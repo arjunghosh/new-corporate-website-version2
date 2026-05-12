@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>About Flexilytics — The Context Engineering Firm</title>
+<meta name="description" content="Flexilytics Pvt. Ltd. — Indian enterprise AI consultancy, founded 2025. The Context Engineering firm. 108+ years of combined enterprise delivery across BFSI, manufacturing, healthcare." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  /* ============ ABOUT-page-specific ============ */
+
+  /* leader cards */
+  .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  @media (max-width:1080px){.team-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:640px){.team-grid{grid-template-columns:1fr}}
+  .leader{position:relative;background:linear-gradient(180deg, var(--bg-3), var(--bg-2));border:1px solid var(--line-1);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:all .35s ease}
+  .leader:hover{border-color:var(--line-3);transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,0.4)}
+  .leader-photo{aspect-ratio:1/1;overflow:hidden;background:var(--bg-4);position:relative}
+  .leader-photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(.15) contrast(1.05);transition:filter .4s ease, transform .8s ease}
+  .leader:hover .leader-photo img{filter:grayscale(0) contrast(1);transform:scale(1.04)}
+  .leader-photo.placeholder{display:flex;align-items:center;justify-content:center;color:var(--blue-lt);font-family:var(--ff-display);font-size:60px;font-weight:200;background:linear-gradient(135deg, var(--bg-4), var(--bg-2))}
+  .leader-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, transparent 50%, rgba(5,6,10,0.6));pointer-events:none}
+  .leader-meta{padding:20px 22px 22px;border-top:1px solid var(--line-1)}
+  .leader-role{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:8px}
+  .leader-name{font-family:var(--ff-display);font-weight:400;font-size:21px;letter-spacing:-0.01em;color:#fff;margin:0 0 4px}
+  .leader-years{font-family:var(--ff-mono);font-size:11.5px;color:var(--faint)}
+  .leader-bio{padding:0 22px 16px;font-size:13.5px;line-height:1.6;color:var(--mute)}
+  .leader-prior{padding:0 22px 22px;display:flex;flex-wrap:wrap;gap:6px}
+  .leader-prior .pill{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);padding:4px 9px;border:1px solid var(--line-2);border-radius:999px;background:rgba(255,255,255,0.02)}
+
+  /* metric strip — under team headline */
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line-1);border-radius:14px;overflow:hidden;background:rgba(5,6,10,0.4);margin:42px 0 28px}
+  @media (max-width:720px){.metrics{grid-template-columns:repeat(2,1fr)}}
+  .metric{padding:24px 22px;border-right:1px solid var(--line-1);border-bottom:1px solid var(--line-1)}
+  .metric:last-child{border-right:0}
+  @media (max-width:720px){.metric:nth-child(2){border-right:0}.metric:nth-child(odd){border-right:1px solid var(--line-1)}}
+  .metric .v{font-family:var(--ff-display);font-weight:200;font-size:42px;line-height:1;letter-spacing:-0.02em;color:#fff;margin-bottom:8px}
+  .metric .v em{font-style:italic;color:var(--blue-xl);font-weight:300;font-size:0.6em}
+  .metric .l{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+
+  /* group + partner section */
+  .group-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:start}
+  @media (max-width:1080px){.group-grid{grid-template-columns:1fr;gap:40px}}
+  .partner-list{display:flex;flex-direction:column;gap:14px}
+  .partner{padding:22px 24px;background:rgba(5,6,10,0.4);border:1px solid var(--line-2);border-radius:12px;position:relative;overflow:hidden;transition:all .3s ease}
+  .partner:hover{border-color:var(--line-3);background:rgba(27,117,240,0.04)}
+  .partner-eye{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+  .partner-eye .v{color:#4ade80}
+  .partner-eye .v::before{content:"●";font-size:8px;margin-right:5px}
+  .partner-name{font-family:var(--ff-display);font-weight:400;font-size:19px;color:#fff;margin:0 0 6px;letter-spacing:-0.01em}
+  .partner-desc{font-size:14px;line-height:1.55;color:var(--mute);margin:0}
+
+  /* ethos cards */
+  .ethos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media (max-width:900px){.ethos-grid{grid-template-columns:1fr}}
+  .ethos{position:relative;padding:32px 28px 30px;background:linear-gradient(180deg, var(--bg-3), var(--bg-2));border:1px solid var(--line-1);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:all .3s ease}
+  .ethos:hover{border-color:var(--line-3);transform:translateY(-4px)}
+  .ethos::before{content:attr(data-num);position:absolute;top:18px;right:24px;font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;color:var(--faint)}
+  .ethos-bignum{font-family:var(--ff-display);font-weight:200;font-size:64px;line-height:1;letter-spacing:-0.04em;color:var(--blue-xl);margin:0 0 18px}
+  .ethos-bignum em{font-style:normal;font-size:0.5em;color:var(--blue-lt)}
+  .ethos h3{font-family:var(--ff-display);font-weight:400;font-size:21px;letter-spacing:-0.01em;color:#fff;margin:0 0 10px}
+  .ethos p{font-size:14.5px;line-height:1.6;color:var(--mute);margin:0}
+
+  /* certifications */
+  .cert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media (max-width:720px){.cert-grid{grid-template-columns:1fr}}
+  .cert{padding:24px 26px;background:rgba(5,6,10,0.4);border:1px solid var(--line-2);border-radius:12px;display:flex;gap:16px;align-items:flex-start;transition:all .3s ease}
+  .cert:hover{border-color:var(--line-3);background:rgba(27,117,240,0.04)}
+  .cert-mark{width:36px;height:36px;border-radius:50%;background:rgba(27,117,240,0.12);border:1px solid var(--line-3);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--blue-lt)}
+  .cert h3{font-family:var(--ff-display);font-weight:400;font-size:17px;color:#fff;margin:0 0 6px;letter-spacing:-0.005em}
+  .cert p{font-size:13.5px;line-height:1.55;color:var(--mute);margin:0}
+
+  /* careers + final cta */
+  .closer{padding:120px 0;position:relative;z-index:2}
+  .closer-card{position:relative;border-radius:24px;overflow:hidden;background:linear-gradient(135deg, var(--bg-3), var(--bg-2) 60%);border:1px solid var(--line-2);padding:64px 56px}
+  @media (max-width:720px){.closer-card{padding:42px 26px}}
+  .closer-card::before{content:"";position:absolute;inset:0;background:radial-gradient(700px 360px at 100% 0%, rgba(27,117,240,0.18), transparent 60%);pointer-events:none}
+  .closer-card > *{position:relative;z-index:1}
+  .closer h2{font-family:var(--ff-display);font-weight:300;font-size:clamp(34px,4.5vw,52px);line-height:1.05;letter-spacing:-0.025em;color:#fff;margin:0 0 22px;max-width:760px;text-wrap:balance}
+  .closer h2 em{font-style:italic;font-weight:200;color:var(--blue-xl)}
+  .closer p{font-size:17px;line-height:1.6;color:var(--mute);max-width:600px;margin:0 0 30px}
+  .closer-meta{margin-top:30px;font-family:var(--ff-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+  .closer-meta a{color:var(--blue-lt)}
+  .closer-meta a:hover{color:var(--blue-xl)}
+</style>
+<!-- SEO-AEO-GEO BEGIN (auto-generated, do not edit by hand) -->
+<link rel="canonical" href="https://flexilytics.ai/about" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="author" content="Flexilytics" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Flexilytics" />
+<meta property="og:url" content="https://flexilytics.ai/about" />
+<meta property="og:title" content="About Flexilytics — The Context Engineering Firm" />
+<meta property="og:description" content="Flexilytics Pvt. Ltd. — Indian enterprise AI consultancy, founded 2025. The Context Engineering firm. 108+ years of combined enterprise delivery across BFSI, manufacturing, healthcare." />
+<meta property="og:image" content="https://flexilytics.ai/og/about.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_IN" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="About Flexilytics — The Context Engineering Firm" />
+<meta name="twitter:description" content="Flexilytics Pvt. Ltd. — Indian enterprise AI consultancy, founded 2025. The Context Engineering firm. 108+ years of combined enterprise delivery across BFSI, manufacturing, healthcare." />
+<meta name="twitter:image" content="https://flexilytics.ai/og/about.png" />
+<meta name="geo.region" content="IN-MH" />
+<meta name="geo.placename" content="Mumbai" />
+<meta name="ICBM" content="19.0760, 72.8777" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://flexilytics.ai/#organization",
+  "name": "Flexilytics",
+  "legalName": "Flexilytics Pvt. Ltd.",
+  "url": "https://flexilytics.ai",
+  "logo": "https://flexilytics.ai/assets/logo-mark.png",
+  "foundingDate": "2025",
+  "description": "Indian enterprise AI consultancy. The Context Engineering firm — grounding AI workloads in identity, hierarchy, definitions, lineage, and policy.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Mumbai",
+    "addressCountry": "IN"
+  },
+  "email": "hello@flexilytics.ai",
+  "areaServed": [
+    "IN",
+    "AE",
+    "SG",
+    "GB",
+    "US"
+  ],
+  "knowsAbout": [
+    "Context Engineering",
+    "Enterprise AI",
+    "Data Governance",
+    "Microsoft Fabric",
+    "Databricks",
+    "AI/ML Engineering",
+    "BFSI Analytics",
+    "Modern Data Platform",
+    "DPDP Compliance",
+    "RBI Regulatory Compliance"
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/company/flexilytics/"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://flexilytics.ai/#website",
+  "url": "https://flexilytics.ai",
+  "name": "Flexilytics",
+  "description": "The Context Engineering firm.",
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "@id": "https://flexilytics.ai/about#webpage",
+  "url": "https://flexilytics.ai/about",
+  "name": "About Flexilytics — The Context Engineering Firm",
+  "description": "Flexilytics Pvt. Ltd. — Indian enterprise AI consultancy, founded 2025. The Context Engineering firm. 108+ years of combined enterprise delivery across BFSI, manufacturing, healthcare.",
+  "isPartOf": {
+    "@id": "https://flexilytics.ai/#website"
+  },
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN",
+  "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://flexilytics.ai/og/about.png"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": "https://flexilytics.ai/about#breadcrumb",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://flexilytics.ai/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "About",
+      "item": "https://flexilytics.ai/about"
+    }
+  ]
+}
+</script>
+<!-- SEO-AEO-GEO END -->
+</head>
+<body>
+
+<canvas id="ambient"></canvas>
+
+<header class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="index.html" aria-label="Flexilytics home">
+      <img class="brand-mark" src="assets/logo-on-dark.png" alt="Flexilytics" />
+      </a>
+    <nav class="nav-links">
+      <a href="approach.html">Approach</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="platforms.html">Platforms</a>
+      <a href="trust-security.html">Trust & Security</a>
+      <a href="insights.html">Insights</a>
+      <a class="active" href="about.html">About</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <a class="nav-cta" href="book-audit.html">Book the 2-Week Audit <span aria-hidden="true">→</span></a>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="page-hero">
+  <div class="wrap page-hero-inner">
+    <div class="reveal">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>ABOUT FLEXILYTICS<span class="eyebrow-bar"></span></div>
+      <h1>The <em>context engineering</em> firm <br/>for enterprise AI<span class="period">.</span></h1>
+      <p class="lede"><strong>Flexilytics Private Limited</strong> is an Indian enterprise AI consultancy founded in 2025. We deliver data science, analytics, and AI automation that enterprises can actually trust — because we engineer the business context and governance around it.</p>
+      <p class="tag">— Intelligence. Grounded.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY WE EXIST ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-chip"><span class="n">§ 01</span><span>WHY WE EXIST</span></div>
+      <h2 class="sec-h">Enterprise AI fails at the <em>context layer</em>.</h2>
+    </div>
+    <div class="reveal d1" style="max-width:880px">
+      <p style="font-size:18px;line-height:1.65;color:var(--mute);margin:0 0 24px">Not in the model. Not in the cloud infrastructure. In the gap between what your business knows and what your AI systems understand.</p>
+      <p style="font-size:18px;line-height:1.65;color:var(--mute);margin:0 0 24px">Most consulting firms hand you a strategy deck and walk away. Most technology firms build the infrastructure and leave you to figure out the business logic. <strong style="color:#fff;font-weight:500">We do both — and we stay through production.</strong></p>
+      <p style="font-size:18px;line-height:1.65;color:var(--mute);margin:0">Flexilytics was founded to close that gap. The methodology is <strong style="color:#fff;font-weight:500">FlexiContext™</strong>. The delivery model is <span style="color:var(--blue-xl)">Strategy → Build → Run</span>. The philosophy is <em style="color:var(--rose);font-style:italic;font-family:var(--ff-display)">Intelligence. Grounded.</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TEAM ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-chip"><span class="n">§ 02</span><span>THE TEAM</span></div>
+      <h2 class="sec-h"><em>108+</em> years of combined enterprise delivery.</h2>
+      <p class="sec-lede">Led by practitioners who've built and operated inside the organisations we now advise — across BFSI, manufacturing, healthcare, and technology. Delivered 265+ analytics and AI solutions. Led teams from 10 to 500+.</p>
+    </div>
+
+    <div class="metrics reveal d1">
+      <div class="metric"><div class="v">108<em>+</em></div><div class="l">Years combined</div></div>
+      <div class="metric"><div class="v">265<em>+</em></div><div class="l">Solutions delivered</div></div>
+      <div class="metric"><div class="v">500<em>+</em></div><div class="l">Practitioners led</div></div>
+      <div class="metric"><div class="v">4</div><div class="l">Founders</div></div>
+    </div>
+
+        <div class="team-grid" style="margin-top:18px">
+      <article class="leader reveal d1">
+        <div class="leader-photo"><img src="assets/team/ankush.jpeg" alt="Ankush Shah" loading="lazy" /></div>
+        <div class="leader-meta">
+          <div class="leader-role">CEO &amp; Founder</div>
+          <h3 class="leader-name">Ankush Shah</h3>
+          <div class="leader-years">24+ years</div>
+        </div>
+        <p class="leader-bio">Twenty-four years as a data partner to large BFSI and manufacturing enterprises, globally. Columbia Business School. ICF-certified Leadership Coach.</p>
+        <div class="leader-prior"><span class="pill">Delta Technologies</span><span class="pill">Exponentia.ai</span></div>
+      </article>
+
+      <article class="leader reveal d2">
+        <div class="leader-photo"><img src="assets/team/vishal.jpeg" alt="Vishal Dhure" loading="lazy" /></div>
+        <div class="leader-meta">
+          <div class="leader-role">COO &amp; CRO</div>
+          <h3 class="leader-name">Vishal Dhure</h3>
+          <div class="leader-years">26 years</div>
+        </div>
+        <p class="leader-bio">Twenty-six years inside tier-one global IT services firms, leading large data and analytics delivery programs. Owns the commercial engine and delivery operations.</p>
+        <div class="leader-prior"><span class="pill">Tech Mahindra</span><span class="pill">Polestar Solutions</span></div>
+      </article>
+
+      <article class="leader reveal d3">
+        <div class="leader-photo"><img src="assets/team/arun.png" alt="Arun Bhatia" loading="lazy" /></div>
+        <div class="leader-meta">
+          <div class="leader-role">Chief Tech Program Manager</div>
+          <h3 class="leader-name">Arun Bhatia</h3>
+          <div class="leader-years">33 years</div>
+        </div>
+        <p class="leader-bio">Thirty-three years inside tier-one IT services and product companies as a BI and data-architecture specialist. He predates the modern lakehouse by a decade.</p>
+        <div class="leader-prior"><span class="pill">HP</span><span class="pill">DXC Technology</span><span class="pill">LTIMindtree</span></div>
+      </article>
+
+      <article class="leader reveal d4">
+        <div class="leader-photo placeholder"><span>AG</span></div>
+        <div class="leader-meta">
+          <div class="leader-role">Chief AI &amp; Tech Officer</div>
+          <h3 class="leader-name">Arjun Ghosh</h3>
+          <div class="leader-years">22+ years</div>
+        </div>
+        <p class="leader-bio">Twenty-two years across tier-one global IT services firms, leading enterprise AI and digital-transformation programs. XLRI · IIM Kozhikode · Cornell (Chief AI Officer programme).</p>
+        <div class="leader-prior"><span class="pill">Accenture</span><span class="pill">PwC</span></div>
+      </article>
+    </div>
+
+    <div class="reveal d2" style="margin-top:38px">
+      <a class="btn btn-ghost" href="leadership.html">Meet the leadership team
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE GROUP + PARTNERS ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-chip"><span class="n">§ 03</span><span>THE GROUP</span></div>
+      <h2 class="sec-h">Part of a group with <em>150+</em> professionals.</h2>
+    </div>
+
+    <div class="group-grid">
+      <div class="reveal d1">
+        <p style="font-size:17px;line-height:1.65;color:var(--mute);margin:0 0 22px">Flexilytics sits inside a group with <strong style="color:#fff;font-weight:500">150+ professionals</strong> across consulting, technology, and finance.</p>
+        <p style="font-size:17px;line-height:1.65;color:var(--mute);margin:0">Mountain Monk Consulting brings management-consulting depth to complement Flexilytics' technology and AI delivery — where Flexilytics engineers the context layer, the group's management-consulting arm frames the business strategy.</p>
+      </div>
+
+      <div class="reveal d2">
+        <div style="font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin-bottom:14px">Certified Partners</div>
+        <div class="partner-list">
+          <div class="partner">
+            <div class="partner-eye"><span>MICROSOFT AI CLOUD PARTNER</span><span class="v">verified</span></div>
+            <h4 class="partner-name">Azure AI · Fabric · Copilot Studio · Azure OpenAI</h4>
+            <p class="partner-desc">Certified delivery capability across the Microsoft AI cloud surface.</p>
+          </div>
+          <div class="partner">
+            <div class="partner-eye"><span>DATABRICKS CONSULTING &amp; SI PARTNER</span><span class="v">verified</span></div>
+            <h4 class="partner-name">Unity Catalog · MLflow · Genie · Mosaic AI</h4>
+            <p class="partner-desc">Certified delivery capability across the Databricks lakehouse and AI stack.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ETHOS ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-chip"><span class="n">§ 04</span><span>OUR ETHOS</span></div>
+      <h2 class="sec-h">Built to <em>last</em>. Built to give back.</h2>
+    </div>
+
+    <div class="ethos-grid">
+      <div class="ethos reveal d1" data-num="01">
+        <div class="ethos-bignum">10<em>%</em></div>
+        <h3>R&amp;D commitment</h3>
+        <p>10% of every engagement to research and internal tooling — the AI PRD Calculator, the Home Menu App, FlexiContext™ framework evolution. This is how we stay practitioner-first.</p>
+      </div>
+      <div class="ethos reveal d2" data-num="02">
+        <div class="ethos-bignum">5<em>%</em></div>
+        <h3>Employee welfare</h3>
+        <p>5% of revenue is earmarked for employee welfare — training budgets, family support, sabbaticals. Talent retention isn't a nice-to-have; it's our moat.</p>
+      </div>
+      <div class="ethos reveal d3" data-num="03">
+        <div class="ethos-bignum" style="font-size:38px;font-weight:300;letter-spacing:-0.025em;line-height:1.1">Foundation</div>
+        <h3>Flexilytics Foundation</h3>
+        <p>Our give-back arm. AI Residency for high-potential graduates, an open Token Calculator, and a roadmap of open-source releases. <a href="#foundation" style="color:var(--blue-lt);border-bottom:1px solid var(--line-2)">See what's underway →</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOUNDATION ============ -->
+<section class="sec" id="foundation" style="background:linear-gradient(180deg, transparent, rgba(27,117,240,0.04) 50%, transparent)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-chip"><span class="n">§ 04.1</span><span>FLEXILYTICS FOUNDATION</span></div>
+      <h2 class="sec-h">A small <em>give-back</em> arm, doing real work.</h2>
+      <p class="sec-lede">The Foundation is where we put time and code back into the broader Indian enterprise-AI community. It runs on its own domain (coming soon); here's a brief look at what's live, what's underway, and what's next.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px" class="reveal d1">
+
+      <div style="padding:32px 28px;background:linear-gradient(180deg,var(--bg-3),var(--bg-2));border:1px solid var(--line-2);border-radius:14px;position:relative;overflow:hidden">
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:4px 12px;background:rgba(27,117,240,0.12);border:1px solid rgba(74,150,255,0.3);border-radius:999px;font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:18px">● COHORT 01 · OPEN</div>
+        <h3 style="font-family:var(--ff-display);font-weight:300;font-size:26px;color:#fff;margin:0 0 10px;letter-spacing:-0.02em;line-height:1.15">AI <em style="font-style:italic;color:var(--blue-xl);font-weight:400">Residency</em> Program</h3>
+        <div style="font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:14px">12 weeks · structured · paid</div>
+        <p style="font-size:13.5px;line-height:1.6;color:var(--mute);margin:0 0 16px">A 12-week residency for high-potential graduates from non-IIT colleges — real projects, real production systems, real mentors. We pay residents and we don't gate the curriculum behind degrees.</p>
+        <p style="font-size:12.5px;line-height:1.6;color:var(--faint);margin:0;font-style:italic">Brief teaser only — full details, applications, and curriculum on the Foundation site.</p>
+      </div>
+
+      <div style="padding:32px 28px;background:rgba(15,18,26,0.7);border:1px solid var(--line-1);border-radius:14px">
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:4px 12px;background:rgba(143,188,255,0.06);border:1px solid var(--line-2);border-radius:999px;font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin-bottom:18px">◇ IN BUILD</div>
+        <h3 style="font-family:var(--ff-display);font-weight:300;font-size:24px;color:#fff;margin:0 0 10px;letter-spacing:-0.015em;line-height:1.15">Token <em style="font-style:italic;color:var(--blue-xl);font-weight:400">Calculator</em></h3>
+        <div style="font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:14px">Open · honest unit economics</div>
+        <p style="font-size:13.5px;line-height:1.6;color:var(--mute);margin:0">A free, transparent calculator for estimating real LLM costs across providers, context sizes, and workload patterns. Because most enterprise AI business cases get the unit economics wrong on slide one.</p>
+      </div>
+
+      <div style="padding:32px 28px;background:rgba(15,18,26,0.7);border:1px solid var(--line-1);border-radius:14px">
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:4px 12px;background:rgba(143,188,255,0.06);border:1px solid var(--line-2);border-radius:999px;font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin-bottom:18px">◇ ROADMAP</div>
+        <h3 style="font-family:var(--ff-display);font-weight:300;font-size:24px;color:#fff;margin:0 0 10px;letter-spacing:-0.015em;line-height:1.15">Open-source <em style="font-style:italic;color:var(--blue-xl);font-weight:400">releases</em></h3>
+        <div style="font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:14px">FlexiContext primitives · evals</div>
+        <p style="font-size:13.5px;line-height:1.6;color:var(--mute);margin:0">Selected primitives from FlexiContext — eval harnesses, retrieval patterns, governance scaffolds — released as Apache-2.0 over the coming year. The framework is ours; the building blocks should be the community's.</p>
+      </div>
+
+    </div>
+
+    <div class="reveal d2" style="margin-top:36px;padding:24px 28px;background:rgba(5,6,10,0.45);border:1px solid var(--line-1);border-radius:12px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+      <p style="font-family:var(--ff-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:0">▸ Foundation gets its own home — flexilytics.foundation — coming soon.</p>
+      <a href="mailto:foundation@flexilytics.ai" style="font-family:var(--ff-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-lt)">foundation@flexilytics.ai →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CERTIFICATIONS ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-chip"><span class="n">§ 05</span><span>CERTIFICATIONS</span></div>
+      <h2 class="sec-h">Verified <em>credentials</em>.</h2>
+    </div>
+
+    <div class="cert-grid">
+      <div class="cert reveal d1">
+        <div class="cert-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div>
+          <h3>Microsoft AI Cloud Partner</h3>
+          <p>Certified capability across Azure AI, Fabric, Copilot Studio, Azure OpenAI.</p>
+        </div>
+      </div>
+      <div class="cert reveal d2">
+        <div class="cert-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div>
+          <h3>Databricks Consulting &amp; SI Partner</h3>
+          <p>Certified capability across Unity Catalog, MLflow, Genie Spaces, Mosaic AI.</p>
+        </div>
+      </div>
+      <div class="cert reveal d3">
+        <div class="cert-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6L12 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+        <div>
+          <h3>Qlik APAC Pre-Sales Person of the Year 2018</h3>
+          <p>Awarded to Ankush Shah in his Qlik tenure.</p>
+        </div>
+      </div>
+      <div class="cert reveal d4">
+        <div class="cert-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6L12 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+        <div>
+          <h3>Alexa Integration Award</h3>
+          <p>Awarded during Ankush's time at Aditya Birla Group for first-of-its-kind voice interface.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CAREERS + CTA ============ -->
+<section class="closer" id="careers">
+  <div class="wrap">
+    <div class="closer-card reveal">
+      <div class="eyebrow" style="margin-bottom:16px"><span class="eyebrow-dot"></span>CAREERS · LET'S TALK</div>
+      <h2>We're hiring practitioners <em>—</em> not demo-makers.</h2>
+      <p>Senior data analysts, business analysts, AI/ML engineers, solution architects. If you've shipped production systems inside regulated enterprises and you care about grounded AI more than demo-AI, we want to talk.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="book-audit.html">Start with a conversation
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="mailto:hello@flexilytics.ai">hello@flexilytics.ai</a>
+      </div>
+      <div class="closer-meta">
+        <span>Mumbai · India</span>
+        <span>Hiring across all four founders' sectors</span>
+        <a href="book-audit.html">Book the 2-Week Readiness Audit →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-wm">
+        <img src="assets/logo-wide.png" alt="Flexilytics — Intelligence. Grounded." />
+        <div class="foot-tag">Context Engineering for regulated enterprises across India, UAE, and Southeast Asia.</div>
+      </div>
+      <div class="foot-col">
+        <h5>Approach</h5>
+        <ul>
+          <li><a href="approach.html">Strategy · Build · Run</a></li>
+          <li><a href="context-engineering.html">FlexiContext™</a></li>
+          <li><a href="trust-security.html">Trust &amp; Security</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Solutions</h5>
+        <ul>
+          <li><a href="solutions-data-governance.html">Data Governance</a></li>
+          <li><a href="solutions-modern-data-platform.html">Modern Data Platform</a></li>
+          <li><a href="solutions-ai-ml-engineering.html">AI &amp; ML Engineering</a></li>
+          <li><a href="solutions-analytics-bi.html">Analytics &amp; BI</a></li>
+          <li><a href="solutions-flexianalyst.html">FlexiAnalyst</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="leadership.html">Leadership</a></li>
+          <li><a href="insights.html">Insights</a></li>
+          <li><a href="bfsi.html">Industries · BFSI</a></li>
+          <li><a href="book-audit.html">Book Audit</a></li>
+          <li><a href="mailto:hello@flexilytics.ai">hello@flexilytics.ai</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 FLEXILYTICS PVT. LTD.</span>
+      <span class="m">INTELLIGENCE. GROUNDED.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ TWEAKS ============ -->
+<div class="tweaks" id="tweaks">
+  <h4>Tweaks <button id="tweaksClose" aria-label="Close">×</button></h4>
+  <div class="tweak-grp"><div class="tweak-lbl">Motion</div>
+    <div class="seg" id="motionSeg">
+      <button data-v="calm" class="active">Calm</button>
+      <button data-v="flow">Flow</button>
+      <button data-v="alive">Alive</button>
+    </div>
+  </div>
+  <div class="tweak-grp"><div class="tweak-lbl">Ambient field</div>
+    <div class="seg" id="ambientSeg">
+      <button data-v="on" class="active">On</button>
+      <button data-v="off">Off</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "motion": "calm",
+  "ambient": "on"
+}/*EDITMODE-END*/;
+window.__motionMode = TWEAK_DEFAULTS.motion;
+window.__ambientMode = TWEAK_DEFAULTS.ambient;
+</script>
+<script src="assets/site.js"></script>
+
+</body>
+</html>

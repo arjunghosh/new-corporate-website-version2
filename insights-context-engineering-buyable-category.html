@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Why Context Engineering is the Next Buyable Category — Flexilytics Insights</title>
+<meta name="description" content="An argument for naming, scoping, and budgeting the semantic layer that every successful enterprise AI program builds first." />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .crumb{padding:96px 0 0;font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  .crumb a{color:var(--mute)} .crumb .sep{color:var(--line-3);margin:0 8px}
+  .article-hero{padding:42px 0 60px}
+  .article-hero .meta-line{display:flex;align-items:center;gap:14px;font-family:var(--ff-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:28px}
+  .article-hero .meta-line .cat{color:var(--blue-lt)}
+  .article-hero .meta-line .dot{width:6px;height:6px;border-radius:50%;background:var(--blue-lt)}
+  .article-hero h1{font-family:var(--ff-display);font-weight:300;font-size:clamp(38px,5.6vw,68px);line-height:1.04;letter-spacing:-0.03em;color:#fff;margin:0 0 24px;text-wrap:balance;max-width:1000px}
+  .article-hero h1 em{font-style:italic;color:var(--blue-xl);font-weight:400}
+  .article-hero .dek{font-family:var(--ff-display);font-style:italic;font-weight:300;font-size:clamp(20px,2.4vw,26px);line-height:1.45;color:var(--mute);max-width:760px;margin:0;letter-spacing:-0.005em}
+  .article-hero .byline{display:flex;align-items:center;gap:14px;margin-top:36px;padding-top:28px;border-top:1px solid var(--line-1);max-width:760px}
+  .article-hero .byline .ph{width:42px;height:42px;border-radius:50%;background:var(--bg-3);border:1px solid var(--line-2);overflow:hidden}
+  .article-hero .byline .ph img{width:100%;height:100%;object-fit:cover}
+  .article-hero .byline .who{font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+  .article-hero .byline .who strong{color:#fff;font-weight:500}
+  .article-body{max-width:760px;margin:0 auto;padding-bottom:60px}
+  .article-body p{font-family:var(--ff-sans);font-size:17px;line-height:1.75;color:#cbd1de;margin:0 0 22px;text-wrap:pretty}
+  .article-body p.lead{font-family:var(--ff-display);font-weight:300;font-size:22px;line-height:1.6;color:#fff;margin-bottom:32px;letter-spacing:-0.005em}
+  .article-body h2{font-family:var(--ff-display);font-weight:400;font-size:30px;color:#fff;margin:48px 0 20px;letter-spacing:-0.02em;line-height:1.2}
+  .article-body h2 em{color:var(--blue-xl);font-style:italic}
+  .article-body h3{font-family:var(--ff-display);font-weight:500;font-size:21px;color:#fff;margin:36px 0 14px;letter-spacing:-0.01em}
+  .article-body strong{color:#fff;font-weight:500}
+  .article-body em{font-style:italic;color:#e1e5ef}
+  .article-body blockquote{margin:32px 0;padding:24px 28px;background:rgba(5,6,10,0.5);border-left:2px solid var(--blue-lt);border-radius:0 10px 10px 0;font-family:var(--ff-display);font-style:italic;font-weight:300;font-size:20px;line-height:1.55;color:#fff;letter-spacing:-0.005em}
+  .article-body ul,.article-body ol{padding-left:22px;margin:0 0 22px;color:#cbd1de;font-size:17px;line-height:1.75}
+  .article-body li{margin-bottom:8px}
+  .pullquote{margin:48px -40px;padding:28px 40px;text-align:center;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+  @media (max-width:840px){.pullquote{margin:48px 0}}
+  .pullquote p{font-family:var(--ff-display);font-style:italic;font-weight:300;font-size:clamp(22px,3vw,30px);line-height:1.4;color:#fff;letter-spacing:-0.015em;margin:0;text-wrap:balance}
+  .pullquote p em{color:var(--blue-xl);font-style:italic}
+  .article-body .callout{margin:36px 0;padding:24px 28px;background:rgba(27,117,240,0.04);border:1px solid var(--line-3);border-radius:12px}
+  .article-body .callout .lbl{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:10px}
+  .article-body .callout p{margin:0;font-size:15px;line-height:1.6;color:var(--mute)}
+  .article-body hr{border:0;border-top:1px solid var(--line-2);margin:40px 0}
+  .article-end{max-width:760px;margin:0 auto;padding:48px 0 60px;border-top:1px solid var(--line-1)}
+  .article-end .tag{font-family:var(--ff-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:18px}
+  .article-end h3{font-family:var(--ff-display);font-weight:300;font-size:30px;letter-spacing:-0.02em;color:#fff;margin:0 0 18px;line-height:1.2}
+  .article-end h3 em{color:var(--blue-xl);font-style:italic}
+  .next-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+  @media (max-width:720px){.next-row{grid-template-columns:1fr}}
+  .next{padding:24px 26px;background:rgba(5,6,10,0.4);border:1px solid var(--line-2);border-radius:12px;text-decoration:none;color:inherit;transition:all .25s ease;display:block}
+  .next:hover{border-color:var(--line-3);background:rgba(27,117,240,0.04)}
+  .next .lbl{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+  .next h4{font-family:var(--ff-display);font-weight:400;font-size:18px;color:#fff;margin:0 0 6px;letter-spacing:-0.005em}
+  .next p{font-size:13.5px;line-height:1.55;color:var(--mute);margin:0}
+</style>
+<!-- SEO-AEO-GEO BEGIN (auto-generated, do not edit by hand) -->
+<link rel="canonical" href="https://flexilytics.ai/insights/context-engineering-buyable-category" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="author" content="Flexilytics" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Flexilytics" />
+<meta property="og:url" content="https://flexilytics.ai/insights/context-engineering-buyable-category" />
+<meta property="og:title" content="Why Context Engineering is the Next Buyable Category — Flexilytics Insights" />
+<meta property="og:description" content="An argument for naming, scoping, and budgeting the semantic layer that every successful enterprise AI program builds first." />
+<meta property="og:image" content="https://flexilytics.ai/og/insight-context-engineering.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_IN" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Why Context Engineering is the Next Buyable Category — Flexilytics Insights" />
+<meta name="twitter:description" content="An argument for naming, scoping, and budgeting the semantic layer that every successful enterprise AI program builds first." />
+<meta name="twitter:image" content="https://flexilytics.ai/og/insight-context-engineering.png" />
+<meta property="article:published_time" content="2026-04-15" />
+<meta property="article:modified_time" content="2026-04-22" />
+<meta property="article:author" content="Ankush Shah" />
+<meta property="article:section" content="Insights" />
+<meta property="article:tag" content="context engineering" />
+<meta property="article:tag" content="enterprise AI" />
+<meta property="article:tag" content="semantic layer" />
+<meta property="article:tag" content="data governance" />
+<meta property="article:tag" content="AI procurement" />
+<meta name="geo.region" content="IN-MH" />
+<meta name="geo.placename" content="Mumbai" />
+<meta name="ICBM" content="19.0760, 72.8777" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://flexilytics.ai/#organization",
+  "name": "Flexilytics",
+  "legalName": "Flexilytics Pvt. Ltd.",
+  "url": "https://flexilytics.ai",
+  "logo": "https://flexilytics.ai/assets/logo-mark.png",
+  "foundingDate": "2025",
+  "description": "Indian enterprise AI consultancy. The Context Engineering firm — grounding AI workloads in identity, hierarchy, definitions, lineage, and policy.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Mumbai",
+    "addressCountry": "IN"
+  },
+  "email": "hello@flexilytics.ai",
+  "areaServed": [
+    "IN",
+    "AE",
+    "SG",
+    "GB",
+    "US"
+  ],
+  "knowsAbout": [
+    "Context Engineering",
+    "Enterprise AI",
+    "Data Governance",
+    "Microsoft Fabric",
+    "Databricks",
+    "AI/ML Engineering",
+    "BFSI Analytics",
+    "Modern Data Platform",
+    "DPDP Compliance",
+    "RBI Regulatory Compliance"
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/company/flexilytics/"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://flexilytics.ai/#website",
+  "url": "https://flexilytics.ai",
+  "name": "Flexilytics",
+  "description": "The Context Engineering firm.",
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://flexilytics.ai/insights/context-engineering-buyable-category#webpage",
+  "url": "https://flexilytics.ai/insights/context-engineering-buyable-category",
+  "name": "Why Context Engineering is the Next Buyable Category — Flexilytics Insights",
+  "description": "An argument for naming, scoping, and budgeting the semantic layer that every successful enterprise AI program builds first.",
+  "isPartOf": {
+    "@id": "https://flexilytics.ai/#website"
+  },
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN",
+  "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://flexilytics.ai/og/insight-context-engineering.png"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": "https://flexilytics.ai/insights/context-engineering-buyable-category#breadcrumb",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://flexilytics.ai/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Insights",
+      "item": "https://flexilytics.ai/insights"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Context Engineering as Category",
+      "item": "https://flexilytics.ai/insights/context-engineering-buyable-category"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://flexilytics.ai/insights/context-engineering-buyable-category#article",
+  "headline": "Why \"Context Engineering\" is the next buyable category",
+  "description": "An argument for naming, scoping, and budgeting the semantic layer that every successful enterprise AI program builds first.",
+  "image": "https://flexilytics.ai/og/insight-context-engineering.png",
+  "datePublished": "2026-04-15",
+  "dateModified": "2026-04-22",
+  "author": {
+    "@type": "Person",
+    "name": "Ankush Shah",
+    "jobTitle": "Founder & CEO, Flexilytics",
+    "worksFor": {
+      "@id": "https://flexilytics.ai/#organization"
+    }
+  },
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "mainEntityOfPage": {
+    "@id": "https://flexilytics.ai/insights/context-engineering-buyable-category#webpage"
+  },
+  "wordCount": 1850,
+  "keywords": [
+    "context engineering",
+    "enterprise AI",
+    "semantic layer",
+    "data governance",
+    "AI procurement"
+  ],
+  "inLanguage": "en-IN"
+}
+</script>
+<!-- SEO-AEO-GEO END -->
+</head>
+<body>
+<canvas id="ambient"></canvas>
+<header class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="index.html" aria-label="Flexilytics home">
+      <img class="brand-mark" src="assets/logo-on-dark.png" alt="Flexilytics" />
+      </a>
+    <nav class="nav-links">
+      <a href="approach.html">Approach</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="platforms.html">Platforms</a>
+      <a href="trust-security.html">Trust & Security</a>
+      <a class="active" href="insights.html">Insights</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <a class="nav-cta" href="book-audit.html">Book the 2-Week Audit <span aria-hidden="true">→</span></a>
+  </div>
+</header>
+<main>
+
+<div class="wrap crumb"><a href="insights.html">Insights</a><span class="sep">/</span><span style="color:var(--blue-lt)">Method · April 2026</span></div>
+
+<section class="article-hero"><div class="wrap">
+<div class="reveal">
+<div class="meta-line"><span class="dot"></span><span class="cat">METHOD</span><span>· 9 MIN READ</span><span>· 16 APR 2026</span></div>
+<h1>Why "Context Engineering" is the next <em>buyable</em> category.</h1>
+<p class="dek">Every enterprise AI project that survived its first year did one thing first. We argue that thing deserves a name, a budget line, and a buyer.</p>
+<div class="byline"><div class="ph"></div><div class="who">By the <strong>Flexilytics Founding Partners</strong> · Edited by Vishal Dhure</div></div>
+</div>
+</div></section>
+
+<article class="wrap"><div class="article-body">
+<p class="lead">Spend a week inside an enterprise AI program that's actually working — not the demo, the <em>actual</em> production deployment — and a pattern shows up. The team isn't talking about model selection. They aren't arguing about GPT-vs-Claude. They're arguing about whether "active customer" includes the dormant SIP holders, and which of the four customer-360 tables is the one finance reconciles to.</p>
+
+<p>That argument is not a distraction from the AI work. It <strong>is</strong> the AI work. And it has no name.</p>
+
+<h2>The unnamed thing</h2>
+<p>Walk through any board-approved AI strategy and you'll find a budget line for "platform," a budget line for "models," sometimes a line for "use cases." You will not find a budget line for the thing the program actually spent six months on: turning fragmented operational data into a coherent, audit-defendable representation of the business that a model — any model — can read without hallucinating.</p>
+<p>Different teams call it different things. The data-engineering side calls it "the semantic layer." The MLOps side calls it "the feature store, plus governance." The architects call it "master data, but extended." The CDO calls it "the thing the last vendor never finished." The COO calls it "why nothing works."</p>
+
+<blockquote>The reason it has so many names is that none of them are big enough. They each describe a slice of the elephant.</blockquote>
+
+<h2>Why we call it Context Engineering</h2>
+<p>Three years of building this layer for clients in BFSI, lending, and consumer health pushed us to name it. We picked <strong>Context Engineering</strong> for three reasons:</p>
+<ul>
+<li><strong>It centers the right noun.</strong> Models need <em>context</em> to be useful. Without context, a model is a clever but ungrounded reasoner. With context, it is an analyst.</li>
+<li><strong>It centers the right verb.</strong> "Engineering" — not "modelling," not "architecture," not "strategy." Context is a thing you build, version, deploy, and maintain. It has SLAs, it has on-call, it has tests.</li>
+<li><strong>It is honest about who is missing.</strong> Most enterprises do not have a head of context engineering. That is the point. The category exists; the role does not yet.</li>
+</ul>
+
+<h2>What's <em>in</em> a context layer</h2>
+<p>We've been refining the FlexiContext framework on engagements for three years. It has five layers, deliberately ordered from most stable to most volatile:</p>
+<ol>
+<li><strong>Identity.</strong> The canonical "what is a customer / counterparty / instrument / claim" — resolved across systems, owned by a steward.</li>
+<li><strong>Hierarchy.</strong> The org / product / geography / time hierarchies, versioned. Most KPI fights are actually hierarchy fights.</li>
+<li><strong>Definitions.</strong> The KPI registry — one definition per metric, an owner, a change history.</li>
+<li><strong>Lineage.</strong> Source-to-report column-level lineage. Reproducibility on demand.</li>
+<li><strong>Exceptions.</strong> A first-class exception spine for the carve-outs every regulated process actually runs on.</li>
+</ol>
+
+<div class="callout"><div class="lbl">FIELD NOTE</div><p>The fifth layer — exceptions — is the one most frameworks pretend doesn't exist. In every BFSI engagement we've run, the gap between the documented process and the actual process is the exception ledger. Make it first-class or accept that your AI is hallucinating.</p></div>
+
+<h2>Why it's now <em>buyable</em></h2>
+<p>Three forces moved this from "internal hygiene" to "procurable category" in the last 18 months.</p>
+
+<h3>1. The platforms grew up.</h3>
+<p>Microsoft Fabric's OneLake and Databricks' Unity Catalog are now expressive enough to hold a real semantic spine. You no longer need a custom in-house build to do this credibly — but you do need partners who understand both the framework and the platform.</p>
+
+<h3>2. The regulators arrived.</h3>
+<p>RBI's master directions on outsourcing and IT, SEBI's CSCRF, IRDAI's cyber guidelines, and the DPDP Act all assume your data is identifiable, lineage-traceable, and exception-handled. The regulator's "show me where this number came from" question has a 90-second answer or a six-week one. Context engineering is the difference.</p>
+
+<h3>3. The agentic wave forced it.</h3>
+<p>You can hide a fuzzy semantic layer behind a dashboard. You cannot hide it behind an agent that's about to send an email to the CFO. The closer the AI gets to autonomous action, the higher the cost of ungrounded context.</p>
+
+<div class="pullquote"><p>You can hide a fuzzy semantic layer behind a dashboard. You <em>cannot</em> hide it behind an agent that's about to send an email to the CFO.</p></div>
+
+<h2>What buying it looks like</h2>
+<p>If you're a CDO or a COO trying to convert this into an actual line item, three rules of thumb:</p>
+<ul>
+<li><strong>Scope it as an outcome, not a deliverable.</strong> "Audit-passable governance for top 50 KPIs by Q3" is buyable. "Implement the semantic layer" is not.</li>
+<li><strong>Time-box the Strategy phase.</strong> Two weeks is enough. Anything longer becomes archaeology.</li>
+<li><strong>Insist on operator handover by the end of Build.</strong> If you can't hire two people to extend the framework after the partner leaves, the framework wasn't engineered. It was performed.</li>
+</ul>
+
+<h2>The honest objection</h2>
+<p>"This sounds like data governance with a new label."</p>
+<p>It overlaps. Governance is a <em>component</em> of context — specifically the lineage and definitions layers. But governance has historically been a compliance function: defensive, posture-driven, slow. Context engineering is a <em>delivery</em> function: it ships, it has on-call, and its KPI is whether the next AI workload can stand on it.</p>
+<p>The two functions need to merge. They will. The companies that figure out the merge first — and put a budget line behind it — will be the ones whose AI roadmaps survive their second year.</p>
+
+<hr/>
+<p style="font-family:var(--ff-mono);font-size:13px;color:var(--faint);letter-spacing:.04em">— The Flexilytics Founding Partners. Mumbai, April 2026.</p>
+
+</div></article>
+
+<section class="wrap"><div class="article-end">
+<div class="tag">● KEEP READING</div>
+<h3>Two more <em>field notes</em>.</h3>
+<div class="next-row">
+<a class="next" href="insights-fabric-vs-databricks-bfsi.html"><div class="lbl">PLATFORM · 12 MIN</div><h4>Microsoft Fabric vs Databricks for Indian BFSI: a partner's view.</h4><p>The honest decision tree — including where each platform loses.</p></a>
+<a class="next" href="approach.html"><div class="lbl">METHOD · DEEPER</div><h4>The full FlexiContext framework</h4><p>Five layers, one method. The approach behind the essay.</p></a>
+</div>
+</div></section>
+
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-wm">
+        <img src="assets/logo-wide.png" alt="Flexilytics — Intelligence. Grounded." />
+        <div class="foot-tag">Context Engineering for regulated enterprises across India, UAE, and Southeast Asia.</div>
+      </div>
+      <div class="foot-col">
+        <h5>Approach</h5>
+        <ul>
+          <li><a href="approach.html">Strategy · Build · Run</a></li>
+          <li><a href="context-engineering.html">FlexiContext™</a></li>
+          <li><a href="trust-security.html">Trust &amp; Security</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Solutions</h5>
+        <ul>
+          <li><a href="solutions-data-governance.html">Data Governance</a></li>
+          <li><a href="solutions-modern-data-platform.html">Modern Data Platform</a></li>
+          <li><a href="solutions-ai-ml-engineering.html">AI &amp; ML Engineering</a></li>
+          <li><a href="solutions-analytics-bi.html">Analytics &amp; BI</a></li>
+          <li><a href="solutions-flexianalyst.html">FlexiAnalyst</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="leadership.html">Leadership</a></li>
+          <li><a href="insights.html">Insights</a></li>
+          <li><a href="bfsi.html">Industries · BFSI</a></li>
+          <li><a href="book-audit.html">Book Audit</a></li>
+          <li><a href="mailto:hello@flexilytics.ai">hello@flexilytics.ai</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 FLEXILYTICS PVT. LTD.</span>
+      <span class="m">INTELLIGENCE. GROUNDED.</span>
+    </div>
+  </div>
+</footer>
+<div class="tweaks" id="tweaks"><h4>Tweaks <button id="tweaksClose">×</button></h4><div class="tweak-grp"><div class="tweak-lbl">Motion</div><div class="seg" id="motionSeg"><button data-v="calm" class="active">Calm</button><button data-v="flow">Flow</button><button data-v="alive">Alive</button></div></div><div class="tweak-grp"><div class="tweak-lbl">Ambient field</div><div class="seg" id="ambientSeg"><button data-v="on" class="active">On</button><button data-v="off">Off</button></div></div></div>
+<script>const TWEAK_DEFAULTS=/*EDITMODE-BEGIN*/{"motion":"calm","ambient":"on"}/*EDITMODE-END*/;window.__motionMode=TWEAK_DEFAULTS.motion;window.__ambientMode=TWEAK_DEFAULTS.ambient;</script>
+<script src="assets/site.js"></script>
+</body></html>

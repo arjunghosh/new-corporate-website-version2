@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Platforms — Microsoft Fabric, Databricks & Ecosystem | Flexilytics</title>
+<meta name="description" content="Flagship depth on Microsoft Fabric and Databricks; pragmatic engagement across the ecosystem. Honest about where we lead and where we integrate." />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .crumb{padding-top:96px;font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  .crumb a{color:var(--mute)} .crumb .sep{color:var(--line-3);margin:0 8px} .crumb .here{color:var(--blue-lt)}
+
+  /* tier label */
+  .tier-label{display:flex;align-items:baseline;gap:18px;margin:0 0 24px;padding-bottom:14px;border-bottom:1px solid var(--line-1)}
+  .tier-label .tn{font-family:var(--ff-mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue-lt)}
+  .tier-label .tt{font-family:var(--ff-display);font-weight:300;font-size:24px;color:#fff;letter-spacing:-0.01em}
+  .tier-label .ts{font-family:var(--ff-display);font-style:italic;font-weight:300;font-size:14px;color:var(--faint);margin-left:auto}
+
+  /* tier 1: flagship platforms */
+  .plat-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media (max-width:900px){.plat-grid{grid-template-columns:1fr}}
+  .plat{position:relative;padding:40px 36px 32px;background:linear-gradient(180deg,var(--bg-3),var(--bg-2));border:1px solid var(--line-1);border-radius:18px;overflow:hidden;transition:all .4s ease}
+  .plat::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent)}
+  .plat[data-k="fabric"]{--accent:linear-gradient(90deg,#0078d4,#50e6ff)}
+  .plat[data-k="dbx"]{--accent:linear-gradient(90deg,#ff3621,#ff8c1a)}
+  .plat:hover{transform:translateY(-4px);border-color:var(--line-3)}
+  .plat .badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;color:var(--blue-lt);text-transform:uppercase;margin-bottom:18px}
+  .plat[data-k="dbx"] .badge{color:#ff8c1a}
+  .plat h2{font-family:var(--ff-display);font-weight:300;font-size:38px;color:#fff;letter-spacing:-0.025em;margin:0 0 12px;line-height:1.05}
+  .plat h2 em{font-style:italic;color:var(--blue-xl);font-weight:400}
+  .plat[data-k="dbx"] h2 em{color:#ff8c1a}
+  .plat .sub{font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:18px}
+  .plat p{font-size:14.5px;line-height:1.65;color:var(--mute);margin:0 0 22px}
+  .plat .caps{display:flex;flex-direction:column;gap:8px;padding:18px 20px;background:rgba(5,6,10,0.45);border:1px solid var(--line-2);border-radius:10px;margin-bottom:20px}
+  .plat .caps .row{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+  .plat .caps .k{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-lt);min-width:90px;padding-top:1px}
+  .plat[data-k="dbx"] .caps .k{color:#ff8c1a}
+  .plat .caps .v{font-size:13px;color:var(--mute);line-height:1.55}
+
+  /* tier 2: ecosystem grid */
+  .eco-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
+  @media (max-width:900px){.eco-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.eco-grid{grid-template-columns:1fr}}
+  .eco{padding:26px 24px;background:rgba(15,18,26,0.55);border:1px solid var(--line-1);border-radius:14px;transition:all .3s ease;position:relative;overflow:hidden}
+  .eco:hover{border-color:var(--line-2);transform:translateY(-2px);background:rgba(15,18,26,0.85)}
+  .eco .eco-cat{font-family:var(--ff-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+  .eco h3{font-family:var(--ff-display);font-weight:400;font-size:19px;color:#fff;margin:0 0 8px;letter-spacing:-0.01em}
+  .eco h3 .v{color:var(--blue-xl);font-style:italic;font-weight:300}
+  .eco .eco-stk{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .eco .eco-stk span{font-family:var(--ff-mono);font-size:10px;letter-spacing:.06em;color:var(--mute);padding:3px 9px;background:rgba(27,117,240,0.06);border:1px solid var(--line-1);border-radius:999px}
+  .eco p{font-size:13px;line-height:1.55;color:var(--mute);margin:0}
+
+  /* honest tiers */
+  .ht{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px}
+  @media (max-width:900px){.ht{grid-template-columns:1fr}}
+  .ht-card{padding:30px 28px;background:linear-gradient(180deg,var(--bg-3),var(--bg-2));border:1px solid var(--line-2);border-radius:14px;position:relative;overflow:hidden}
+  .ht-card::before{content:"";position:absolute;top:0;left:0;width:3px;height:48px;background:var(--accent)}
+  .ht-card[data-t="lead"]{--accent:#1B75F0}
+  .ht-card[data-t="build"]{--accent:#4A96FF}
+  .ht-card[data-t="integrate"]{--accent:#8FBCFF}
+  .ht-card .ht-eye{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:12px}
+  .ht-card h4{font-family:var(--ff-display);font-weight:300;font-size:24px;color:#fff;margin:0 0 6px;letter-spacing:-0.015em}
+  .ht-card h4 em{font-style:italic;color:var(--blue-xl);font-weight:400}
+  .ht-card .ht-tag{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:14px}
+  .ht-card p{font-size:13.5px;line-height:1.6;color:var(--mute);margin:0}
+
+  .stripe3{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line-1);border-radius:14px;overflow:hidden;background:rgba(5,6,10,0.4);margin-top:18px}
+  @media (max-width:720px){.stripe3{grid-template-columns:1fr}}
+  .stripe3 > div{padding:24px;border-right:1px solid var(--line-1)}
+  .stripe3 > div:last-child{border-right:0}
+  @media (max-width:720px){.stripe3 > div{border-right:0;border-bottom:1px solid var(--line-1)}.stripe3 > div:last-child{border-bottom:0}}
+  .stripe3 .v{font-family:var(--ff-display);font-weight:300;font-size:22px;color:#fff;margin-bottom:8px}
+  .stripe3 .l{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);line-height:1.5}
+
+  /* honesty principles */
+  .why{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
+  @media (max-width:720px){.why{grid-template-columns:1fr}}
+  .why-card{padding:26px 28px;background:rgba(5,6,10,0.4);border:1px solid var(--line-2);border-radius:12px}
+  .why-card .n{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;color:var(--blue-lt);margin-bottom:10px}
+  .why-card h4{font-family:var(--ff-display);font-weight:400;font-size:19px;color:#fff;margin:0 0 8px}
+  .why-card p{font-size:13.5px;line-height:1.6;color:var(--mute);margin:0}
+</style>
+<!-- SEO-AEO-GEO BEGIN (auto-generated, do not edit by hand) -->
+<link rel="canonical" href="https://flexilytics.ai/platforms" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="author" content="Flexilytics" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Flexilytics" />
+<meta property="og:url" content="https://flexilytics.ai/platforms" />
+<meta property="og:title" content="Platforms — Microsoft Fabric, Databricks &amp; Ecosystem | Flexilytics" />
+<meta property="og:description" content="Flagship depth on Microsoft Fabric and Databricks; pragmatic engagement across the ecosystem. Honest about where we lead and where we integrate." />
+<meta property="og:image" content="https://flexilytics.ai/og/platforms.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_IN" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Platforms — Microsoft Fabric, Databricks &amp; Ecosystem | Flexilytics" />
+<meta name="twitter:description" content="Flagship depth on Microsoft Fabric and Databricks; pragmatic engagement across the ecosystem. Honest about where we lead and where we integrate." />
+<meta name="twitter:image" content="https://flexilytics.ai/og/platforms.png" />
+<meta name="geo.region" content="IN-MH" />
+<meta name="geo.placename" content="Mumbai" />
+<meta name="ICBM" content="19.0760, 72.8777" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://flexilytics.ai/#organization",
+  "name": "Flexilytics",
+  "legalName": "Flexilytics Pvt. Ltd.",
+  "url": "https://flexilytics.ai",
+  "logo": "https://flexilytics.ai/assets/logo-mark.png",
+  "foundingDate": "2025",
+  "description": "Indian enterprise AI consultancy. The Context Engineering firm — grounding AI workloads in identity, hierarchy, definitions, lineage, and policy.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Mumbai",
+    "addressCountry": "IN"
+  },
+  "email": "hello@flexilytics.ai",
+  "areaServed": [
+    "IN",
+    "AE",
+    "SG",
+    "GB",
+    "US"
+  ],
+  "knowsAbout": [
+    "Context Engineering",
+    "Enterprise AI",
+    "Data Governance",
+    "Microsoft Fabric",
+    "Databricks",
+    "AI/ML Engineering",
+    "BFSI Analytics",
+    "Modern Data Platform",
+    "DPDP Compliance",
+    "RBI Regulatory Compliance"
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/company/flexilytics/"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://flexilytics.ai/#website",
+  "url": "https://flexilytics.ai",
+  "name": "Flexilytics",
+  "description": "The Context Engineering firm.",
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://flexilytics.ai/platforms#webpage",
+  "url": "https://flexilytics.ai/platforms",
+  "name": "Platforms — Microsoft Fabric, Databricks & Ecosystem | Flexilytics",
+  "description": "Flagship depth on Microsoft Fabric and Databricks; pragmatic engagement across the ecosystem. Honest about where we lead and where we integrate.",
+  "isPartOf": {
+    "@id": "https://flexilytics.ai/#website"
+  },
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN",
+  "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://flexilytics.ai/og/platforms.png"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": "https://flexilytics.ai/platforms#breadcrumb",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://flexilytics.ai/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Platforms",
+      "item": "https://flexilytics.ai/platforms"
+    }
+  ]
+}
+</script>
+<!-- SEO-AEO-GEO END -->
+</head>
+<body>
+<canvas id="ambient"></canvas>
+<header class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="index.html" aria-label="Flexilytics home">
+      <img class="brand-mark" src="assets/logo-on-dark.png" alt="Flexilytics" />
+      </a>
+    <nav class="nav-links">
+      <a href="approach.html">Approach</a>
+      <a href="solutions.html">Solutions</a>
+      <a class="active" href="platforms.html">Platforms</a>
+      <a href="trust-security.html">Trust &amp; Security</a>
+      <a href="insights.html">Insights</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <a class="nav-cta" href="book-audit.html">Book the 2-Week Audit <span aria-hidden="true">→</span></a>
+  </div>
+</header>
+
+<main>
+<div class="wrap crumb"><span class="here">Platforms</span></div>
+
+<section class="page-hero" style="padding-top:60px"><div class="wrap page-hero-inner"><div class="reveal">
+<div class="eyebrow"><span class="eyebrow-dot"></span>PLATFORMS &amp; ECOSYSTEM<span class="eyebrow-bar"></span></div>
+<h1>Two flagships<span class="period">.</span><br/>One <em>honest</em> ecosystem<span class="period">.</span></h1>
+<p class="lede">We lead with two platforms — <strong>Microsoft Fabric</strong> and <strong>Databricks</strong> — where we hold partner-grade certifications and ship reference architectures. Around them, we engage pragmatically with the rest of the modern data and AI ecosystem: deep enough to integrate, ingest, and deliver against your requirement; honest about where we don't go further than that.</p>
+<p class="tag">— Where we lead, we lead deep. Where we don't, we'll tell you.</p>
+</div></div></section>
+
+<!-- ============ TIER 1: FLAGSHIP ============ -->
+<section class="sec" style="padding-top:30px"><div class="wrap">
+<div class="tier-label reveal">
+  <span class="tn">▸ TIER 01</span>
+  <span class="tt">Flagship platforms</span>
+  <span class="ts">where we hold partner-grade depth</span>
+</div>
+
+<div class="plat-grid">
+
+<div class="plat reveal" data-k="fabric">
+<div class="badge">● PARTNER · MICROSOFT</div>
+<h2>Microsoft <em>Fabric</em></h2>
+<div class="sub">OneLake-native · Direct Lake · Purview-aligned</div>
+<p>For Microsoft-stack enterprises — Office 365, Dynamics, Azure-led IT. Fabric collapses the lakehouse, the warehouse, and Power BI into one surface. We build production-grade Fabric estates with FlexiContext sitting on top — and our partners can debug a Spark UI, tune a Direct Lake semantic model, and read an XMLA trace.</p>
+<div class="caps">
+<div class="row"><span class="k">Storage</span><span class="v">OneLake, Delta-native, single-copy across workloads</span></div>
+<div class="row"><span class="k">Compute</span><span class="v">Spark, T-SQL, KQL — picked per workload, paid per second</span></div>
+<div class="row"><span class="k">Semantic</span><span class="v">Direct Lake to Power BI, no import / no copy</span></div>
+<div class="row"><span class="k">Govern</span><span class="v">Purview lineage, sensitivity labels, sovereign cloud where needed</span></div>
+</div>
+<a class="btn btn-ghost" href="solutions-modern-data-platform.html">See how we ship Fabric →</a>
+</div>
+
+<div class="plat reveal d1" data-k="dbx">
+<div class="badge">● PARTNER · DATABRICKS</div>
+<h2>Data<em>bricks</em></h2>
+<div class="sub">Unity Catalog · Delta Live · MLflow · Mosaic AI</div>
+<p>For data-engineering-led organizations and where ML / agentic workloads dominate. Unity Catalog gives us a real semantic boundary; Mosaic AI gives us a real path from notebook to production model. We build production-grade Lakehouses with FlexiContext expressed in Unity Catalog metadata — and we maintain the toolchain end-to-end.</p>
+<div class="caps">
+<div class="row"><span class="k">Storage</span><span class="v">Delta on cloud object storage, governed by Unity Catalog</span></div>
+<div class="row"><span class="k">Compute</span><span class="v">Photon SQL warehouses, all-purpose, jobs, serverless</span></div>
+<div class="row"><span class="k">ML</span><span class="v">MLflow + Mosaic AI for model lifecycle &amp; agent serving</span></div>
+<div class="row"><span class="k">Govern</span><span class="v">Unity Catalog lineage, attribute-based access, audit logs</span></div>
+</div>
+<a class="btn btn-ghost" href="solutions-ai-ml-engineering.html">See how we ship AI on DBX →</a>
+</div>
+
+</div>
+</div></section>
+
+<!-- ============ TIER 2: ECOSYSTEM ============ -->
+<section class="sec" style="padding-top:60px"><div class="wrap">
+<div class="tier-label reveal">
+  <span class="tn">▸ TIER 02</span>
+  <span class="tt">Across the ecosystem</span>
+  <span class="ts">we integrate, ingest, deliver — pragmatically</span>
+</div>
+
+<p class="sec-lede reveal" style="margin:0 0 36px;max-width:820px">Real enterprises run heterogeneous stacks. We work with the tools below the way a good plumber works with a building you didn't design — <strong>deep enough to do the job right</strong>, without pretending to be the world expert in someone else's product.</p>
+
+<div class="eco-grid">
+
+<div class="eco reveal d1">
+  <div class="eco-cat">CLOUD WAREHOUSES</div>
+  <h3><span class="v">Snowflake</span> · BigQuery · Redshift · Synapse</h3>
+  <div class="eco-stk"><span>SQL</span><span>Streams</span><span>Tasks</span><span>Storage Integrations</span></div>
+  <p>We extract from, load into, and query against these. Strong on modeling, role-based access, share/marketplace boundaries — enough to integrate FlexiContext as a reader/writer.</p>
+</div>
+
+<div class="eco reveal d1">
+  <div class="eco-cat">SAP &amp; ERP</div>
+  <h3><span class="v">SAP</span> · Oracle EBS · Workday · Dynamics</h3>
+  <div class="eco-stk"><span>OData</span><span>RFC/BAPI</span><span>CDS Views</span><span>Datasphere</span></div>
+  <p>We understand SAP transports, master data, and extraction surfaces deeply enough to get the data out reliably for analytics and AI. We don't implement S/4 — we partner with firms that do.</p>
+</div>
+
+<div class="eco reveal d1">
+  <div class="eco-cat">CLOUD HYPERSCALERS</div>
+  <h3><span class="v">Azure</span> · AWS · GCP</h3>
+  <div class="eco-stk"><span>IAM</span><span>Networking</span><span>KMS</span><span>Object Storage</span></div>
+  <p>We deploy inside your cloud, your VNets, your KMS keys. Comfortable across all three for the data + AI control plane; we let your cloud team own the rest of the cloud.</p>
+</div>
+
+<div class="eco reveal d2">
+  <div class="eco-cat">BI &amp; VISUALIZATION</div>
+  <h3><span class="v">Power BI</span> · Tableau · Qlik · Looker</h3>
+  <div class="eco-stk"><span>DAX</span><span>VizQL</span><span>Set Analysis</span><span>LookML</span></div>
+  <p>Power BI is where we go deepest (semantic models, RLS, Direct Lake). We deliver to Tableau, Qlik, Looker too — semantic-layer-first, dashboard-second, so the model survives the tool.</p>
+</div>
+
+<div class="eco reveal d2">
+  <div class="eco-cat">INTEGRATION &amp; ELT</div>
+  <h3><span class="v">Fivetran</span> · Airbyte · Informatica · ADF</h3>
+  <div class="eco-stk"><span>CDC</span><span>Connectors</span><span>Mappings</span><span>Lineage</span></div>
+  <p>We use what's already in your stack. We won't sell you a new ELT tool unless the audit finds your current one is structurally wrong — in which case we'll say so directly.</p>
+</div>
+
+<div class="eco reveal d2">
+  <div class="eco-cat">AI / ML &amp; LLM TOOLING</div>
+  <h3><span class="v">OpenAI</span> · Azure OpenAI · Anthropic · Bedrock · Vertex</h3>
+  <div class="eco-stk"><span>Agents</span><span>Embeddings</span><span>Eval</span><span>Guardrails</span></div>
+  <p>Model-agnostic by design. FlexiContext sits between your data and any frontier model — we'll pick the right one for the task, and re-pick when the frontier moves.</p>
+</div>
+
+<div class="eco reveal d3">
+  <div class="eco-cat">GOVERNANCE &amp; CATALOG</div>
+  <h3><span class="v">Purview</span> · Unity · Collibra · Alation · Atlan</h3>
+  <div class="eco-stk"><span>Lineage</span><span>Glossary</span><span>Stewardship</span><span>DPDP/GDPR</span></div>
+  <p>Catalog is where context lives. We're deepest on Purview and Unity (because of the flagships), competent on the others, and honest about where we'd rather plug in than rebuild.</p>
+</div>
+
+<div class="eco reveal d3">
+  <div class="eco-cat">ORCHESTRATION &amp; OPS</div>
+  <h3><span class="v">Airflow</span> · dbt · Dagster · GitHub Actions</h3>
+  <div class="eco-stk"><span>DAGs</span><span>Tests</span><span>CI/CD</span><span>Observability</span></div>
+  <p>Pipelines need owners, not heroes. We ship orchestration with tests, CI/CD, and runbooks — using whichever of these your team will actually maintain after we leave.</p>
+</div>
+
+<div class="eco reveal d3">
+  <div class="eco-cat">VECTOR &amp; SEMANTIC</div>
+  <h3><span class="v">pgvector</span> · Azure AI Search · Pinecone · Weaviate</h3>
+  <div class="eco-stk"><span>HNSW</span><span>Hybrid Search</span><span>Re-rank</span><span>Eval</span></div>
+  <p>We benchmark before we recommend. For most regulated enterprises, pgvector or Azure AI Search inside your perimeter beats a managed vector DB — but we'll deploy the latter when it's right.</p>
+</div>
+
+</div>
+</div></section>
+
+<!-- ============ HONEST TIERS ============ -->
+<section class="sec"><div class="wrap">
+<div class="sec-head reveal"><div class="sec-chip"><span class="n">§ 03</span><span>OUR DEPTH MODEL</span></div><h2 class="sec-h">Three tiers, named <em>honestly</em>.</h2><p class="sec-lede">Inside the firm, we say it like this. We're saying it on the website too.</p></div>
+<div class="ht">
+  <div class="ht-card reveal d1" data-t="lead">
+    <div class="ht-eye">TIER 01 · LEAD</div>
+    <h4>We <em>lead</em></h4>
+    <div class="ht-tag">Fabric · Databricks · Power BI · Purview · Unity Catalog</div>
+    <p>Reference architectures, certified depth, partner-grade engineering, opinionated points of view. If you ask us "what would you do," we'll tell you in detail and ship it.</p>
+  </div>
+  <div class="ht-card reveal d2" data-t="build">
+    <div class="ht-eye">TIER 02 · BUILD</div>
+    <h4>We <em>build with</em></h4>
+    <div class="ht-tag">Snowflake · BigQuery · Azure · AWS · Tableau · dbt · Airflow · Vector DBs</div>
+    <p>Production-comfortable — we'll model, deploy, and integrate. We won't out-expert the platform's own SI partners on edge cases, and we'll say so. Most of our work touches this tier.</p>
+  </div>
+  <div class="ht-card reveal d3" data-t="integrate">
+    <div class="ht-eye">TIER 03 · INTEGRATE</div>
+    <h4>We <em>integrate</em></h4>
+    <div class="ht-tag">SAP · Oracle · Workday · Salesforce · Mainframe extracts</div>
+    <p>Deep enough to get clean, governed data out. We understand the transport layer, the master data, and the gotchas — but we don't implement these systems. For that, we recommend a partner.</p>
+  </div>
+</div>
+</div></section>
+
+<!-- ============ DECISION TREE ============ -->
+<section class="sec"><div class="wrap">
+<div class="sec-head reveal"><div class="sec-chip"><span class="n">§ 04</span><span>HOW WE PICK FOR YOU</span></div><h2 class="sec-h">Three questions, <em>one platform</em>.</h2><p class="sec-lede">For greenfield builds and major re-platforms, we don't bring a preference into the audit. We ask three questions and let your answers pick.</p></div>
+<div class="stripe3 reveal d1">
+<div><div class="v">Q · 01</div><div class="l">Where does your IT identity live? AD/Entra → Fabric. Otherwise, neutral.</div></div>
+<div><div class="v">Q · 02</div><div class="l">Does the org have a real data-engineering function? Yes → Databricks. No / building → Fabric.</div></div>
+<div><div class="v">Q · 03</div><div class="l">Is ML / agentic AI ≥ 30% of the roadmap? Yes → Databricks weighted. No → Fabric weighted.</div></div>
+</div>
+<p class="sec-lede reveal d2" style="margin-top:24px;font-size:15px;color:var(--faint)">If your stack is already on Snowflake, BigQuery, or anywhere else and you're not re-platforming — that's fine. We integrate, deliver FlexiContext on top, and respect what you've built.</p>
+</div></section>
+
+<!-- ============ HONESTY PRINCIPLES ============ -->
+<section class="sec"><div class="wrap">
+<div class="sec-head reveal"><div class="sec-chip"><span class="n">§ 05</span><span>WHY WE FRAME IT THIS WAY</span></div><h2 class="sec-h">Four reasons we <em>tier</em> instead of pretending.</h2></div>
+<div class="why reveal d1">
+<div class="why-card"><div class="n">REASON · 01</div><h4>Cloud lakehouses move fast</h4><p>OneLake, Unity Catalog, Mosaic — every quarter has new primitives. Two flagships is the most we can stay current on at partner-grade depth. Eight is theatre.</p></div>
+<div class="why-card"><div class="n">REASON · 02</div><h4>Most projects need Tier 2 work anyway</h4><p>Real data lives in SAP, Snowflake, Salesforce, mainframes. Pretending we only do Fabric and Databricks would be useless. Tier 2 is where most of the actual work happens.</p></div>
+<div class="why-card"><div class="n">REASON · 03</div><h4>FlexiContext is platform-specific in implementation</h4><p>The framework is platform-agnostic; the implementation is not. Fabric and Databricks are our two reference implementations. On other platforms we adapt the framework — same principles, different mechanics.</p></div>
+<div class="why-card"><div class="n">REASON · 04</div><h4>Honesty beats a bigger SOW</h4><p>If your roadmap needs deep S/4 implementation or Snowflake-native engineering at frontier scale, we'll refer you to a partner who's deeper there. Saying so up front earns the trust to win the work we should do.</p></div>
+</div>
+</div></section>
+
+<section class="sec" style="padding-top:60px;padding-bottom:140px"><div class="wrap">
+<div class="reveal" style="border-top:1px solid var(--line-1);padding-top:56px;text-align:center;max-width:780px;margin:0 auto">
+<h2 style="font-family:var(--ff-display);font-weight:300;font-size:clamp(28px,3.6vw,40px);color:#fff;margin:0 0 22px;letter-spacing:-0.02em;text-wrap:balance">The audit picks the platform <em style="color:var(--blue-xl);font-style:italic">for you</em>.</h2>
+<a class="btn btn-primary" href="book-audit.html">Book the 2-Week Audit
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</div>
+</div></section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-wm">
+        <img src="assets/logo-wide.png" alt="Flexilytics — Intelligence. Grounded." />
+        <div class="foot-tag">Context Engineering for regulated enterprises across India, UAE, and Southeast Asia.</div>
+      </div>
+      <div class="foot-col">
+        <h5>Approach</h5>
+        <ul>
+          <li><a href="approach.html">Strategy · Build · Run</a></li>
+          <li><a href="context-engineering.html">FlexiContext™</a></li>
+          <li><a href="trust-security.html">Trust &amp; Security</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Solutions</h5>
+        <ul>
+          <li><a href="solutions-data-governance.html">Data Governance</a></li>
+          <li><a href="solutions-modern-data-platform.html">Modern Data Platform</a></li>
+          <li><a href="solutions-ai-ml-engineering.html">AI &amp; ML Engineering</a></li>
+          <li><a href="solutions-analytics-bi.html">Analytics &amp; BI</a></li>
+          <li><a href="solutions-flexianalyst.html">FlexiAnalyst</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="leadership.html">Leadership</a></li>
+          <li><a href="insights.html">Insights</a></li>
+          <li><a href="bfsi.html">Industries · BFSI</a></li>
+          <li><a href="book-audit.html">Book Audit</a></li>
+          <li><a href="mailto:hello@flexilytics.ai">hello@flexilytics.ai</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 FLEXILYTICS PVT. LTD.</span>
+      <span class="m">INTELLIGENCE. GROUNDED.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="tweaks" id="tweaks"><h4>Tweaks <button id="tweaksClose">×</button></h4><div class="tweak-grp"><div class="tweak-lbl">Motion</div><div class="seg" id="motionSeg"><button data-v="calm" class="active">Calm</button><button data-v="flow">Flow</button><button data-v="alive">Alive</button></div></div><div class="tweak-grp"><div class="tweak-lbl">Ambient field</div><div class="seg" id="ambientSeg"><button data-v="on" class="active">On</button><button data-v="off">Off</button></div></div></div>
+<script>const TWEAK_DEFAULTS=/*EDITMODE-BEGIN*/{"motion":"calm","ambient":"on"}/*EDITMODE-END*/;window.__motionMode=TWEAK_DEFAULTS.motion;window.__ambientMode=TWEAK_DEFAULTS.ambient;</script>
+<script src="assets/site.js"></script>
+</body></html>

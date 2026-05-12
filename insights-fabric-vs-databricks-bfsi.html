@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Microsoft Fabric vs Databricks for Indian BFSI — A Partner's View | Flexilytics</title>
+<meta name="description" content="We have shipped both, in production, for regulated financial-services clients. Here is the honest decision tree — workload by workload." />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .crumb{padding:96px 0 0;font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  .crumb a{color:var(--mute)} .crumb .sep{color:var(--line-3);margin:0 8px}
+  .article-hero{padding:42px 0 60px}
+  .article-hero .meta-line{display:flex;align-items:center;gap:14px;font-family:var(--ff-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:28px}
+  .article-hero .meta-line .cat{color:var(--blue-lt)}
+  .article-hero .meta-line .dot{width:6px;height:6px;border-radius:50%;background:var(--blue-lt)}
+  .article-hero h1{font-family:var(--ff-display);font-weight:300;font-size:clamp(38px,5.6vw,68px);line-height:1.04;letter-spacing:-0.03em;color:#fff;margin:0 0 24px;text-wrap:balance;max-width:1000px}
+  .article-hero h1 em{font-style:italic;color:var(--blue-xl);font-weight:400}
+  .article-hero .dek{font-family:var(--ff-display);font-style:italic;font-weight:300;font-size:clamp(20px,2.4vw,26px);line-height:1.45;color:var(--mute);max-width:760px;margin:0;letter-spacing:-0.005em}
+  .article-hero .byline{display:flex;align-items:center;gap:14px;margin-top:36px;padding-top:28px;border-top:1px solid var(--line-1);max-width:760px}
+  .article-hero .byline .ph{width:42px;height:42px;border-radius:50%;background:var(--bg-3);border:1px solid var(--line-2);overflow:hidden}
+  .article-hero .byline .ph img{width:100%;height:100%;object-fit:cover}
+  .article-hero .byline .who{font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+  .article-hero .byline .who strong{color:#fff;font-weight:500}
+  .article-body{max-width:760px;margin:0 auto;padding-bottom:60px}
+  .article-body p{font-family:var(--ff-sans);font-size:17px;line-height:1.75;color:#cbd1de;margin:0 0 22px;text-wrap:pretty}
+  .article-body p.lead{font-family:var(--ff-display);font-weight:300;font-size:22px;line-height:1.6;color:#fff;margin-bottom:32px;letter-spacing:-0.005em}
+  .article-body h2{font-family:var(--ff-display);font-weight:400;font-size:30px;color:#fff;margin:48px 0 20px;letter-spacing:-0.02em;line-height:1.2}
+  .article-body h2 em{color:var(--blue-xl);font-style:italic}
+  .article-body h3{font-family:var(--ff-display);font-weight:500;font-size:21px;color:#fff;margin:36px 0 14px;letter-spacing:-0.01em}
+  .article-body strong{color:#fff;font-weight:500}
+  .article-body em{font-style:italic;color:#e1e5ef}
+  .article-body blockquote{margin:32px 0;padding:24px 28px;background:rgba(5,6,10,0.5);border-left:2px solid var(--blue-lt);border-radius:0 10px 10px 0;font-family:var(--ff-display);font-style:italic;font-weight:300;font-size:20px;line-height:1.55;color:#fff;letter-spacing:-0.005em}
+  .article-body ul,.article-body ol{padding-left:22px;margin:0 0 22px;color:#cbd1de;font-size:17px;line-height:1.75}
+  .article-body li{margin-bottom:8px}
+  .pullquote{margin:48px -40px;padding:28px 40px;text-align:center;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+  @media (max-width:840px){.pullquote{margin:48px 0}}
+  .pullquote p{font-family:var(--ff-display);font-style:italic;font-weight:300;font-size:clamp(22px,3vw,30px);line-height:1.4;color:#fff;letter-spacing:-0.015em;margin:0;text-wrap:balance}
+  .pullquote p em{color:var(--blue-xl);font-style:italic}
+  .article-body .callout{margin:36px 0;padding:24px 28px;background:rgba(27,117,240,0.04);border:1px solid var(--line-3);border-radius:12px}
+  .article-body .callout .lbl{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:10px}
+  .article-body .callout p{margin:0;font-size:15px;line-height:1.6;color:var(--mute)}
+  .article-body hr{border:0;border-top:1px solid var(--line-2);margin:40px 0}
+  .article-end{max-width:760px;margin:0 auto;padding:48px 0 60px;border-top:1px solid var(--line-1)}
+  .article-end .tag{font-family:var(--ff-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:18px}
+  .article-end h3{font-family:var(--ff-display);font-weight:300;font-size:30px;letter-spacing:-0.02em;color:#fff;margin:0 0 18px;line-height:1.2}
+  .article-end h3 em{color:var(--blue-xl);font-style:italic}
+  .next-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+  @media (max-width:720px){.next-row{grid-template-columns:1fr}}
+  .next{padding:24px 26px;background:rgba(5,6,10,0.4);border:1px solid var(--line-2);border-radius:12px;text-decoration:none;color:inherit;transition:all .25s ease;display:block}
+  .next:hover{border-color:var(--line-3);background:rgba(27,117,240,0.04)}
+  .next .lbl{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+  .next h4{font-family:var(--ff-display);font-weight:400;font-size:18px;color:#fff;margin:0 0 6px;letter-spacing:-0.005em}
+  .next p{font-size:13.5px;line-height:1.55;color:var(--mute);margin:0}
+</style>
+<!-- SEO-AEO-GEO BEGIN (auto-generated, do not edit by hand) -->
+<link rel="canonical" href="https://flexilytics.ai/insights/fabric-vs-databricks-bfsi" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="author" content="Flexilytics" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Flexilytics" />
+<meta property="og:url" content="https://flexilytics.ai/insights/fabric-vs-databricks-bfsi" />
+<meta property="og:title" content="Microsoft Fabric vs Databricks for Indian BFSI — A Partner's View | Flexilytics" />
+<meta property="og:description" content="We have shipped both, in production, for regulated financial-services clients. Here is the honest decision tree — workload by workload." />
+<meta property="og:image" content="https://flexilytics.ai/og/insight-fabric-vs-dbx.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_IN" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Microsoft Fabric vs Databricks for Indian BFSI — A Partner's View | Flexilytics" />
+<meta name="twitter:description" content="We have shipped both, in production, for regulated financial-services clients. Here is the honest decision tree — workload by workload." />
+<meta name="twitter:image" content="https://flexilytics.ai/og/insight-fabric-vs-dbx.png" />
+<meta property="article:published_time" content="2026-04-08" />
+<meta property="article:modified_time" content="2026-04-20" />
+<meta property="article:author" content="Vishal Dhure" />
+<meta property="article:section" content="Insights" />
+<meta property="article:tag" content="microsoft fabric" />
+<meta property="article:tag" content="databricks" />
+<meta property="article:tag" content="BFSI" />
+<meta property="article:tag" content="indian banking" />
+<meta property="article:tag" content="lakehouse" />
+<meta property="article:tag" content="RBI" />
+<meta property="article:tag" content="platform comparison" />
+<meta name="geo.region" content="IN-MH" />
+<meta name="geo.placename" content="Mumbai" />
+<meta name="ICBM" content="19.0760, 72.8777" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://flexilytics.ai/#organization",
+  "name": "Flexilytics",
+  "legalName": "Flexilytics Pvt. Ltd.",
+  "url": "https://flexilytics.ai",
+  "logo": "https://flexilytics.ai/assets/logo-mark.png",
+  "foundingDate": "2025",
+  "description": "Indian enterprise AI consultancy. The Context Engineering firm — grounding AI workloads in identity, hierarchy, definitions, lineage, and policy.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Mumbai",
+    "addressCountry": "IN"
+  },
+  "email": "hello@flexilytics.ai",
+  "areaServed": [
+    "IN",
+    "AE",
+    "SG",
+    "GB",
+    "US"
+  ],
+  "knowsAbout": [
+    "Context Engineering",
+    "Enterprise AI",
+    "Data Governance",
+    "Microsoft Fabric",
+    "Databricks",
+    "AI/ML Engineering",
+    "BFSI Analytics",
+    "Modern Data Platform",
+    "DPDP Compliance",
+    "RBI Regulatory Compliance"
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/company/flexilytics/"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://flexilytics.ai/#website",
+  "url": "https://flexilytics.ai",
+  "name": "Flexilytics",
+  "description": "The Context Engineering firm.",
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://flexilytics.ai/insights/fabric-vs-databricks-bfsi#webpage",
+  "url": "https://flexilytics.ai/insights/fabric-vs-databricks-bfsi",
+  "name": "Microsoft Fabric vs Databricks for Indian BFSI — A Partner's View | Flexilytics",
+  "description": "We have shipped both, in production, for regulated financial-services clients. Here is the honest decision tree — workload by workload.",
+  "isPartOf": {
+    "@id": "https://flexilytics.ai/#website"
+  },
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN",
+  "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://flexilytics.ai/og/insight-fabric-vs-dbx.png"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": "https://flexilytics.ai/insights/fabric-vs-databricks-bfsi#breadcrumb",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://flexilytics.ai/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Insights",
+      "item": "https://flexilytics.ai/insights"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Fabric vs Databricks for BFSI",
+      "item": "https://flexilytics.ai/insights/fabric-vs-databricks-bfsi"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://flexilytics.ai/insights/fabric-vs-databricks-bfsi#article",
+  "headline": "Microsoft Fabric vs Databricks for Indian BFSI: a partner's view",
+  "description": "We have shipped both, in production, for regulated financial-services clients. Here is the honest decision tree — workload by workload.",
+  "image": "https://flexilytics.ai/og/insight-fabric-vs-dbx.png",
+  "datePublished": "2026-04-08",
+  "dateModified": "2026-04-20",
+  "author": {
+    "@type": "Person",
+    "name": "Vishal Dhure",
+    "jobTitle": "Founding Partner, Flexilytics",
+    "worksFor": {
+      "@id": "https://flexilytics.ai/#organization"
+    }
+  },
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "mainEntityOfPage": {
+    "@id": "https://flexilytics.ai/insights/fabric-vs-databricks-bfsi#webpage"
+  },
+  "wordCount": 2400,
+  "keywords": [
+    "microsoft fabric",
+    "databricks",
+    "BFSI",
+    "indian banking",
+    "lakehouse",
+    "RBI",
+    "platform comparison"
+  ],
+  "inLanguage": "en-IN"
+}
+</script>
+<!-- SEO-AEO-GEO END -->
+</head>
+<body>
+<canvas id="ambient"></canvas>
+<header class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="index.html" aria-label="Flexilytics home">
+      <img class="brand-mark" src="assets/logo-on-dark.png" alt="Flexilytics" />
+      </a>
+    <nav class="nav-links">
+      <a href="approach.html">Approach</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="platforms.html">Platforms</a>
+      <a href="trust-security.html">Trust & Security</a>
+      <a class="active" href="insights.html">Insights</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <a class="nav-cta" href="book-audit.html">Book the 2-Week Audit <span aria-hidden="true">→</span></a>
+  </div>
+</header>
+<main>
+
+<div class="wrap crumb"><a href="insights.html">Insights</a><span class="sep">/</span><span style="color:var(--blue-lt)">Platform · April 2026</span></div>
+
+<section class="article-hero"><div class="wrap">
+<div class="reveal">
+<div class="meta-line"><span class="dot"></span><span class="cat">PLATFORM</span><span>· 12 MIN READ</span><span>· 22 APR 2026</span></div>
+<h1>Microsoft Fabric vs Databricks for <em>Indian BFSI</em>: a partner's view.</h1>
+<p class="dek">We've shipped both, in production, for regulated financial-services clients. Here is the honest decision tree — including where Fabric loses, where Databricks loses, and what RBI / SEBI care about that the vendors don't lead with.</p>
+<div class="byline"><div class="ph"></div><div class="who">By <strong>Vishal Dhure</strong> · Founding Partner · Build Engineering</div></div>
+</div>
+</div></section>
+
+<article class="wrap"><div class="article-body">
+<p class="lead">If you've sat through a Microsoft pitch and a Databricks pitch in the same week, you know the experience. Both vendors are technically correct. Neither is fully <em>useful</em>. This piece is for the CDO, COO, or CIO who has to actually pick — and live with the choice for five years — at a regulated Indian financial-services firm.</p>
+
+<p>I've led Build engagements on both platforms for the last three years, mostly in BFSI. What follows is a working partner's view: opinionated, occasionally unfair, and grounded in things I've actually seen go wrong.</p>
+
+<h2>Start with the <em>only</em> question that matters</h2>
+<p>Both platforms are good. The choice is not between excellent and adequate; it's between two excellent stacks that are excellent at different things. So the question to start with is not "which is better" but: <strong>which weakness can my organisation tolerate for five years?</strong></p>
+
+<blockquote>Pick the platform whose weakness you can live with. Both have weaknesses. Anyone who tells you otherwise is selling.</blockquote>
+
+<h2>Where Fabric is the right answer</h2>
+<p>Microsoft Fabric is the right answer when:</p>
+<ul>
+<li>Your IT identity and productivity stack is already Microsoft. Entra, Purview, Office 365, Dynamics. The integration tax is real, and Fabric makes most of it disappear.</li>
+<li>Your analytics culture is BI-first, not engineering-first. Power BI's Direct Lake mode on Fabric is genuinely the best self-service experience on the market right now.</li>
+<li>Your data team is small (under 20 engineers) and you need a platform that is opinionated. Fabric is opinionated. That's a feature.</li>
+<li>You need sovereign-cloud or local-residency options. Microsoft's regional posture in India is the most mature.</li>
+</ul>
+
+<h3>Where Fabric loses, honestly</h3>
+<p>Fabric is younger as a unified product than Databricks. The pace of change is fast — this is good — but it means certain primitives we'd consider table-stakes on Databricks (workspace governance, mature CI/CD, deep ML lifecycle) are still maturing on Fabric. If your roadmap is heavily ML-led, this is a tax.</p>
+
+<div class="callout"><div class="lbl">FIELD NOTE</div><p>I lost three weeks last year on a Fabric Direct Lake performance issue that turned out to be a known bug fix shipping the following month. On Databricks, that bug would have been documented in a JIRA-style trail. On Fabric, it took a Microsoft escalation. The product is closing this gap fast — but it's not closed yet.</p></div>
+
+<h2>Where Databricks is the right answer</h2>
+<p>Databricks is the right answer when:</p>
+<ul>
+<li>You have a real data-engineering function — twenty-plus engineers, comfortable with Spark, opinionated about CI/CD.</li>
+<li>ML or agentic AI is ≥30% of your roadmap. Mosaic AI plus MLflow is, today, the most production-ready ML lifecycle on a major lakehouse.</li>
+<li>You expect to do heavy ELT or streaming and you want fine-grained cost control on compute.</li>
+<li>Your team prefers "powerful and unopinionated" over "opinionated and integrated."</li>
+</ul>
+
+<h3>Where Databricks loses, honestly</h3>
+<p>Databricks is, by design, a power-user platform. The self-service BI story (via the Databricks SQL warehouse and AI/BI dashboards) is improving — but it is not Power BI's equal yet for a finance analyst who lives in slicers and pivot tables. If your top 100 users are non-engineers and your top use case is BI, Databricks asks more of you to make that experience equivalent.</p>
+
+<h2>What the vendors don't lead with — and the regulator does</h2>
+<p>Both vendors will brief you on performance, TCO, and AI features. The regulator will not. The regulator will ask three questions, and you should pick on these:</p>
+
+<h3>1. Where does the data physically sit?</h3>
+<p>For RBI-supervised entities, the answer needs to be defensible per the master directions on outsourcing and IT. Both vendors offer Indian regions. Fabric has a longer tenure of sovereign-aligned posture in India; Databricks' India region maturity is now adequate but younger. Verify your specific workspace placement, not just the marketing region claim.</p>
+
+<h3>2. How is access logged, and for how long?</h3>
+<p>Both platforms produce access logs adequate for RBI / SEBI / IRDAI evidence — but the retention and SIEM-integration story is meaningfully different. Plan for at least a six-month retention requirement; budget for the storage on either platform.</p>
+
+<h3>3. Can you reproduce a number from 14 months ago?</h3>
+<p>This is the question every regulator asks and every team underestimates. Time-machined Delta on Databricks Unity Catalog, and Fabric's OneLake equivalent, both make this answer "yes" — <strong>provided you set retention deliberately at design time</strong>. The default settings are too short for regulated workloads. We've seen this go wrong on both platforms.</p>
+
+<div class="pullquote"><p>The regulator's question is not "what model did you use." It is <em>"reproduce the number from fourteen months ago."</em> Both platforms can. Default settings won't.</p></div>
+
+<h2>The decision tree we actually use</h2>
+<p>When clients ask us to pick during the two-week audit, the tree is roughly:</p>
+<ol>
+<li><strong>Is your IT identity stack Microsoft?</strong> Yes → +2 Fabric. No → neutral.</li>
+<li><strong>Do you have a real data-engineering function (≥20 engineers, Spark-fluent)?</strong> Yes → +2 Databricks. No / building → +1 Fabric.</li>
+<li><strong>Is ML / agentic AI ≥30% of the next-24-month roadmap?</strong> Yes → +2 Databricks. No → +1 Fabric.</li>
+<li><strong>Top 100 daily users — analysts or engineers?</strong> Analysts → +1 Fabric. Engineers → +1 Databricks.</li>
+<li><strong>Are you under explicit RBI sovereign-cloud pressure?</strong> Yes → +1 Fabric (today; this gap is closing).</li>
+</ol>
+<p>The platform with the higher score wins. Most BFSI engagements we've run come out 4–3 in either direction; the conviction comes from which weakness the executive team can tolerate, not from the score.</p>
+
+<h2>Hybrid is rare. And usually a mistake.</h2>
+<p>We have one client running both — deliberately, for good reason: a clean separation between the BI estate (Fabric) and the ML platform (Databricks), with a shared OneLake / Delta data plane. It works. It also costs roughly 1.6× a single-platform build, and requires a higher-grade engineering team than either platform alone.</p>
+<p>If someone is selling you "best of both worlds," ask them what the second best of both costs.</p>
+
+<h2>The unfashionable conclusion</h2>
+<p>Pick the one your team can operate without us. Both platforms reward operators. Neither rewards consultants who left. The platform that survives our exit is the one where you can hire two engineers locally, on the platform's certification path, in your city. In Mumbai today that's a coin flip; in Bengaluru, slightly Databricks; in Delhi-NCR, slightly Fabric. Optimise for the talent map.</p>
+
+<hr/>
+<p style="font-family:var(--ff-mono);font-size:13px;color:var(--faint);letter-spacing:.04em">— Vishal Dhure. Mumbai, April 2026. Comments: <a href="mailto:vishal@flexilytics.ai" style="color:var(--blue-lt)">vishal@flexilytics.ai</a></p>
+
+</div></article>
+
+<section class="wrap"><div class="article-end">
+<div class="tag">● KEEP READING</div>
+<h3>Two more <em>field notes</em>.</h3>
+<div class="next-row">
+<a class="next" href="insights-context-engineering-buyable-category.html"><div class="lbl">METHOD · 9 MIN</div><h4>Why "Context Engineering" is the next buyable category.</h4><p>Naming, scoping, and budgeting the semantic layer.</p></a>
+<a class="next" href="platforms.html"><div class="lbl">PRACTICE · DEEPER</div><h4>Our platform practice</h4><p>Two platforms, deeply. The depth-vs-breadth choice in detail.</p></a>
+</div>
+</div></section>
+
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-wm">
+        <img src="assets/logo-wide.png" alt="Flexilytics — Intelligence. Grounded." />
+        <div class="foot-tag">Context Engineering for regulated enterprises across India, UAE, and Southeast Asia.</div>
+      </div>
+      <div class="foot-col">
+        <h5>Approach</h5>
+        <ul>
+          <li><a href="approach.html">Strategy · Build · Run</a></li>
+          <li><a href="context-engineering.html">FlexiContext™</a></li>
+          <li><a href="trust-security.html">Trust &amp; Security</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Solutions</h5>
+        <ul>
+          <li><a href="solutions-data-governance.html">Data Governance</a></li>
+          <li><a href="solutions-modern-data-platform.html">Modern Data Platform</a></li>
+          <li><a href="solutions-ai-ml-engineering.html">AI &amp; ML Engineering</a></li>
+          <li><a href="solutions-analytics-bi.html">Analytics &amp; BI</a></li>
+          <li><a href="solutions-flexianalyst.html">FlexiAnalyst</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="leadership.html">Leadership</a></li>
+          <li><a href="insights.html">Insights</a></li>
+          <li><a href="bfsi.html">Industries · BFSI</a></li>
+          <li><a href="book-audit.html">Book Audit</a></li>
+          <li><a href="mailto:hello@flexilytics.ai">hello@flexilytics.ai</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 FLEXILYTICS PVT. LTD.</span>
+      <span class="m">INTELLIGENCE. GROUNDED.</span>
+    </div>
+  </div>
+</footer>
+<div class="tweaks" id="tweaks"><h4>Tweaks <button id="tweaksClose">×</button></h4><div class="tweak-grp"><div class="tweak-lbl">Motion</div><div class="seg" id="motionSeg"><button data-v="calm" class="active">Calm</button><button data-v="flow">Flow</button><button data-v="alive">Alive</button></div></div><div class="tweak-grp"><div class="tweak-lbl">Ambient field</div><div class="seg" id="ambientSeg"><button data-v="on" class="active">On</button><button data-v="off">Off</button></div></div></div>
+<script>const TWEAK_DEFAULTS=/*EDITMODE-BEGIN*/{"motion":"calm","ambient":"on"}/*EDITMODE-END*/;window.__motionMode=TWEAK_DEFAULTS.motion;window.__ambientMode=TWEAK_DEFAULTS.ambient;</script>
+<script src="assets/site.js"></script>
+</body></html>

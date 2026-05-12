@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Solutions — Five Practices, One Method | Flexilytics</title>
+<meta name="description" content="Five practices, one method. Data Governance, Modern Data Platform, AI/ML Engineering, Analytics &amp; BI Modernization, FlexiAnalyst — all built on Context Engineering." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .sol-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:24px}
+  @media (max-width:900px){.sol-grid{grid-template-columns:1fr}}
+  .sol{position:relative;display:flex;flex-direction:column;padding:36px 32px 32px;background:linear-gradient(180deg, var(--bg-3), var(--bg-2));border:1px solid var(--line-1);border-radius:18px;overflow:hidden;transition:all .35s ease;text-decoration:none;color:inherit}
+  .sol::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,linear-gradient(90deg,var(--blue),var(--blue-xl)))}
+  .sol::after{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(500px 240px at 100% 0%, rgba(27,117,240,0.14), transparent 65%);opacity:0;transition:opacity .4s ease;pointer-events:none}
+  .sol:hover{border-color:var(--line-3);transform:translateY(-5px);box-shadow:0 24px 60px rgba(0,0,0,0.4)}
+  .sol:hover::after{opacity:1}
+  .sol[data-key="gov"]{--accent:linear-gradient(90deg,var(--blue),var(--blue-xl))}
+  .sol[data-key="mdp"]{--accent:linear-gradient(90deg,var(--blue-xl),#9b6fff)}
+  .sol[data-key="ai"]{--accent:linear-gradient(90deg,#9b6fff,var(--rose))}
+  .sol[data-key="bi"]{--accent:linear-gradient(90deg,var(--rose),var(--blue-lt))}
+  .sol[data-key="fa"]{--accent:linear-gradient(90deg,var(--cyan),var(--blue-xl))}
+  .sol-no{position:absolute;top:28px;right:32px;font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;color:var(--faint)}
+  .sol-eye{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .sol[data-key="ai"] .sol-eye{color:#b89eff}
+  .sol[data-key="bi"] .sol-eye{color:var(--rose)}
+  .sol[data-key="fa"] .sol-eye{color:var(--cyan)}
+  .sol-eye .badge{font-size:9.5px;padding:3px 8px;border-radius:50px;background:rgba(27,117,240,0.1);color:var(--blue-lt);border:1px solid var(--line-3);letter-spacing:.14em}
+  .sol-eye .badge.soon{background:rgba(111,227,255,0.08);color:var(--cyan);border-color:rgba(111,227,255,0.2)}
+  .sol h3{font-family:var(--ff-display);font-weight:300;font-size:32px;letter-spacing:-0.025em;color:#fff;margin:0 0 14px;line-height:1.1}
+  .sol h3 em{font-style:italic;color:var(--blue-xl);font-weight:400}
+  .sol p{font-size:15px;line-height:1.65;color:var(--mute);margin:0 0 22px;flex:1}
+  .sol-out{padding:14px 16px;background:rgba(5,6,10,0.45);border:1px solid var(--line-2);border-radius:10px;margin-bottom:22px}
+  .sol-out .lbl{font-family:var(--ff-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+  .sol-out .v{font-size:13.5px;color:#fff;font-weight:500}
+  .sol-arrow{font-family:var(--ff-mono);font-size:11.5px;letter-spacing:.06em;color:var(--blue-lt);display:inline-flex;align-items:center;gap:8px}
+
+  .accelerator-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+  @media (max-width:900px){.accelerator-strip{grid-template-columns:1fr}}
+  .acc{padding:24px 26px;background:rgba(5,6,10,0.4);border:1px solid var(--line-2);border-radius:12px;transition:all .3s ease}
+  .acc:hover{border-color:var(--line-3);background:rgba(27,117,240,0.04)}
+  .acc .v{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:10px}
+  .acc h4{font-family:var(--ff-display);font-weight:400;font-size:18px;color:#fff;margin:0 0 8px;letter-spacing:-0.005em}
+  .acc p{font-size:13.5px;line-height:1.6;color:var(--mute);margin:0}
+</style>
+<!-- SEO-AEO-GEO BEGIN (auto-generated, do not edit by hand) -->
+<link rel="canonical" href="https://flexilytics.ai/solutions" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="author" content="Flexilytics" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Flexilytics" />
+<meta property="og:url" content="https://flexilytics.ai/solutions" />
+<meta property="og:title" content="Solutions — Five Practices, One Method | Flexilytics" />
+<meta property="og:description" content="Five practices, one method. Data Governance, Modern Data Platform, AI/ML Engineering, Analytics &amp; BI Modernization, FlexiAnalyst — all built on Context Engineering." />
+<meta property="og:image" content="https://flexilytics.ai/og/solutions.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_IN" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Solutions — Five Practices, One Method | Flexilytics" />
+<meta name="twitter:description" content="Five practices, one method. Data Governance, Modern Data Platform, AI/ML Engineering, Analytics &amp; BI Modernization, FlexiAnalyst — all built on Context Engineering." />
+<meta name="twitter:image" content="https://flexilytics.ai/og/solutions.png" />
+<meta name="geo.region" content="IN-MH" />
+<meta name="geo.placename" content="Mumbai" />
+<meta name="ICBM" content="19.0760, 72.8777" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://flexilytics.ai/#organization",
+  "name": "Flexilytics",
+  "legalName": "Flexilytics Pvt. Ltd.",
+  "url": "https://flexilytics.ai",
+  "logo": "https://flexilytics.ai/assets/logo-mark.png",
+  "foundingDate": "2025",
+  "description": "Indian enterprise AI consultancy. The Context Engineering firm — grounding AI workloads in identity, hierarchy, definitions, lineage, and policy.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Mumbai",
+    "addressCountry": "IN"
+  },
+  "email": "hello@flexilytics.ai",
+  "areaServed": [
+    "IN",
+    "AE",
+    "SG",
+    "GB",
+    "US"
+  ],
+  "knowsAbout": [
+    "Context Engineering",
+    "Enterprise AI",
+    "Data Governance",
+    "Microsoft Fabric",
+    "Databricks",
+    "AI/ML Engineering",
+    "BFSI Analytics",
+    "Modern Data Platform",
+    "DPDP Compliance",
+    "RBI Regulatory Compliance"
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/company/flexilytics/"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://flexilytics.ai/#website",
+  "url": "https://flexilytics.ai",
+  "name": "Flexilytics",
+  "description": "The Context Engineering firm.",
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": "https://flexilytics.ai/solutions#webpage",
+  "url": "https://flexilytics.ai/solutions",
+  "name": "Solutions — Five Practices, One Method | Flexilytics",
+  "description": "Five practices, one method. Data Governance, Modern Data Platform, AI/ML Engineering, Analytics & BI Modernization, FlexiAnalyst — all built on Context Engineering.",
+  "isPartOf": {
+    "@id": "https://flexilytics.ai/#website"
+  },
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN",
+  "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://flexilytics.ai/og/solutions.png"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": "https://flexilytics.ai/solutions#breadcrumb",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://flexilytics.ai/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Solutions",
+      "item": "https://flexilytics.ai/solutions"
+    }
+  ]
+}
+</script>
+<!-- SEO-AEO-GEO END -->
+</head>
+<body>
+
+<canvas id="ambient"></canvas>
+
+<header class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="index.html" aria-label="Flexilytics home">
+      <img class="brand-mark" src="assets/logo-on-dark.png" alt="Flexilytics" />
+      </a>
+    <nav class="nav-links">
+      <a href="approach.html">Approach</a>
+      <a class="active" href="solutions.html">Solutions</a>
+      <a href="platforms.html">Platforms</a>
+      <a href="trust-security.html">Trust & Security</a>
+      <a href="insights.html">Insights</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <a class="nav-cta" href="book-audit.html">Book the 2-Week Audit <span aria-hidden="true">→</span></a>
+  </div>
+</header>
+
+<main>
+
+<section class="page-hero">
+  <div class="wrap page-hero-inner">
+    <div class="reveal">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>SOLUTIONS<span class="eyebrow-bar"></span></div>
+      <h1>Five practices.<br/>One <em>method</em><span class="period">.</span></h1>
+      <p class="lede">Each practice is a Strategy → Build → Run engagement. Each is anchored on the <strong>FlexiContext framework</strong>. Each is delivered by a founding partner, on your platform, inside your tenancy.</p>
+      <p class="tag">— Intelligence. Grounded.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION CARDS -->
+<section class="sec" style="padding-top:30px">
+  <div class="wrap">
+    <div class="sol-grid">
+
+      <a class="sol reveal" data-key="gov" href="solutions-data-governance.html">
+        <span class="sol-no">§ 01</span>
+        <div class="sol-eye"><span>● PRACTICE</span><span class="badge">FLAGSHIP</span></div>
+        <h3>Data Governance &amp; <em>Compliance</em></h3>
+        <p>The Governance Trinity in production: lineage you can audit, KPI definitions everyone agrees on, and an exception-handling spine that survives a regulator visit. Built for RBI, SEBI, IRDAI, and DPDP-Act exposure.</p>
+        <div class="sol-out"><div class="lbl">Outcome</div><div class="v">Audit-passable governance, owned in-house by month 6</div></div>
+        <div class="sol-arrow">Read the practice → </div>
+      </a>
+
+      <a class="sol reveal d1" data-key="mdp" href="solutions-modern-data-platform.html">
+        <span class="sol-no">§ 02</span>
+        <div class="sol-eye"><span>● PRACTICE</span></div>
+        <h3>Modern Data <em>Platform</em></h3>
+        <p>Microsoft Fabric, Databricks, or hybrid lakehouse — designed and shipped to production-engineering standards. We don't pick a platform you don't already have. We make the one you have actually work.</p>
+        <div class="sol-out"><div class="lbl">Outcome</div><div class="v">A platform your engineers can extend without us</div></div>
+        <div class="sol-arrow">Read the practice → </div>
+      </a>
+
+      <a class="sol reveal d2" data-key="ai" href="solutions-ai-ml-engineering.html">
+        <span class="sol-no">§ 03</span>
+        <div class="sol-eye"><span>● PRACTICE</span></div>
+        <h3>AI / ML <em>Engineering</em></h3>
+        <p>Production AI workloads — credit decisioning, claims triage, demand forecasting, agentic workflows — built on top of an engineered context layer. We don't ship a model without the governance to defend it.</p>
+        <div class="sol-out"><div class="lbl">Outcome</div><div class="v">Models that survive audit, scale, and CTO turnover</div></div>
+        <div class="sol-arrow">Read the practice → </div>
+      </a>
+
+      <a class="sol reveal d3" data-key="bi" href="solutions-analytics-bi.html">
+        <span class="sol-no">§ 04</span>
+        <div class="sol-eye"><span>● PRACTICE</span></div>
+        <h3>Analytics &amp; BI <em>Modernization</em></h3>
+        <p>Self-service analytics that actually serves itself. Reconcile KPI definitions across business units, retire shadow Excel, and put Power BI / Tableau / Looker on a single, governed semantic spine. The boring practice that quietly unblocks every AI ambition.</p>
+        <div class="sol-out"><div class="lbl">Outcome</div><div class="v">One number per KPI, one source per question, no slack threads</div></div>
+        <div class="sol-arrow">Read the practice → </div>
+      </a>
+
+      <a class="sol reveal d4" data-key="fa" href="solutions-flexianalyst.html" style="grid-column:1/-1">
+        <span class="sol-no">§ 05</span>
+        <div class="sol-eye"><span>● PRODUCT · PREVIEW</span><span class="badge soon">JOIN WAITLIST</span></div>
+        <h3>FlexiAnalyst — the AI <em>Sales Analyst</em></h3>
+        <p>The first product that comes out of the practice. A grounded sales-analytics agent that answers "why did this region miss" with the same rigour your best human analyst would — because it sits on the same engineered context. Beta with three pilot partners in Q3 2026.</p>
+        <div class="sol-out"><div class="lbl">Outcome</div><div class="v">An always-on analyst for the sales leadership team — grounded, governed, deployable in your tenancy</div></div>
+        <div class="sol-arrow">Read the brief &amp; join waitlist → </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ACCELERATORS -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-chip"><span class="n">§ 06</span><span>ACCELERATORS</span></div>
+      <h2 class="sec-h">Pre-built <em>kits</em> that compress the build phase.</h2>
+      <p class="sec-lede">We don't reinvent infrastructure on every engagement. These accelerators ship inside Build phases — they're not products to license, they're the firm's accumulated kit.</p>
+    </div>
+    <div class="accelerator-strip reveal d1">
+      <div class="acc"><div class="v">● ACCELERATOR · 01</div><h4>FlexiContext Reference Stack</h4><p>The five-layer semantic framework, pre-implemented for Microsoft Fabric and Databricks. Two-week head start on every Build.</p></div>
+      <div class="acc"><div class="v">● ACCELERATOR · 02</div><h4>Governance Trinity Toolkit</h4><p>Lineage, KPI registry, exception handler. Drop-in modules with audit-trail discipline baked in. RBI / SEBI / IRDAI tested.</p></div>
+      <div class="acc"><div class="v">● ACCELERATOR · 03</div><h4>BFSI Decision Pack</h4><p>Pre-built credit, collections, fraud, and AML decision flows on top of the FlexiContext stack. Domain-tuned defaults.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="sec" style="padding-top:60px;padding-bottom:140px">
+  <div class="wrap">
+    <div class="reveal" style="border-top:1px solid var(--line-1);padding-top:64px;text-align:center;max-width:780px;margin:0 auto">
+      <h2 style="font-family:var(--ff-display);font-weight:300;font-size:clamp(30px,4vw,46px);line-height:1.1;letter-spacing:-0.025em;color:#fff;margin:0 0 24px;text-wrap:balance">Not sure which practice fits? <em style="color:var(--blue-xl);font-style:italic">Start with the audit.</em></h2>
+      <a class="btn btn-primary" href="book-audit.html">Book the 2-Week Readiness Audit
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-wm">
+        <img src="assets/logo-wide.png" alt="Flexilytics — Intelligence. Grounded." />
+        <div class="foot-tag">Context Engineering for regulated enterprises across India, UAE, and Southeast Asia.</div>
+      </div>
+      <div class="foot-col">
+        <h5>Approach</h5>
+        <ul>
+          <li><a href="approach.html">Strategy · Build · Run</a></li>
+          <li><a href="context-engineering.html">FlexiContext™</a></li>
+          <li><a href="trust-security.html">Trust &amp; Security</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Solutions</h5>
+        <ul>
+          <li><a href="solutions-data-governance.html">Data Governance</a></li>
+          <li><a href="solutions-modern-data-platform.html">Modern Data Platform</a></li>
+          <li><a href="solutions-ai-ml-engineering.html">AI &amp; ML Engineering</a></li>
+          <li><a href="solutions-analytics-bi.html">Analytics &amp; BI</a></li>
+          <li><a href="solutions-flexianalyst.html">FlexiAnalyst</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="leadership.html">Leadership</a></li>
+          <li><a href="insights.html">Insights</a></li>
+          <li><a href="bfsi.html">Industries · BFSI</a></li>
+          <li><a href="book-audit.html">Book Audit</a></li>
+          <li><a href="mailto:hello@flexilytics.ai">hello@flexilytics.ai</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 FLEXILYTICS PVT. LTD.</span>
+      <span class="m">INTELLIGENCE. GROUNDED.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="tweaks" id="tweaks">
+  <h4>Tweaks <button id="tweaksClose" aria-label="Close">×</button></h4>
+  <div class="tweak-grp"><div class="tweak-lbl">Motion</div><div class="seg" id="motionSeg"><button data-v="calm" class="active">Calm</button><button data-v="flow">Flow</button><button data-v="alive">Alive</button></div></div>
+  <div class="tweak-grp"><div class="tweak-lbl">Ambient field</div><div class="seg" id="ambientSeg"><button data-v="on" class="active">On</button><button data-v="off">Off</button></div></div>
+</div>
+
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"motion":"calm","ambient":"on"}/*EDITMODE-END*/;
+window.__motionMode = TWEAK_DEFAULTS.motion; window.__ambientMode = TWEAK_DEFAULTS.ambient;
+</script>
+<script src="assets/site.js"></script>
+
+</body>
+</html>

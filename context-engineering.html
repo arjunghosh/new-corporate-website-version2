@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Context Engineering — The Definitive Guide | Flexilytics</title>
+<meta name="description" content="What Context Engineering is, why enterprise AI fails without it, and how it differs from prompt engineering. The five-layer FlexiContext™ method explained." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  /* ============ CONTEXT-ENGINEERING-page-specific ============ */
+
+  /* article-style layout */
+  .pillar{max-width:780px;margin:0 auto}
+  .pillar > * + *{margin-top:0}
+  .pillar p{font-size:18px;line-height:1.75;color:rgba(255,255,255,0.78);margin:0 0 22px;font-weight:300;letter-spacing:0.005em}
+  .pillar p strong{color:#fff;font-weight:500}
+  .pillar p em{color:var(--blue-xl);font-style:italic;font-family:'Instrument Serif', Georgia, serif;font-size:1.04em}
+  .pillar h2{font-family:var(--ff-display);font-weight:300;font-size:36px;line-height:1.1;letter-spacing:-0.025em;color:#fff;margin:64px 0 24px;text-wrap:balance}
+  .pillar h2 em{font-style:italic;color:var(--blue-xl);font-family:'Instrument Serif', Georgia, serif;font-weight:400}
+  .pillar h3{font-family:var(--ff-display);font-weight:400;font-size:22px;line-height:1.25;letter-spacing:-0.01em;color:#fff;margin:36px 0 14px}
+  .pillar hr{border:0;border-top:1px solid var(--line-1);margin:64px auto;max-width:80px}
+  .pillar a{color:var(--blue-xl);border-bottom:1px solid rgba(74,212,255,0.3);transition:border-color .25s ease}
+  .pillar a:hover{border-color:var(--blue-xl)}
+
+  .byline{font-family:var(--ff-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin:0 0 36px;display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+  .byline .author{color:var(--blue-xl)}
+  .byline .dot{color:var(--line-3)}
+
+  /* opening definition card */
+  .defcard{position:relative;padding:40px 44px;background:linear-gradient(135deg, rgba(27,117,240,0.08), rgba(155,111,255,0.04));border:1px solid var(--line-3);border-radius:16px;margin:0 0 36px;overflow:hidden}
+  .defcard::before{content:"";position:absolute;top:18px;left:18px;width:32px;height:32px;border-left:2px solid var(--blue-xl);border-top:2px solid var(--blue-xl);border-radius:6px 0 0 0;opacity:0.5}
+  .defcard::after{content:"";position:absolute;bottom:18px;right:18px;width:32px;height:32px;border-right:2px solid var(--blue-xl);border-bottom:2px solid var(--blue-xl);border-radius:0 0 6px 0;opacity:0.5}
+  .defcard-eye{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:14px}
+  .defcard p{font-family:var(--ff-display);font-weight:300;font-size:21px;line-height:1.45;color:#fff;margin:0;letter-spacing:-0.005em;font-style:italic}
+
+  /* compare table — prompt vs context */
+  .compare{margin:32px 0 36px;border:1px solid var(--line-2);border-radius:14px;overflow:hidden;background:rgba(5,6,10,0.4)}
+  .compare-row{display:grid;grid-template-columns:1.2fr 2fr 2fr;border-bottom:1px solid var(--line-1)}
+  .compare-row:last-child{border-bottom:0}
+  .compare-row.head{background:rgba(27,117,240,0.06)}
+  .compare-cell{padding:18px 22px;font-size:14.5px;line-height:1.55;color:var(--mute);border-right:1px solid var(--line-1)}
+  .compare-cell:last-child{border-right:0}
+  .compare-row.head .compare-cell{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+  .compare-row.head .compare-cell.col2{color:var(--blue-lt)}
+  .compare-row.head .compare-cell.col3{color:var(--rose)}
+  .compare-cell.label{color:#fff;font-weight:500;font-size:14px;font-family:var(--ff-display)}
+  @media (max-width:720px){.compare-row{grid-template-columns:1fr}.compare-cell{border-right:0;border-bottom:1px solid var(--line-1)}}
+
+  /* pull-quote */
+  .pullq{margin:48px -20px;padding:36px 44px;border-left:2px solid var(--blue-xl);background:linear-gradient(90deg, rgba(27,117,240,0.05), transparent);border-radius:0 12px 12px 0}
+  .pullq blockquote{margin:0;font-family:'Instrument Serif', Georgia, serif;font-style:italic;font-weight:400;font-size:26px;line-height:1.4;color:#fff;letter-spacing:-0.005em}
+  .pullq blockquote::before{content:"\201C";font-size:42px;color:var(--blue-xl);line-height:0;vertical-align:-0.4em;margin-right:6px}
+  .pullq cite{display:block;margin-top:18px;font-style:normal;font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  .pullq cite strong{color:var(--blue-lt);font-weight:400}
+
+  /* layer cards (compact, links to approach) */
+  .layers-mini{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:28px 0 28px}
+  @media (max-width:720px){.layers-mini{grid-template-columns:1fr}}
+  .lyr-mini{padding:22px 24px;background:rgba(5,6,10,0.4);border:1px solid var(--line-2);border-radius:12px;transition:all .3s ease}
+  .lyr-mini:hover{border-color:var(--line-3);background:rgba(27,117,240,0.04)}
+  .lyr-mini .num{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;color:var(--blue-lt);margin-bottom:8px}
+  .lyr-mini h4{font-family:var(--ff-display);font-weight:400;font-size:18px;color:#fff;margin:0 0 8px;letter-spacing:-0.005em}
+  .lyr-mini p{font-size:13.5px;line-height:1.55;color:var(--mute);margin:0;font-weight:400}
+
+  /* stat callout band */
+  .statband{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line-2);border-radius:14px;overflow:hidden;background:rgba(5,6,10,0.5);margin:32px 0}
+  @media (max-width:720px){.statband{grid-template-columns:repeat(2,1fr)}}
+  .statband > div{padding:20px 22px;border-right:1px solid var(--line-1);border-bottom:1px solid var(--line-1)}
+  .statband > div:nth-child(4){border-right:0}
+  @media (max-width:720px){.statband > div:nth-child(2){border-right:0}.statband > div:nth-child(odd){border-right:1px solid var(--line-1)}}
+  .statband .v{font-family:var(--ff-display);font-weight:200;font-size:32px;line-height:1;letter-spacing:-0.02em;color:var(--blue-xl);margin-bottom:6px}
+  .statband .v em{font-style:normal;font-size:0.6em;color:var(--blue-lt);font-weight:300}
+  .statband .l{font-family:var(--ff-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);line-height:1.4}
+
+  /* practice example card */
+  .ex{padding:28px 30px;background:linear-gradient(180deg, var(--bg-3), var(--bg-2));border:1px solid var(--line-1);border-radius:14px;margin:24px 0}
+  .ex .ex-eye{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:10px}
+  .ex h4{font-family:var(--ff-display);font-weight:400;font-size:20px;letter-spacing:-0.005em;color:#fff;margin:0 0 14px}
+  .ex p{font-size:15px !important;line-height:1.65 !important;color:var(--mute);margin:0 0 12px;font-weight:400 !important}
+  .ex p:last-child{margin:0}
+  .ex p strong{color:var(--blue-xl);font-weight:500}
+
+  /* faq accordion (same as approach) */
+  .faq-list{display:flex;flex-direction:column;gap:10px}
+  .faq-item{background:rgba(5,6,10,0.4);border:1px solid var(--line-2);border-radius:12px;overflow:hidden;transition:border-color .25s ease}
+  .faq-item[open]{border-color:var(--line-3);background:rgba(27,117,240,0.04)}
+  .faq-item summary{cursor:pointer;list-style:none;padding:22px 26px;display:flex;align-items:center;justify-content:space-between;gap:24px;font-family:var(--ff-display);font-weight:400;font-size:17px;color:#fff;letter-spacing:-0.005em;line-height:1.35}
+  .faq-item summary::-webkit-details-marker{display:none}
+  .faq-item summary::after{content:"+";font-family:var(--ff-display);font-size:28px;font-weight:200;color:var(--blue-lt);line-height:0.7;transition:transform .3s ease;flex-shrink:0}
+  .faq-item[open] summary::after{transform:rotate(45deg);color:var(--rose)}
+  .faq-item .a{padding:0 26px 24px;font-size:14.5px;line-height:1.7;color:var(--mute)}
+
+  /* TOC sidebar */
+  .toc{position:sticky;top:96px;font-family:var(--ff-mono);font-size:11px}
+  .toc-h{font-size:10.5px;letter-spacing:.22em;color:var(--faint);text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--line-1)}
+  .toc ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+  .toc a{display:block;color:var(--mute);font-size:11.5px;letter-spacing:.04em;line-height:1.45;transition:color .2s ease;padding-left:14px;border-left:1px solid transparent}
+  .toc a:hover{color:#fff;border-left-color:var(--blue-md)}
+  .toc a.active{color:var(--blue-xl);border-left-color:var(--blue-xl)}
+
+  .pillar-shell{display:grid;grid-template-columns:200px 1fr;gap:80px;align-items:start}
+  @media (max-width:1080px){.pillar-shell{grid-template-columns:1fr;gap:30px}.toc{display:none}}
+</style>
+<!-- SEO-AEO-GEO BEGIN (auto-generated, do not edit by hand) -->
+<link rel="canonical" href="https://flexilytics.ai/context-engineering" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="author" content="Flexilytics" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Flexilytics" />
+<meta property="og:url" content="https://flexilytics.ai/context-engineering" />
+<meta property="og:title" content="Context Engineering — The Definitive Guide | Flexilytics" />
+<meta property="og:description" content="What Context Engineering is, why enterprise AI fails without it, and how it differs from prompt engineering. The five-layer FlexiContext™ method explained." />
+<meta property="og:image" content="https://flexilytics.ai/og/context-engineering.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_IN" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Context Engineering — The Definitive Guide | Flexilytics" />
+<meta name="twitter:description" content="What Context Engineering is, why enterprise AI fails without it, and how it differs from prompt engineering. The five-layer FlexiContext™ method explained." />
+<meta name="twitter:image" content="https://flexilytics.ai/og/context-engineering.png" />
+<meta name="geo.region" content="IN-MH" />
+<meta name="geo.placename" content="Mumbai" />
+<meta name="ICBM" content="19.0760, 72.8777" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://flexilytics.ai/#organization",
+  "name": "Flexilytics",
+  "legalName": "Flexilytics Pvt. Ltd.",
+  "url": "https://flexilytics.ai",
+  "logo": "https://flexilytics.ai/assets/logo-mark.png",
+  "foundingDate": "2025",
+  "description": "Indian enterprise AI consultancy. The Context Engineering firm — grounding AI workloads in identity, hierarchy, definitions, lineage, and policy.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Mumbai",
+    "addressCountry": "IN"
+  },
+  "email": "hello@flexilytics.ai",
+  "areaServed": [
+    "IN",
+    "AE",
+    "SG",
+    "GB",
+    "US"
+  ],
+  "knowsAbout": [
+    "Context Engineering",
+    "Enterprise AI",
+    "Data Governance",
+    "Microsoft Fabric",
+    "Databricks",
+    "AI/ML Engineering",
+    "BFSI Analytics",
+    "Modern Data Platform",
+    "DPDP Compliance",
+    "RBI Regulatory Compliance"
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/company/flexilytics/"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://flexilytics.ai/#website",
+  "url": "https://flexilytics.ai",
+  "name": "Flexilytics",
+  "description": "The Context Engineering firm.",
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "@id": "https://flexilytics.ai/context-engineering#webpage",
+  "url": "https://flexilytics.ai/context-engineering",
+  "name": "Context Engineering — The Definitive Guide | Flexilytics",
+  "description": "What Context Engineering is, why enterprise AI fails without it, and how it differs from prompt engineering. The five-layer FlexiContext™ method explained.",
+  "isPartOf": {
+    "@id": "https://flexilytics.ai/#website"
+  },
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN",
+  "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://flexilytics.ai/og/context-engineering.png"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": "https://flexilytics.ai/context-engineering#breadcrumb",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://flexilytics.ai/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Context Engineering",
+      "item": "https://flexilytics.ai/context-engineering"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "https://flexilytics.ai/context-engineering#faq",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Context Engineering?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Context Engineering is the discipline of resolving the data, definitions, hierarchies, lineage and policy an enterprise AI workload needs to be correct and auditable. It is the semantic layer beneath every successful AI program."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Context Engineering different from Prompt Engineering?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Prompt Engineering optimizes the question to a model. Context Engineering ensures the model has the right facts, definitions and permissions to answer it. Without context, prompts are guesses; with context, they are queries."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does enterprise AI fail without Context Engineering?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most enterprise AI projects stall not on model quality but on disagreements about what a customer is, what last quarter's revenue was, or who is allowed to see which row. Context Engineering removes those disagreements before the model ever runs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the five layers of FlexiContext™?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Identity (who or what an entity is), Hierarchy (how entities roll up), Definitions (the KPI registry), Lineage (where each number came from) and Policy (who can see and act on what)."
+      }
+    }
+  ]
+}
+</script>
+<!-- SEO-AEO-GEO END -->
+</head>
+<body>
+
+<canvas id="ambient"></canvas>
+
+<header class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="index.html" aria-label="Flexilytics home">
+      <img class="brand-mark" src="assets/logo-on-dark.png" alt="Flexilytics" />
+      </a>
+    <nav class="nav-links">
+      <a class="active" href="approach.html">Approach</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="platforms.html">Platforms</a>
+      <a href="trust-security.html">Trust & Security</a>
+      <a href="insights.html">Insights</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <a class="nav-cta" href="book-audit.html">Book the 2-Week Audit <span aria-hidden="true">→</span></a>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="page-hero" style="padding-bottom:48px">
+  <div class="wrap page-hero-inner" style="max-width:780px;margin:0 auto">
+    <div class="reveal">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>DEFINITIVE GUIDE · CONTEXT ENGINEERING<span class="eyebrow-bar"></span></div>
+      <h1 style="font-size:clamp(40px,5.6vw,68px)">What is <em>context</em><br/>engineering<span class="period">?</span></h1>
+      <p class="lede" style="max-width:640px">The discipline of encoding business knowledge — definitions, rules, relationships, constraints — into the systems that power enterprise AI. The difference between AI that is statistically correct and AI that is <strong>business-correct</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARTICLE BODY ============ -->
+<section class="sec" style="padding-top:40px">
+  <div class="wrap">
+    <div class="pillar-shell">
+
+      <aside class="toc reveal">
+        <div class="toc-h">CONTENTS</div>
+        <ul>
+          <li><a href="#definition" class="active">Definition</a></li>
+          <li><a href="#why-now">Why now</a></li>
+          <li><a href="#vs-prompt">vs. Prompt eng.</a></li>
+          <li><a href="#five-layers">Five layers</a></li>
+          <li><a href="#in-practice">In practice</a></li>
+          <li><a href="#governance">Governance</a></li>
+          <li><a href="#future">The future</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </aside>
+
+      <article class="pillar reveal d1">
+        <div class="byline">
+          <span>BY <span class="author">ANKUSH SHAH</span></span>
+          <span class="dot">·</span>
+          <span>Founder &amp; CEO, Flexilytics</span>
+          <span class="dot">·</span>
+          <span>Updated April 2026</span>
+        </div>
+
+        <!-- ============ DEFINITION ============ -->
+        <div id="definition" class="defcard">
+          <div class="defcard-eye">DEFINITION</div>
+          <p>Context engineering is the discipline of encoding business knowledge — KPI definitions, domain relationships, governance rules, operational constraints, and semantic hierarchies — into the systems that power enterprise AI.</p>
+        </div>
+
+        <p>It's the difference between an AI that gives you a statistically correct answer and one that gives you a <strong>business-correct</strong> answer.</p>
+
+        <p>Here's what I mean. You ask your AI system: <em>"What was our revenue last quarter?"</em> It pulls the number. Technically accurate. Except it used gross revenue instead of net, included a divested business unit you stopped reporting on six months ago, and ignored the currency conversion policy your finance team enforces for APAC subsidiaries. The number is right. The answer is wrong.</p>
+
+        <p>That's not a model problem. That's a context problem.</p>
+
+        <p>Without context engineering, AI systems hallucinate definitions, ignore governance rules, and produce outputs that are technically accurate but operationally useless. They don't know what "revenue" means <em>in your business</em>. They don't know which KPI definition your CFO approved last quarter. They don't know that "customer" means something different in your lending division than your insurance division.</p>
+
+        <p>Context engineering fixes this. It's the five-layer methodology that sits between your data platform and your AI applications — making every model, every dashboard, and every automated workflow grounded in your specific business reality. Not grounded in generic training data. Not grounded in what the internet thinks your industry looks like. <strong>Grounded in your business, as it actually operates.</strong></p>
+
+        <hr/>
+
+        <!-- ============ WHY NOW ============ -->
+        <h2 id="why-now">Why context engineering matters <em>now</em></h2>
+        <p>The timing isn't accidental. Several things converged in 2025–2026 that turned context engineering from an academic concept into an operational necessity.</p>
+
+        <div class="statband">
+          <div><div class="v">80<em>%</em></div><div class="l">Enterprise AI projects fail (RAND, 2025)</div></div>
+          <div><div class="v">$547<em>B</em></div><div class="l">Investment producing no measurable value</div></div>
+          <div><div class="v">88<em>%</em></div><div class="l">AI agents fail to reach production (Gartner)</div></div>
+          <div><div class="v">97<em>M</em></div><div class="l">Monthly MCP SDK downloads (Mar 2026)</div></div>
+        </div>
+
+        <p><strong>The failure rate finally became undeniable.</strong> RAND Corporation published their 2025 analysis: 80.3% of enterprise AI projects fail to deliver intended business value. A third are abandoned before reaching production. Another 28% deliver no measurable value. We're talking about a $684 billion global enterprise AI investment in 2025, with over $547 billion producing nothing.</p>
+
+        <p><strong>Gartner declared 2026 "The Year of Context."</strong> Not my words — Gartner's. They formally positioned context engineering as core infrastructure for enterprise AI at the 2026 Data &amp; Analytics Summit. Their warning: 60% of MCP-only projects will fail by 2028 without semantic foundations. Four of five organizations increased AI investments in 2026. Only one in five shows measurable ROI. The gap? Fragmented context.</p>
+
+        <p><strong>Anthropic released MCP, and the industry adopted it faster than React.</strong> The Model Context Protocol launched in November 2024. By March 2026: 97 million monthly SDK downloads, 5,800+ MCP servers, 300+ clients. OpenAI adopted it. Google DeepMind followed. MCP gave context engineering a standard wire format, the way HTTP gave the web a standard wire format.</p>
+
+        <div class="pullq">
+          <blockquote>I really like the term "context engineering" over prompt engineering. It describes the core skill better: the art of providing all the context for the task to be plausibly solvable by the LLM.</blockquote>
+          <cite><strong>Tobi Lutke</strong> · CEO, Shopify · June 2025</cite>
+        </div>
+
+        <p>When the people actually building production AI systems start using the same term independently, that's not marketing — that's a discipline emerging.</p>
+
+        <hr/>
+
+        <!-- ============ VS PROMPT ============ -->
+        <h2 id="vs-prompt">Context engineering <em>vs.</em> prompt engineering</h2>
+        <p>This is the question I get most often, so let me be direct about it.</p>
+        <p><strong>Prompt engineering is a skill. Context engineering is a discipline.</strong></p>
+        <p>Prompt engineering optimizes individual interactions — you write a better prompt, you get a better response. It's valuable. It's necessary. And it's completely insufficient for enterprise AI.</p>
+
+        <div class="compare">
+          <div class="compare-row head">
+            <div class="compare-cell col1">DIMENSION</div>
+            <div class="compare-cell col2">PROMPT ENGINEERING</div>
+            <div class="compare-cell col3">CONTEXT ENGINEERING</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell label">Scope</div>
+            <div class="compare-cell">Single interaction</div>
+            <div class="compare-cell">Entire enterprise knowledge layer</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell label">Persistence</div>
+            <div class="compare-cell">Session-level — dies when the conversation ends</div>
+            <div class="compare-cell">Organizational — survives model upgrades, team changes, vendor switches</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell label">Governance</div>
+            <div class="compare-cell">None built in</div>
+            <div class="compare-cell">First-class citizen, not afterthought</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell label">Ownership</div>
+            <div class="compare-cell">Tied to the prompt author's head</div>
+            <div class="compare-cell">Organizational IP — documented, versioned, transferable</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell label">Auditability</div>
+            <div class="compare-cell">Minimal — who reviewed this prompt?</div>
+            <div class="compare-cell">Full evidence trails from context source to AI output</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-cell label">Scalability</div>
+            <div class="compare-cell">One prompt, one task</div>
+            <div class="compare-cell">One context layer, every task</div>
+          </div>
+        </div>
+
+        <p>Here's the practical difference. A prompt engineer writes: <em>"You are a financial analyst. When calculating revenue, use net revenue excluding discontinued operations."</em> That works until it doesn't — until someone else writes a different prompt with a different definition, until the model gets updated and the prompt breaks, until the person who wrote it leaves and nobody remembers why it says what it says.</p>
+
+        <p>A context engineer encodes the same information differently: the KPI definition of "revenue" lives in a governed context pack, versioned, with a change history, automatically injected into every AI interaction that touches revenue data. <strong>Nobody has to remember. Nobody has to copy-paste.</strong> The knowledge is infrastructure, not folklore.</p>
+
+        <p><em>Prompts are ephemeral. Context is infrastructure.</em></p>
+
+        <hr/>
+
+        <!-- ============ FIVE LAYERS ============ -->
+        <h2 id="five-layers">The <em>five</em> layers</h2>
+        <p>At Flexilytics, we've codified context engineering into five layers. This isn't academic taxonomy — it's the framework we use to scope, build, and deliver every engagement.</p>
+
+        <div class="layers-mini">
+          <div class="lyr-mini"><div class="num">LAYER 01</div><h4>Business Context</h4><p>KPI definitions, business rules, exceptions, decision frameworks. Where most enterprise AI falls apart first.</p></div>
+          <div class="lyr-mini"><div class="num">LAYER 02</div><h4>Semantic Models</h4><p>Hierarchies, taxonomies, entity relationships. The Rosetta Stone between how your business talks and how your data is structured.</p></div>
+          <div class="lyr-mini"><div class="num">LAYER 03</div><h4>Governance Rules</h4><p>Access policies, compliance constraints, approval thresholds. Operational guardrails — not paperwork.</p></div>
+          <div class="lyr-mini"><div class="num">LAYER 04</div><h4>Domain Ontologies</h4><p>Industry-specific knowledge. What "risk" means in banking vs. manufacturing vs. healthcare.</p></div>
+          <div class="lyr-mini" style="grid-column:1/-1"><div class="num">LAYER 05</div><h4>Operational Constraints</h4><p>System boundaries, performance requirements, deployment models. The physics of enterprise AI — non-negotiable.</p></div>
+        </div>
+
+        <p>Every Flexilytics engagement follows the <strong>Strategy → Build → Run</strong> model with these layers integrated at every phase. The Flexi accelerators — FlexiAnalyst, FlexiGovern, FlexiFlow, FlexiRAG — are delivery mechanisms within this framework. <a href="approach.html">Read how we engage →</a></p>
+
+        <hr/>
+
+        <!-- ============ IN PRACTICE ============ -->
+        <h2 id="in-practice">Context engineering <em>in practice</em></h2>
+        <p>Patterns from our team's combined experience — anonymized but specific enough to be useful.</p>
+
+        <div class="ex">
+          <div class="ex-eye">MANUFACTURING · OPERATIONAL CONSTRAINTS (LAYER 5)</div>
+          <h4>The optimization model that recommended physically impossible settings</h4>
+          <p>A manufacturing firm was running a process optimization model that kept recommending settings outside the operational envelope of their equipment. Technically optimal. Physically impossible. The model had been trained on production data but had no encoding of machine constraints — temperature limits, pressure tolerances, maintenance windows.</p>
+          <p><strong>The intervention:</strong> Operational constraints encoded alongside the process data. The recommendation space was bounded by physical reality. Optimization results dropped from "theoretically optimal" to "actually achievable" — and cost savings materialized because recommendations could actually be implemented.</p>
+        </div>
+
+        <div class="ex">
+          <div class="ex-eye">BFSI · SEMANTIC MODELS (LAYER 2)</div>
+          <h4>Three definitions of "Non-Performing Asset"</h4>
+          <p>A mid-market bank had three different definitions of NPA across its retail, SME, and corporate lending divisions. The RBI definition was clear; the internal definitions had evolved over a decade of mergers. Every model trained on this data inherited the ambiguity.</p>
+          <p><strong>The intervention:</strong> We mapped the semantic hierarchy of credit risk terms across all three divisions, reconciled them against the RBI taxonomy, and rebuilt the model inputs with consistent business context. <strong>The model didn't change. The context did.</strong> The outputs became explainable.</p>
+        </div>
+
+        <div class="ex">
+          <div class="ex-eye">HEALTHCARE · DOMAIN ONTOLOGIES (LAYER 4)</div>
+          <h4>"Hypertension" doesn't mean the same thing everywhere</h4>
+          <p>"Hypertension" in primary care means something different than in nephrology — the risk profile, the treatment protocol, the monitoring cadence all change. An AI system that doesn't encode these domain-specific interpretations produces outputs a clinician will immediately reject as generic.</p>
+          <p><strong>The intervention:</strong> Domain ontologies mapped clinical terminology across specializations, linked to ICD-10 codes, treatment protocols, and institutional guidelines. The AI system didn't become a better model — it became a useful one.</p>
+        </div>
+
+        <hr/>
+
+        <!-- ============ GOVERNANCE ============ -->
+        <h2 id="governance">The <em>Governance Trinity</em></h2>
+        <p>Data governance + Model governance + Agent governance. Most organizations have made progress on the first. Almost nobody has the second. The third doesn't exist in most enterprises yet.</p>
+        <p><strong>Context engineering makes governance operational, not performative.</strong></p>
+        <p>A policy document says "all AI outputs must be explainable." Great. <em>How?</em> Explainability requires knowing what context the AI used, where that context came from, whether it was current and accurate, and what governance rules were applied. Without a context engineering layer, "explainability" is a slide in a board deck, not a technical capability.</p>
+
+        <div class="pullq">
+          <blockquote>An AI model that produces a wrong answer is a nuisance. An AI agent that takes a wrong action is a liability.</blockquote>
+          <cite><strong>The agent governance gap</strong> · Why context engineering is the enabler</cite>
+        </div>
+
+        <p>India's DPDP Act, GDPR, RBI guidelines, HIPAA — these don't get solved by context engineering directly. But context engineering provides the infrastructure that makes compliance <strong>provable</strong>. Every AI output traces back through its context chain. Compliance stops being a quarterly audit exercise and becomes a continuous operational reality. <a href="trust-security.html">See how we operationalize trust →</a></p>
+
+        <hr/>
+
+        <!-- ============ FUTURE ============ -->
+        <h2 id="future">The <em>future</em> of context engineering</h2>
+        <p>Here's my thesis on where this is going. Take it or leave it.</p>
+        <p><strong>Models will commoditize. Context won't.</strong> Foundation models are already converging in capability. Within two years, the model layer will be largely interchangeable for most enterprise use cases. The differentiation won't be which model you use. It will be <em>what context you feed it</em>. Better models + better context = exponentially better outcomes. Better models + no context = the same 80% failure rate with fancier infrastructure.</p>
+
+        <p><strong>Context packs will become an ecosystem.</strong> Industry-specific context packs — pre-encoded domain ontologies for BFSI, manufacturing, healthcare, retail — become a marketplace. You deploy a foundation model, connect it to your data, and plug in a context pack for your industry. This is why Flexilytics builds accelerators, not products.</p>
+
+        <p><strong>Domain expertise becomes the moat.</strong> In a world where models are commoditized, the organizations that understand their own business deeply — and can encode that understanding into AI infrastructure — will outperform everyone else. This is why we obsess over the five layers. This is why we lead with strategy before building anything. And this is why we say <em>"Intelligence. Grounded."</em> — because grounded isn't a marketing word. It's an engineering requirement.</p>
+
+        <hr/>
+
+        <!-- ============ FAQ ============ -->
+        <h2 id="faq">Frequently asked.</h2>
+
+        <div class="faq-list">
+          <details class="faq-item" open>
+            <summary>What is context engineering in simple terms?</summary>
+            <div class="a">Context engineering is the practice of encoding your business knowledge — definitions, rules, relationships, and constraints — into the systems that power your AI. It's what makes the difference between AI that gives technically correct answers and AI that gives business-correct answers. Think of it as the translation layer between what your business knows and what your AI models need to understand.</div>
+          </details>
+          <details class="faq-item">
+            <summary>How is context engineering different from prompt engineering?</summary>
+            <div class="a">Prompt engineering optimizes individual interactions. Context engineering builds organizational knowledge layers that persist across all interactions, survive model upgrades, and include governance rules as first-class citizens. Prompts are ephemeral; context is infrastructure.</div>
+          </details>
+          <details class="faq-item">
+            <summary>Do I need context engineering if I already have a data governance program?</summary>
+            <div class="a">Yes. Data governance manages data quality and access. Context engineering manages business <em>meaning</em> — KPI definitions, domain relationships, decision rules. Your governance program tells AI what data it can access; context engineering tells AI what that data <em>means</em> in your specific business.</div>
+          </details>
+          <details class="faq-item">
+            <summary>Is context engineering a Flexilytics invention?</summary>
+            <div class="a">No. The term gained mainstream recognition through Gartner (who declared 2026 "The Year of Context"), Anthropic (whose MCP protocol hit 97M monthly downloads), and practitioners like Tobi Lutke and Andrej Karpathy. Flexilytics is the first firm to build a complete enterprise methodology — FlexiContext™ — around context engineering. We didn't invent the concept; we built the first enterprise-grade framework for applying it.</div>
+          </details>
+          <details class="faq-item">
+            <summary>What does context engineering cost?</summary>
+            <div class="a">It depends on scope. A Strategy phase (context blueprint) typically runs 2–4 weeks. The Build phase depends on how many context layers you need and how fragmented your business knowledge is. The question isn't what context engineering costs — it's what the absence of it costs. With 80%+ AI project failure rates, the real expense is building without context.</div>
+          </details>
+          <details class="faq-item">
+            <summary>Can I do context engineering with my existing team?</summary>
+            <div class="a">Yes, if your team has the combination of data engineering skills and deep business domain knowledge. The challenge is usually the second part — most technical teams can build the infrastructure but struggle to map the business semantics. That's the gap we fill. We encode the context, transfer the methodology, and your team maintains it.</div>
+          </details>
+          <details class="faq-item">
+            <summary>How long before we see results?</summary>
+            <div class="a">Strategy phase outputs are immediate — you get a context blueprint and clarity on where your AI is failing and why. Build phase results depend on the use case, but we typically target a production-ready context layer for one use case within 8–12 weeks. The compounding effect kicks in after the first layer.</div>
+          </details>
+          <details class="faq-item">
+            <summary>Does context engineering work with any AI model?</summary>
+            <div class="a">Yes. That's the point. Context engineering is model-agnostic by design. Whether you're running GPT, Claude, Gemini, Llama, or domain-specific models, the context layer sits between your business knowledge and whatever model you deploy. When you upgrade models — and you will — the context persists.</div>
+          </details>
+          <details class="faq-item">
+            <summary>What platforms does Flexilytics build on?</summary>
+            <div class="a">Python is our primary implementation language — flexible and cost-effective. We work extensively on Microsoft Fabric and Databricks when enterprise requirements call for platform-level infrastructure. We evaluate architecture first. Sometimes a full platform isn't needed; sometimes stitching existing systems into a unified data fabric is the smarter move.</div>
+          </details>
+        </div>
+
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLOSER CTA ============ -->
+<section class="closer">
+  <div class="wrap">
+    <div class="closer-card reveal">
+      <div class="eyebrow" style="margin-bottom:16px"><span class="eyebrow-dot"></span>CONTINUE THE CONVERSATION</div>
+      <h2>Want to explore <em>context engineering</em> for your enterprise?</h2>
+      <p>We read every submission personally. No marketing lists without your consent. Tell us where AI is failing in your business — we'll tell you whether it's a context problem, a tooling problem, or something else.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="book-audit.html">Book the 2-Week Audit
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="approach.html">See how we engage</a>
+      </div>
+      <div class="closer-meta">
+        <span>— Intelligence. Grounded.</span>
+        <a href="mailto:hello@flexilytics.ai">hello@flexilytics.ai</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-wm">
+        <img src="assets/logo-wide.png" alt="Flexilytics — Intelligence. Grounded." />
+        <div class="foot-tag">Context Engineering for regulated enterprises across India, UAE, and Southeast Asia.</div>
+      </div>
+      <div class="foot-col">
+        <h5>Approach</h5>
+        <ul>
+          <li><a href="approach.html">Strategy · Build · Run</a></li>
+          <li><a href="context-engineering.html">FlexiContext™</a></li>
+          <li><a href="trust-security.html">Trust &amp; Security</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Solutions</h5>
+        <ul>
+          <li><a href="solutions-data-governance.html">Data Governance</a></li>
+          <li><a href="solutions-modern-data-platform.html">Modern Data Platform</a></li>
+          <li><a href="solutions-ai-ml-engineering.html">AI &amp; ML Engineering</a></li>
+          <li><a href="solutions-analytics-bi.html">Analytics &amp; BI</a></li>
+          <li><a href="solutions-flexianalyst.html">FlexiAnalyst</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="leadership.html">Leadership</a></li>
+          <li><a href="insights.html">Insights</a></li>
+          <li><a href="bfsi.html">Industries · BFSI</a></li>
+          <li><a href="book-audit.html">Book Audit</a></li>
+          <li><a href="mailto:hello@flexilytics.ai">hello@flexilytics.ai</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 FLEXILYTICS PVT. LTD.</span>
+      <span class="m">INTELLIGENCE. GROUNDED.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="tweaks" id="tweaks">
+  <h4>Tweaks <button id="tweaksClose" aria-label="Close">×</button></h4>
+  <div class="tweak-grp"><div class="tweak-lbl">Motion</div>
+    <div class="seg" id="motionSeg">
+      <button data-v="calm" class="active">Calm</button>
+      <button data-v="flow">Flow</button>
+      <button data-v="alive">Alive</button>
+    </div>
+  </div>
+  <div class="tweak-grp"><div class="tweak-lbl">Ambient field</div>
+    <div class="seg" id="ambientSeg">
+      <button data-v="on" class="active">On</button>
+      <button data-v="off">Off</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "motion": "calm",
+  "ambient": "on"
+}/*EDITMODE-END*/;
+window.__motionMode = TWEAK_DEFAULTS.motion;
+window.__ambientMode = TWEAK_DEFAULTS.ambient;
+
+// TOC active-section tracking
+(function(){
+  const tocLinks = document.querySelectorAll('.toc a');
+  const sections = Array.from(tocLinks).map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+  if(!sections.length) return;
+  function update(){
+    let cur = sections[0];
+    const y = window.scrollY + 200;
+    sections.forEach(s => { if(s.offsetTop <= y) cur = s; });
+    tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur.id));
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+})();
+</script>
+<script src="assets/site.js"></script>
+
+</body>
+</html>

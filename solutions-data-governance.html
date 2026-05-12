@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Data Governance & Compliance — Solutions | Flexilytics</title>
+<meta name="description" content="The Governance Trinity in production: lineage, KPI registry, exception handling — built for RBI, SEBI, IRDAI and DPDP exposure. Defendable on day one." />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .crumb{padding-top:96px;font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  .crumb a{color:var(--mute)} .crumb .sep{color:var(--line-3);margin:0 8px} .crumb .here{color:var(--blue-lt)}
+  .trinity{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+  @media (max-width:900px){.trinity{grid-template-columns:1fr}}
+  .tri{padding:30px 28px;background:linear-gradient(180deg,var(--bg-3),var(--bg-2));border:1px solid var(--line-1);border-radius:16px;transition:all .3s ease}
+  .tri:hover{border-color:var(--line-3);transform:translateY(-3px)}
+  .tri .n{font-family:var(--ff-mono);font-size:11px;letter-spacing:.22em;color:var(--blue-lt);margin-bottom:14px}
+  .tri h3{font-family:var(--ff-display);font-weight:400;font-size:22px;color:#fff;margin:0 0 12px;letter-spacing:-0.01em}
+  .tri p{font-size:14px;line-height:1.65;color:var(--mute);margin:0 0 14px}
+  .tri ul{list-style:none;padding:0;margin:0;font-size:13px;color:var(--mute);line-height:1.6}
+  .tri li{padding:4px 0 4px 18px;position:relative}
+  .tri li::before{content:"";position:absolute;left:0;top:11px;width:8px;height:1px;background:var(--blue-lt)}
+  .reglist{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line-1);border-radius:14px;overflow:hidden;background:rgba(5,6,10,0.4);margin-top:18px}
+  @media (max-width:720px){.reglist{grid-template-columns:repeat(2,1fr)}}
+  .reglist > div{padding:24px;border-right:1px solid var(--line-1);border-bottom:1px solid var(--line-1)}
+  .reglist > div:nth-child(4){border-right:0}
+  @media (max-width:720px){.reglist > div:nth-child(2){border-right:0}.reglist > div:nth-child(odd){border-right:1px solid var(--line-1)}}
+  .reglist .v{font-family:var(--ff-display);font-weight:300;font-size:22px;color:#fff;margin-bottom:8px}
+  .reglist .l{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);line-height:1.5}
+  .deliv-list{display:flex;flex-direction:column;gap:12px;max-width:880px}
+  .deliv-list .d{display:grid;grid-template-columns:auto 1fr;gap:18px;padding:18px 22px;background:rgba(5,6,10,0.4);border:1px solid var(--line-2);border-radius:12px}
+  .deliv-list .d .n{font-family:var(--ff-display);font-weight:200;font-size:24px;color:var(--blue-xl);min-width:48px;letter-spacing:-0.02em}
+  .deliv-list .d h4{font-family:var(--ff-display);font-weight:400;font-size:17px;color:#fff;margin:0 0 4px}
+  .deliv-list .d p{font-size:13.5px;line-height:1.55;color:var(--mute);margin:0}
+</style>
+<!-- SEO-AEO-GEO BEGIN (auto-generated, do not edit by hand) -->
+<link rel="canonical" href="https://flexilytics.ai/solutions/data-governance" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="author" content="Flexilytics" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Flexilytics" />
+<meta property="og:url" content="https://flexilytics.ai/solutions/data-governance" />
+<meta property="og:title" content="Data Governance &amp; Compliance — Solutions | Flexilytics" />
+<meta property="og:description" content="The Governance Trinity in production: lineage, KPI registry, exception handling — built for RBI, SEBI, IRDAI and DPDP exposure. Defendable on day one." />
+<meta property="og:image" content="https://flexilytics.ai/og/solutions-governance.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_IN" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Data Governance &amp; Compliance — Solutions | Flexilytics" />
+<meta name="twitter:description" content="The Governance Trinity in production: lineage, KPI registry, exception handling — built for RBI, SEBI, IRDAI and DPDP exposure. Defendable on day one." />
+<meta name="twitter:image" content="https://flexilytics.ai/og/solutions-governance.png" />
+<meta name="geo.region" content="IN-MH" />
+<meta name="geo.placename" content="Mumbai" />
+<meta name="ICBM" content="19.0760, 72.8777" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://flexilytics.ai/#organization",
+  "name": "Flexilytics",
+  "legalName": "Flexilytics Pvt. Ltd.",
+  "url": "https://flexilytics.ai",
+  "logo": "https://flexilytics.ai/assets/logo-mark.png",
+  "foundingDate": "2025",
+  "description": "Indian enterprise AI consultancy. The Context Engineering firm — grounding AI workloads in identity, hierarchy, definitions, lineage, and policy.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Mumbai",
+    "addressCountry": "IN"
+  },
+  "email": "hello@flexilytics.ai",
+  "areaServed": [
+    "IN",
+    "AE",
+    "SG",
+    "GB",
+    "US"
+  ],
+  "knowsAbout": [
+    "Context Engineering",
+    "Enterprise AI",
+    "Data Governance",
+    "Microsoft Fabric",
+    "Databricks",
+    "AI/ML Engineering",
+    "BFSI Analytics",
+    "Modern Data Platform",
+    "DPDP Compliance",
+    "RBI Regulatory Compliance"
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/company/flexilytics/"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://flexilytics.ai/#website",
+  "url": "https://flexilytics.ai",
+  "name": "Flexilytics",
+  "description": "The Context Engineering firm.",
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://flexilytics.ai/solutions/data-governance#webpage",
+  "url": "https://flexilytics.ai/solutions/data-governance",
+  "name": "Data Governance & Compliance — Solutions | Flexilytics",
+  "description": "The Governance Trinity in production: lineage, KPI registry, exception handling — built for RBI, SEBI, IRDAI and DPDP exposure. Defendable on day one.",
+  "isPartOf": {
+    "@id": "https://flexilytics.ai/#website"
+  },
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN",
+  "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://flexilytics.ai/og/solutions-governance.png"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": "https://flexilytics.ai/solutions/data-governance#breadcrumb",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://flexilytics.ai/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Solutions",
+      "item": "https://flexilytics.ai/solutions"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Data Governance",
+      "item": "https://flexilytics.ai/solutions/data-governance"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://flexilytics.ai/solutions/data-governance#service",
+  "name": "Data Governance & Compliance",
+  "serviceType": "Data Governance & Compliance",
+  "provider": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "areaServed": "IN",
+  "url": "https://flexilytics.ai/solutions/data-governance",
+  "description": "The Governance Trinity in production: lineage, KPI registry, exception handling — built for RBI, SEBI, IRDAI and DPDP exposure. Defendable on day one."
+}
+</script>
+<!-- SEO-AEO-GEO END -->
+</head>
+<body>
+
+<canvas id="ambient"></canvas>
+
+<header class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="index.html" aria-label="Flexilytics home">
+      <img class="brand-mark" src="assets/logo-on-dark.png" alt="Flexilytics" />
+      </a>
+    <nav class="nav-links">
+      <a href="approach.html">Approach</a>
+      <a class="active" href="solutions.html">Solutions</a>
+      <a href="platforms.html">Platforms</a>
+      <a href="trust-security.html">Trust & Security</a>
+      <a href="insights.html">Insights</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <a class="nav-cta" href="book-audit.html">Book the 2-Week Audit <span aria-hidden="true">→</span></a>
+  </div>
+</header>
+
+<main>
+
+<div class="wrap crumb"><a href="solutions.html">Solutions</a><span class="sep">/</span><span class="here">Data Governance &amp; Compliance</span></div>
+
+<section class="page-hero" style="padding-top:60px">
+  <div class="wrap page-hero-inner">
+    <div class="reveal">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>PRACTICE · 01<span class="eyebrow-bar"></span></div>
+      <h1>Data Governance &amp; <em>Compliance</em><span class="period">.</span></h1>
+      <p class="lede">Most enterprises have governance in PowerPoint and exceptions in Excel. We replace that with the <strong>Governance Trinity</strong> — production-grade lineage, a single KPI registry, and an exception-handling spine that survives a regulator visit.</p>
+      <p class="tag">— Built for RBI, SEBI, IRDAI, DPDP Act exposure.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:30px">
+  <div class="wrap">
+    <div class="sec-head reveal"><div class="sec-chip"><span class="n">§ 01</span><span>THE TRINITY</span></div><h2 class="sec-h">Three pillars. <em>One spine.</em></h2></div>
+    <div class="trinity reveal d1">
+      <div class="tri">
+        <div class="n">PILLAR · 01</div>
+        <h3>Lineage you can audit</h3>
+        <p>Column-level data lineage from source system to dashboard, with versioned definitions. When a regulator asks where a number came from, you have the answer in 90 seconds.</p>
+        <ul><li>Source-to-report lineage</li><li>Versioned, time-machined</li><li>Native to Fabric / Databricks</li><li>Auto-discovered, not hand-drawn</li></ul>
+      </div>
+      <div class="tri">
+        <div class="n">PILLAR · 02</div>
+        <h3>One KPI registry</h3>
+        <p>A single, governed semantic spine where each KPI has one definition, one owner, one source. Disagreements go through a change process, not a Slack thread. Power BI / Tableau / Looker all consume the same registry.</p>
+        <ul><li>Owner-per-KPI</li><li>Definition history</li><li>BI tool agnostic</li><li>Aligned to FinOps &amp; risk reporting</li></ul>
+      </div>
+      <div class="tri">
+        <div class="n">PILLAR · 03</div>
+        <h3>Exception spine</h3>
+        <p>Every regulated process has exceptions. Most governance frameworks pretend they don't. Ours has a first-class exception handler with approvals, expiry, and audit trail — because that's how real risk gets managed.</p>
+        <ul><li>Approval workflows</li><li>Auto-expiring carve-outs</li><li>Audit-trail by default</li><li>DPDP-compliant retention</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal"><div class="sec-chip"><span class="n">§ 02</span><span>REGULATORY POSTURE</span></div><h2 class="sec-h">Calibrated to the rules <em>you actually live under</em>.</h2><p class="sec-lede">We don't ship a generic GDPR template and call it governance. Each engagement is calibrated to your regulatory exposure — across the four frameworks that matter most in our markets.</p></div>
+    <div class="reglist reveal d1">
+      <div><div class="v">RBI</div><div class="l">Master directions on outsourcing, IT, and cyber resilience for banks &amp; NBFCs</div></div>
+      <div><div class="v">SEBI</div><div class="l">CSCRF for capital-markets entities, AI/ML disclosure, model-risk attestations</div></div>
+      <div><div class="v">IRDAI</div><div class="l">Information &amp; cyber security guidelines for insurers, claims-data integrity</div></div>
+      <div><div class="v">DPDP</div><div class="l">India's Digital Personal Data Protection Act — consent, residency, breach posture</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal"><div class="sec-chip"><span class="n">§ 03</span><span>WHAT WE SHIP</span></div><h2 class="sec-h">Four artefacts you can <em>defend</em>.</h2></div>
+    <div class="deliv-list reveal d1">
+      <div class="d"><div class="n">01</div><div><h4>Governance Operating Model</h4><p>Roles, RACIs, decision rights. Who owns what, who approves what, who escalates to whom. The org chart for context.</p></div></div>
+      <div class="d"><div class="n">02</div><div><h4>Lineage &amp; KPI Registry — live</h4><p>Implemented inside your platform, populated for top 50 KPIs, extensible by your team. Not a slide deck.</p></div></div>
+      <div class="d"><div class="n">03</div><div><h4>Exception Handler &amp; Audit Trail</h4><p>Workflow + storage, integrated with your IAM, retention-policy aligned to DPDP and the relevant sectoral regulator.</p></div></div>
+      <div class="d"><div class="n">04</div><div><h4>Regulator-readiness Pack</h4><p>The bundle you hand to a visiting regulator: posture statement, control map, sample audit walk-throughs, and an exception ledger.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:60px;padding-bottom:140px">
+  <div class="wrap">
+    <div class="reveal" style="border-top:1px solid var(--line-1);padding-top:56px;text-align:center;max-width:780px;margin:0 auto">
+      <h2 style="font-family:var(--ff-display);font-weight:300;font-size:clamp(28px,3.6vw,40px);color:#fff;margin:0 0 22px;letter-spacing:-0.02em;text-wrap:balance">Bring us in <em style="color:var(--blue-xl);font-style:italic">before</em> the next regulatory visit.</h2>
+      <a class="btn btn-primary" href="book-audit.html">Book the 2-Week Audit
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-wm">
+        <img src="assets/logo-wide.png" alt="Flexilytics — Intelligence. Grounded." />
+        <div class="foot-tag">Context Engineering for regulated enterprises across India, UAE, and Southeast Asia.</div>
+      </div>
+      <div class="foot-col">
+        <h5>Approach</h5>
+        <ul>
+          <li><a href="approach.html">Strategy · Build · Run</a></li>
+          <li><a href="context-engineering.html">FlexiContext™</a></li>
+          <li><a href="trust-security.html">Trust &amp; Security</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Solutions</h5>
+        <ul>
+          <li><a href="solutions-data-governance.html">Data Governance</a></li>
+          <li><a href="solutions-modern-data-platform.html">Modern Data Platform</a></li>
+          <li><a href="solutions-ai-ml-engineering.html">AI &amp; ML Engineering</a></li>
+          <li><a href="solutions-analytics-bi.html">Analytics &amp; BI</a></li>
+          <li><a href="solutions-flexianalyst.html">FlexiAnalyst</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="leadership.html">Leadership</a></li>
+          <li><a href="insights.html">Insights</a></li>
+          <li><a href="bfsi.html">Industries · BFSI</a></li>
+          <li><a href="book-audit.html">Book Audit</a></li>
+          <li><a href="mailto:hello@flexilytics.ai">hello@flexilytics.ai</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 FLEXILYTICS PVT. LTD.</span>
+      <span class="m">INTELLIGENCE. GROUNDED.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="tweaks" id="tweaks"><h4>Tweaks <button id="tweaksClose">×</button></h4><div class="tweak-grp"><div class="tweak-lbl">Motion</div><div class="seg" id="motionSeg"><button data-v="calm" class="active">Calm</button><button data-v="flow">Flow</button><button data-v="alive">Alive</button></div></div><div class="tweak-grp"><div class="tweak-lbl">Ambient field</div><div class="seg" id="ambientSeg"><button data-v="on" class="active">On</button><button data-v="off">Off</button></div></div></div>
+
+<script>const TWEAK_DEFAULTS=/*EDITMODE-BEGIN*/{"motion":"calm","ambient":"on"}/*EDITMODE-END*/;window.__motionMode=TWEAK_DEFAULTS.motion;window.__ambientMode=TWEAK_DEFAULTS.ambient;</script>
+<script src="assets/site.js"></script>
+</body></html>

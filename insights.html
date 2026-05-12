@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Insights — Field Notes on Context Engineering | Flexilytics</title>
+<meta name="description" content="Field notes on Context Engineering for regulated enterprises. Two starter essays plus the next four in the editorial calendar." />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .crumb{padding-top:96px;font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  .crumb .here{color:var(--blue-lt)}
+  .feature-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+  @media (max-width:900px){.feature-row{grid-template-columns:1fr}}
+  .art{position:relative;display:flex;flex-direction:column;padding:36px 34px 30px;background:linear-gradient(180deg,var(--bg-3),var(--bg-2));border:1px solid var(--line-1);border-radius:16px;text-decoration:none;color:inherit;transition:all .35s ease;overflow:hidden;min-height:380px}
+  .art::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--blue-xl))}
+  .art:hover{border-color:var(--line-3);transform:translateY(-4px);box-shadow:0 24px 60px rgba(0,0,0,0.4)}
+  .art .meta-line{display:flex;align-items:center;gap:14px;font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:24px}
+  .art .meta-line .dot{width:6px;height:6px;border-radius:50%;background:var(--blue-lt)}
+  .art .meta-line .cat{color:var(--blue-lt)}
+  .art h3{font-family:var(--ff-display);font-weight:300;font-size:32px;color:#fff;letter-spacing:-0.025em;margin:0 0 18px;line-height:1.15;text-wrap:pretty}
+  .art h3 em{color:var(--blue-xl);font-style:italic;font-weight:400}
+  .art p{font-size:14.5px;line-height:1.65;color:var(--mute);margin:0 0 24px;flex:1}
+  .art .read{display:flex;justify-content:space-between;align-items:center;font-family:var(--ff-mono);font-size:11px;letter-spacing:.06em;color:var(--blue-lt)}
+  .art .read .by{color:var(--faint)}
+  .upcoming-list{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line-1);margin-top:18px}
+  .up{display:grid;grid-template-columns:120px 1fr 140px;gap:24px;padding:24px 0;border-bottom:1px solid var(--line-1);align-items:start}
+  @media (max-width:720px){.up{grid-template-columns:1fr;gap:8px}}
+  .up .when{font-family:var(--ff-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-lt);padding-top:6px}
+  .up h4{font-family:var(--ff-display);font-weight:400;font-size:20px;color:#fff;margin:0 0 6px;letter-spacing:-0.005em;text-wrap:pretty}
+  .up p{font-size:13.5px;line-height:1.6;color:var(--mute);margin:0}
+  .up .topic{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);padding-top:6px;text-align:right}
+  @media (max-width:720px){.up .topic{text-align:left;padding-top:0}}
+  .sub-card{margin-top:24px;padding:36px 40px;background:rgba(5,6,10,0.55);border:1px solid var(--line-2);border-radius:14px;display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center}
+  @media (max-width:720px){.sub-card{grid-template-columns:1fr}}
+  .sub-card h3{font-family:var(--ff-display);font-weight:300;font-size:24px;color:#fff;margin:0 0 8px;letter-spacing:-0.015em}
+  .sub-card h3 em{color:var(--blue-xl);font-style:italic}
+  .sub-card p{font-size:13.5px;color:var(--mute);margin:0;line-height:1.55}
+  .sub-card form{display:flex;gap:8px}
+  .sub-card input{padding:13px 16px;background:rgba(5,6,10,0.6);border:1px solid var(--line-2);border-radius:8px;color:#fff;font-family:var(--ff-sans);font-size:13.5px;min-width:240px;transition:all .2s}
+  .sub-card input:focus{outline:none;border-color:var(--blue-lt);background:rgba(27,117,240,0.05)}
+</style>
+<!-- SEO-AEO-GEO BEGIN (auto-generated, do not edit by hand) -->
+<link rel="canonical" href="https://flexilytics.ai/insights" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="author" content="Flexilytics" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Flexilytics" />
+<meta property="og:url" content="https://flexilytics.ai/insights" />
+<meta property="og:title" content="Insights — Field Notes on Context Engineering | Flexilytics" />
+<meta property="og:description" content="Field notes on Context Engineering for regulated enterprises. Two starter essays plus the next four in the editorial calendar." />
+<meta property="og:image" content="https://flexilytics.ai/og/insights.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_IN" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Insights — Field Notes on Context Engineering | Flexilytics" />
+<meta name="twitter:description" content="Field notes on Context Engineering for regulated enterprises. Two starter essays plus the next four in the editorial calendar." />
+<meta name="twitter:image" content="https://flexilytics.ai/og/insights.png" />
+<meta name="geo.region" content="IN-MH" />
+<meta name="geo.placename" content="Mumbai" />
+<meta name="ICBM" content="19.0760, 72.8777" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://flexilytics.ai/#organization",
+  "name": "Flexilytics",
+  "legalName": "Flexilytics Pvt. Ltd.",
+  "url": "https://flexilytics.ai",
+  "logo": "https://flexilytics.ai/assets/logo-mark.png",
+  "foundingDate": "2025",
+  "description": "Indian enterprise AI consultancy. The Context Engineering firm — grounding AI workloads in identity, hierarchy, definitions, lineage, and policy.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Mumbai",
+    "addressCountry": "IN"
+  },
+  "email": "hello@flexilytics.ai",
+  "areaServed": [
+    "IN",
+    "AE",
+    "SG",
+    "GB",
+    "US"
+  ],
+  "knowsAbout": [
+    "Context Engineering",
+    "Enterprise AI",
+    "Data Governance",
+    "Microsoft Fabric",
+    "Databricks",
+    "AI/ML Engineering",
+    "BFSI Analytics",
+    "Modern Data Platform",
+    "DPDP Compliance",
+    "RBI Regulatory Compliance"
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/company/flexilytics/"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://flexilytics.ai/#website",
+  "url": "https://flexilytics.ai",
+  "name": "Flexilytics",
+  "description": "The Context Engineering firm.",
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "@id": "https://flexilytics.ai/insights#webpage",
+  "url": "https://flexilytics.ai/insights",
+  "name": "Insights — Field Notes on Context Engineering | Flexilytics",
+  "description": "Field notes on Context Engineering for regulated enterprises. Two starter essays plus the next four in the editorial calendar.",
+  "isPartOf": {
+    "@id": "https://flexilytics.ai/#website"
+  },
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN",
+  "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://flexilytics.ai/og/insights.png"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": "https://flexilytics.ai/insights#breadcrumb",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://flexilytics.ai/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Insights",
+      "item": "https://flexilytics.ai/insights"
+    }
+  ]
+}
+</script>
+<!-- SEO-AEO-GEO END -->
+</head>
+<body>
+<canvas id="ambient"></canvas>
+<header class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="index.html" aria-label="Flexilytics home">
+      <img class="brand-mark" src="assets/logo-on-dark.png" alt="Flexilytics" />
+      </a>
+    <nav class="nav-links">
+      <a href="approach.html">Approach</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="platforms.html">Platforms</a>
+      <a href="trust-security.html">Trust & Security</a>
+      <a class="active" href="insights.html">Insights</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <a class="nav-cta" href="book-audit.html">Book the 2-Week Audit <span aria-hidden="true">→</span></a>
+  </div>
+</header>
+<main>
+<div class="wrap crumb"><span class="here">Insights</span></div>
+<section class="page-hero" style="padding-top:60px"><div class="wrap page-hero-inner"><div class="reveal">
+<div class="eyebrow"><span class="eyebrow-dot"></span>INSIGHTS · FIELD NOTES<span class="eyebrow-bar"></span></div>
+<h1>Field notes on <em>Context Engineering</em><span class="period">.</span></h1>
+<p class="lede">Essays from the engagements — what we shipped, what failed, what the next regulator visit will ask. Published roughly twice a month, written by the people on the floor.</p>
+<p class="tag">— No SEO churn. No "ten things". Just field notes.</p>
+</div></div></section>
+
+<section class="sec" style="padding-top:30px"><div class="wrap">
+<div class="sec-head reveal"><div class="sec-chip"><span class="n">§ 01</span><span>STARTER ESSAYS</span></div><h2 class="sec-h">Two we wrote <em>first</em>.</h2></div>
+<div class="feature-row reveal d1">
+
+<a class="art" href="insights-context-engineering-buyable-category.html">
+<div class="meta-line"><span class="dot"></span><span class="cat">METHOD</span><span>· 9 MIN READ</span><span>· APR 2026</span></div>
+<h3>Why "Context Engineering" is the next <em>buyable</em> category.</h3>
+<p>Every enterprise AI project that survived its first year did one thing first: it built the semantic layer. We argue this layer deserves a name, a budget line, and a buyer — and explain how the FlexiContext framework makes it procurable.</p>
+<div class="read"><span>Read the essay →</span><span class="by">— Founding Partners</span></div>
+</a>
+
+<a class="art" href="insights-fabric-vs-databricks-bfsi.html">
+<div class="meta-line"><span class="dot"></span><span class="cat">PLATFORM</span><span>· 12 MIN READ</span><span>· APR 2026</span></div>
+<h3>Microsoft Fabric vs Databricks for <em>Indian BFSI</em>: a partner's view.</h3>
+<p>We've shipped both, in production, for regulated financial-services clients in India. Here is the honest decision tree — including where Fabric loses, where Databricks loses, and what RBI / SEBI care about that the vendors don't lead with.</p>
+<div class="read"><span>Read the essay →</span><span class="by">— Vishal Dhure</span></div>
+</a>
+
+</div>
+</div></section>
+
+<section class="sec"><div class="wrap">
+<div class="sec-head reveal"><div class="sec-chip"><span class="n">§ 02</span><span>EDITORIAL CALENDAR</span></div><h2 class="sec-h">Next four in the <em>queue</em>.</h2><p class="sec-lede">We publish what we're learning, in the order we learn it. The list shifts when an engagement teaches us something worth writing.</p></div>
+<div class="upcoming-list reveal d1">
+<div class="up"><div class="when">May 2026</div><div><h4>The Governance Trinity, in production: lessons from a Top-5 NBFC.</h4><p>What it took to put lineage, KPI registry, and exception spine into a live RBI-supervised entity — and what we'd do differently next time.</p></div><div class="topic">CASE · GOVERNANCE</div></div>
+<div class="up"><div class="when">May 2026</div><div><h4>Why every "AI strategy" we've seen this year is wrong.</h4><p>The honest critique. CXO-level AI strategies that confuse model selection with system design — and the four corrections that turn a slide deck into a roadmap.</p></div><div class="topic">OPINION · STRATEGY</div></div>
+<div class="up"><div class="when">Jun 2026</div><div><h4>Decommissioning a model: the part nobody writes the playbook for.</h4><p>Models retire. Most teams have no plan. The pre-mortem we now write before any model goes to production.</p></div><div class="topic">METHOD · MLOPS</div></div>
+<div class="up"><div class="when">Jun 2026</div><div><h4>FlexiAnalyst — what we learned in three pilot deployments.</h4><p>The product post-mortem on the first three pilots: where the agent shone, where it tripped, and what changed in the underlying context layer as a result.</p></div><div class="topic">PRODUCT · CASE</div></div>
+</div>
+</div></section>
+
+<section class="sec"><div class="wrap">
+<div class="sub-card reveal">
+<div>
+<h3>Get the field notes <em>in your inbox</em>.</h3>
+<p>Roughly twice a month. No marketing. No sales. Unsubscribe in one click. Used by data leaders at PE-backed banks, NBFCs, and listed insurers.</p>
+</div>
+<form onsubmit="event.preventDefault();this.innerHTML='<div style=\'font-family:var(--ff-display);font-weight:300;font-size:18px;color:#fff\'>Subscribed. Welcome.</div>'">
+<input type="email" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+" placeholder="you@company.com" />
+<button class="btn btn-primary" type="submit">Subscribe</button>
+</form>
+</div>
+</div></section>
+
+<section class="sec" style="padding-top:60px;padding-bottom:140px"><div class="wrap">
+<div class="reveal" style="border-top:1px solid var(--line-1);padding-top:56px;text-align:center;max-width:780px;margin:0 auto">
+<h2 style="font-family:var(--ff-display);font-weight:300;font-size:clamp(28px,3.6vw,40px);color:#fff;margin:0 0 22px;letter-spacing:-0.02em;text-wrap:balance">Have a <em style="color:var(--blue-xl);font-style:italic">topic</em> we should write about?</h2>
+<a class="btn btn-secondary" href="mailto:editorial@flexilytics.ai">Pitch the editor →</a>
+</div>
+</div></section>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-wm">
+        <img src="assets/logo-wide.png" alt="Flexilytics — Intelligence. Grounded." />
+        <div class="foot-tag">Context Engineering for regulated enterprises across India, UAE, and Southeast Asia.</div>
+      </div>
+      <div class="foot-col">
+        <h5>Approach</h5>
+        <ul>
+          <li><a href="approach.html">Strategy · Build · Run</a></li>
+          <li><a href="context-engineering.html">FlexiContext™</a></li>
+          <li><a href="trust-security.html">Trust &amp; Security</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Solutions</h5>
+        <ul>
+          <li><a href="solutions-data-governance.html">Data Governance</a></li>
+          <li><a href="solutions-modern-data-platform.html">Modern Data Platform</a></li>
+          <li><a href="solutions-ai-ml-engineering.html">AI &amp; ML Engineering</a></li>
+          <li><a href="solutions-analytics-bi.html">Analytics &amp; BI</a></li>
+          <li><a href="solutions-flexianalyst.html">FlexiAnalyst</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="leadership.html">Leadership</a></li>
+          <li><a href="insights.html">Insights</a></li>
+          <li><a href="bfsi.html">Industries · BFSI</a></li>
+          <li><a href="book-audit.html">Book Audit</a></li>
+          <li><a href="mailto:hello@flexilytics.ai">hello@flexilytics.ai</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 FLEXILYTICS PVT. LTD.</span>
+      <span class="m">INTELLIGENCE. GROUNDED.</span>
+    </div>
+  </div>
+</footer>
+<div class="tweaks" id="tweaks"><h4>Tweaks <button id="tweaksClose">×</button></h4><div class="tweak-grp"><div class="tweak-lbl">Motion</div><div class="seg" id="motionSeg"><button data-v="calm" class="active">Calm</button><button data-v="flow">Flow</button><button data-v="alive">Alive</button></div></div><div class="tweak-grp"><div class="tweak-lbl">Ambient field</div><div class="seg" id="ambientSeg"><button data-v="on" class="active">On</button><button data-v="off">Off</button></div></div></div>
+<script>const TWEAK_DEFAULTS=/*EDITMODE-BEGIN*/{"motion":"calm","ambient":"on"}/*EDITMODE-END*/;window.__motionMode=TWEAK_DEFAULTS.motion;window.__ambientMode=TWEAK_DEFAULTS.ambient;</script>
+<script src="assets/site.js"></script>
+</body></html>

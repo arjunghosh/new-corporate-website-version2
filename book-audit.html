@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Book the 2-Week Readiness Audit — Flexilytics</title>
+<meta name="description" content="A focused two-week diagnostic for enterprises stuck between AI ambition and AI delivery. Context inventory, governance map, prioritized roadmap." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  /* ============ BOOK-AUDIT-page-specific ============ */
+
+  /* Two-column layout: deliverables on left, form on right */
+  .audit-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:start;margin-top:36px}
+  @media (max-width:1080px){.audit-grid{grid-template-columns:1fr;gap:36px}}
+
+  /* deliverable list */
+  .deliv{display:flex;flex-direction:column;gap:14px;margin:0 0 36px}
+  .deliv-row{display:grid;grid-template-columns:auto 1fr;gap:18px;padding:20px 22px;background:rgba(5,6,10,0.4);border:1px solid var(--line-2);border-radius:12px;transition:all .3s ease}
+  .deliv-row:hover{border-color:var(--line-3);background:rgba(27,117,240,0.04)}
+  .deliv-num{font-family:var(--ff-display);font-weight:200;font-size:32px;line-height:1;color:var(--blue-xl);letter-spacing:-0.02em;min-width:52px}
+  .deliv-row h3{font-family:var(--ff-display);font-weight:400;font-size:18px;color:#fff;margin:0 0 6px;letter-spacing:-0.005em}
+  .deliv-row p{font-size:14px;line-height:1.55;color:var(--mute);margin:0}
+
+  /* timeline strip */
+  .timeline{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-1);border-radius:16px;overflow:hidden;margin:32px 0}
+  @media (max-width:720px){.timeline{grid-template-columns:1fr}}
+  .tline-cell{padding:30px 30px 28px;background:linear-gradient(180deg, var(--bg-3), var(--bg-2));border-right:1px solid var(--line-1);position:relative}
+  .tline-cell:last-child{border-right:0}
+  @media (max-width:720px){.tline-cell{border-right:0;border-bottom:1px solid var(--line-1)}.tline-cell:last-child{border-bottom:0}}
+  .tline-cell .week{font-family:var(--ff-mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:10px}
+  .tline-cell h3{font-family:var(--ff-display);font-weight:300;font-size:26px;letter-spacing:-0.02em;color:#fff;margin:0 0 14px}
+  .tline-cell ul{list-style:none;padding:0;margin:0;font-size:14px;line-height:1.65;color:var(--mute)}
+  .tline-cell li{padding-left:22px;position:relative;margin-bottom:6px}
+  .tline-cell li::before{content:"";position:absolute;left:0;top:9px;width:9px;height:1px;background:var(--blue-lt)}
+
+  /* fit-grid: who this is for / not for */
+  .fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0}
+  @media (max-width:720px){.fit-grid{grid-template-columns:1fr}}
+  .fit{padding:26px 28px;background:rgba(5,6,10,0.4);border:1px solid var(--line-2);border-radius:14px}
+  .fit.yes{border-left:2px solid var(--blue-lt)}
+  .fit.no{border-left:2px solid var(--rose)}
+  .fit-eye{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .fit.yes .fit-eye{color:var(--blue-lt)}
+  .fit.no .fit-eye{color:var(--rose)}
+  .fit ul{list-style:none;padding:0;margin:0;font-size:14px;line-height:1.65;color:var(--mute)}
+  .fit li{padding:6px 0 6px 22px;position:relative;border-bottom:1px solid var(--line-1)}
+  .fit li:last-child{border-bottom:0}
+  .fit.yes li::before{content:"+";position:absolute;left:0;top:6px;color:var(--blue-lt);font-family:var(--ff-mono);font-weight:500}
+  .fit.no li::before{content:"\2014";position:absolute;left:0;top:6px;color:var(--rose);font-family:var(--ff-mono)}
+
+  /* faq accordion */
+  .faq-list{display:flex;flex-direction:column;gap:10px;max-width:880px}
+  .faq-item{background:rgba(5,6,10,0.4);border:1px solid var(--line-2);border-radius:12px;overflow:hidden;transition:border-color .25s ease}
+  .faq-item[open]{border-color:var(--line-3);background:rgba(27,117,240,0.04)}
+  .faq-item summary{cursor:pointer;list-style:none;padding:22px 26px;display:flex;align-items:center;justify-content:space-between;gap:24px;font-family:var(--ff-display);font-weight:400;font-size:18px;color:#fff;letter-spacing:-0.005em;line-height:1.35}
+  .faq-item summary::-webkit-details-marker{display:none}
+  .faq-item summary::after{content:"+";font-family:var(--ff-display);font-size:26px;font-weight:200;color:var(--blue-lt);line-height:0.7;transition:transform .3s ease;flex-shrink:0}
+  .faq-item[open] summary::after{transform:rotate(45deg);color:var(--rose)}
+  .faq-item .a{padding:0 26px 24px;font-size:15px;line-height:1.7;color:var(--mute)}
+
+  /* trust strip */
+  .trust-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line-1);border-radius:14px;overflow:hidden;background:rgba(5,6,10,0.4);margin:30px 0 0}
+  @media (max-width:720px){.trust-strip{grid-template-columns:repeat(2,1fr)}}
+  .trust-strip > div{padding:22px;border-right:1px solid var(--line-1);border-bottom:1px solid var(--line-1)}
+  .trust-strip > div:nth-child(4){border-right:0}
+  @media (max-width:720px){.trust-strip > div:nth-child(2){border-right:0}.trust-strip > div:nth-child(odd){border-right:1px solid var(--line-1)}}
+  .trust-strip .v{font-family:var(--ff-display);font-weight:200;font-size:32px;line-height:1;letter-spacing:-0.02em;color:var(--blue-xl);margin-bottom:6px}
+  .trust-strip .v em{font-style:normal;font-size:0.6em;color:var(--blue-lt)}
+  .trust-strip .l{font-family:var(--ff-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);line-height:1.4}
+
+  /* form-specific overrides */
+  .form-card h3{font-family:var(--ff-display);font-weight:400;font-size:22px;color:#fff;margin:0 0 6px;letter-spacing:-0.01em}
+  .form-card .form-sub{font-size:13.5px;color:var(--mute);margin:0 0 24px;line-height:1.55}
+  .field label .req{color:var(--rose);margin-left:4px;font-family:var(--ff-display);font-weight:400}
+  .field-error{color:var(--rose);font-size:11.5px;font-family:var(--ff-mono);letter-spacing:.06em;margin-top:6px;display:none}
+  .field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--rose)}
+  .field.invalid .field-error{display:block}
+  .submit-btn{width:100%;justify-content:center;margin-top:8px}
+  .form-success{display:none;text-align:center;padding:40px 20px}
+  .form-success.on{display:block}
+  .form-success svg{margin-bottom:18px;color:var(--blue-lt)}
+  .form-success h3{font-family:var(--ff-display);font-weight:300;font-size:26px;color:#fff;margin:0 0 10px;letter-spacing:-0.015em}
+  .form-success p{font-size:15px;color:var(--mute);max-width:400px;margin:0 auto;line-height:1.6}
+
+  /* honeypot */
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+
+  /* sticky-ish form on desktop */
+  @media (min-width:1080px){.audit-form-wrap{position:sticky;top:100px}}
+</style>
+<!-- SEO-AEO-GEO BEGIN (auto-generated, do not edit by hand) -->
+<link rel="canonical" href="https://flexilytics.ai/book-audit" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="author" content="Flexilytics" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Flexilytics" />
+<meta property="og:url" content="https://flexilytics.ai/book-audit" />
+<meta property="og:title" content="Book the 2-Week Readiness Audit — Flexilytics" />
+<meta property="og:description" content="A focused two-week diagnostic for enterprises stuck between AI ambition and AI delivery. Context inventory, governance map, prioritized roadmap." />
+<meta property="og:image" content="https://flexilytics.ai/og/book-audit.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_IN" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Book the 2-Week Readiness Audit — Flexilytics" />
+<meta name="twitter:description" content="A focused two-week diagnostic for enterprises stuck between AI ambition and AI delivery. Context inventory, governance map, prioritized roadmap." />
+<meta name="twitter:image" content="https://flexilytics.ai/og/book-audit.png" />
+<meta name="geo.region" content="IN-MH" />
+<meta name="geo.placename" content="Mumbai" />
+<meta name="ICBM" content="19.0760, 72.8777" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://flexilytics.ai/#organization",
+  "name": "Flexilytics",
+  "legalName": "Flexilytics Pvt. Ltd.",
+  "url": "https://flexilytics.ai",
+  "logo": "https://flexilytics.ai/assets/logo-mark.png",
+  "foundingDate": "2025",
+  "description": "Indian enterprise AI consultancy. The Context Engineering firm — grounding AI workloads in identity, hierarchy, definitions, lineage, and policy.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Mumbai",
+    "addressCountry": "IN"
+  },
+  "email": "hello@flexilytics.ai",
+  "areaServed": [
+    "IN",
+    "AE",
+    "SG",
+    "GB",
+    "US"
+  ],
+  "knowsAbout": [
+    "Context Engineering",
+    "Enterprise AI",
+    "Data Governance",
+    "Microsoft Fabric",
+    "Databricks",
+    "AI/ML Engineering",
+    "BFSI Analytics",
+    "Modern Data Platform",
+    "DPDP Compliance",
+    "RBI Regulatory Compliance"
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/company/flexilytics/"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://flexilytics.ai/#website",
+  "url": "https://flexilytics.ai",
+  "name": "Flexilytics",
+  "description": "The Context Engineering firm.",
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://flexilytics.ai/book-audit#webpage",
+  "url": "https://flexilytics.ai/book-audit",
+  "name": "Book the 2-Week Readiness Audit — Flexilytics",
+  "description": "A focused two-week diagnostic for enterprises stuck between AI ambition and AI delivery. Context inventory, governance map, prioritized roadmap.",
+  "isPartOf": {
+    "@id": "https://flexilytics.ai/#website"
+  },
+  "publisher": {
+    "@id": "https://flexilytics.ai/#organization"
+  },
+  "inLanguage": "en-IN",
+  "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": "https://flexilytics.ai/og/book-audit.png"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": "https://flexilytics.ai/book-audit#breadcrumb",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://flexilytics.ai/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Book Audit",
+      "item": "https://flexilytics.ai/book-audit"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "https://flexilytics.ai/book-audit#faq",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How long does the Readiness Audit take?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Two calendar weeks from kickoff. Week one is discovery — interviews, system walkthroughs, data sample reviews. Week two synthesizes findings into a context inventory, governance map and prioritized roadmap."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the Readiness Audit cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Audit pricing is fixed per engagement and shared after a 30-minute scoping call. We keep it deliberately accessible — the audit is meant to be the first chapter of a longer relationship, not a profit centre."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who should attend from our side?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A sponsor from business or technology, your data platform lead, one or two domain SMEs, and a governance or compliance representative. We will run the rest."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What do we get at the end?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A written report with a context inventory, a governance gap map, a prioritized two-quarter roadmap, and a recommendation on engagement tier. The IP is yours."
+      }
+    }
+  ]
+}
+</script>
+<!-- SEO-AEO-GEO END -->
+</head>
+<body>
+
+<canvas id="ambient"></canvas>
+
+<header class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="index.html" aria-label="Flexilytics home">
+      <img class="brand-mark" src="assets/logo-on-dark.png" alt="Flexilytics" />
+      </a>
+    <nav class="nav-links">
+      <a href="approach.html">Approach</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="platforms.html">Platforms</a>
+      <a href="trust-security.html">Trust & Security</a>
+      <a href="insights.html">Insights</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <a class="nav-cta" href="book-audit.html">Book the 2-Week Audit <span aria-hidden="true">→</span></a>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="page-hero">
+  <div class="wrap page-hero-inner">
+    <div class="reveal">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>THE 2-WEEK READINESS AUDIT<span class="eyebrow-bar"></span></div>
+      <h1>Find out what's <em>between</em><br/>your data and your AI<span class="period">.</span></h1>
+      <p class="lede">A focused two-week diagnostic for enterprises stuck between AI ambition and AI delivery. We map your context landscape, identify governance gaps, and hand back a prioritized roadmap. <strong>No software to install. No data leaves your environment.</strong></p>
+      <p class="tag">— Intelligence. Grounded.</p>
+    </div>
+
+    <div class="trust-strip reveal d1">
+      <div><div class="v">2<em>wk</em></div><div class="l">Engagement window</div></div>
+      <div><div class="v">3</div><div class="l">Deliverables, written and walked-through</div></div>
+      <div><div class="v">0</div><div class="l">Data leaves your environment</div></div>
+      <div><div class="v">100<em>%</em></div><div class="l">Confidential — NDA on day one</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DELIVERABLES + FORM ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="audit-grid">
+
+      <!-- LEFT: deliverables + timeline + fit -->
+      <div>
+        <div class="reveal">
+          <div class="sec-chip"><span class="n">§ 01</span><span>WHAT YOU WALK AWAY WITH</span></div>
+          <h2 class="sec-h" style="font-size:clamp(28px,3.6vw,42px);margin-bottom:28px">Three documents. <em>Real</em> ones.</h2>
+        </div>
+
+        <div class="deliv reveal d1">
+          <div class="deliv-row">
+            <div class="deliv-num">01</div>
+            <div>
+              <h3>Context Inventory</h3>
+              <p>Where business logic lives across departments, spreadsheets, tribal knowledge. The gap between what your business knows and what your AI systems can see.</p>
+            </div>
+          </div>
+          <div class="deliv-row">
+            <div class="deliv-num">02</div>
+            <div>
+              <h3>Governance Map</h3>
+              <p>What's enforced versus aspirational. Data lineage, KPI ownership, exception handling, audit trail. The Governance Trinity applied to your stack.</p>
+            </div>
+          </div>
+          <div class="deliv-row">
+            <div class="deliv-num">03</div>
+            <div>
+              <h3>Prioritized Roadmap</h3>
+              <p>A sequenced 6–12 month plan. What to do first, second, never. Outcomes, owners, costs, risks. Built for your platform — Fabric, Databricks, or hybrid.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal d2" style="margin-top:48px">
+          <div class="sec-chip"><span class="n">§ 02</span><span>THE TWO WEEKS</span></div>
+          <h2 class="sec-h" style="font-size:clamp(28px,3.6vw,42px);margin-bottom:0">How we spend the time.</h2>
+        </div>
+
+        <div class="timeline reveal d3">
+          <div class="tline-cell">
+            <div class="week">Week 01 · Listen</div>
+            <h3>We come to you</h3>
+            <ul>
+              <li>Stakeholder interviews — business, data, IT, risk</li>
+              <li>Existing platform &amp; license review</li>
+              <li>Sample workflow walk-through</li>
+              <li>KPI definition reconciliation across teams</li>
+              <li>Governance &amp; compliance posture check</li>
+            </ul>
+          </div>
+          <div class="tline-cell">
+            <div class="week">Week 02 · Synthesize</div>
+            <h3>We hand it back</h3>
+            <ul>
+              <li>Context inventory + diagrams</li>
+              <li>Governance map with priority bands</li>
+              <li>Prioritized roadmap with sequencing logic</li>
+              <li>2-hour readout to your leadership team</li>
+              <li>Q&amp;A and pushback session — no slides hiding behind</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="reveal d4" style="margin-top:48px">
+          <div class="sec-chip"><span class="n">§ 03</span><span>FIT CHECK</span></div>
+          <h2 class="sec-h" style="font-size:clamp(28px,3.6vw,42px);margin-bottom:0">Be honest with yourself.</h2>
+          <p class="sec-lede">The audit isn't free. Your time isn't either. Here's who it works for — and who it doesn't.</p>
+        </div>
+
+        <div class="fit-grid reveal d5">
+          <div class="fit yes">
+            <div class="fit-eye">● THIS IS FOR YOU IF</div>
+            <ul>
+              <li>You've spent &gt;₹2 cr on AI/analytics with thin business outcomes</li>
+              <li>You're on Microsoft Fabric, Databricks, Snowflake or evaluating one</li>
+              <li>You operate in BFSI, manufacturing, healthcare, or another regulated sector</li>
+              <li>The CEO, CIO, or CDO is sponsoring this conversation</li>
+              <li>You can give us 6–8 hours of executive time across two weeks</li>
+            </ul>
+          </div>
+          <div class="fit no">
+            <div class="fit-eye">— THIS IS NOT FOR YOU IF</div>
+            <ul>
+              <li>You want a chatbot demo or a "GenAI strategy deck"</li>
+              <li>You're shopping for the cheapest implementation partner</li>
+              <li>You don't have an internal team to receive the work</li>
+              <li>You expect us to recommend a platform we don't actually know</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: form -->
+      <div class="audit-form-wrap">
+        <div class="form-card reveal d1" id="formCard">
+          <div id="formInner">
+            <h3>Tell us a little about your situation.</h3>
+            <p class="form-sub">We read every submission. You'll hear back within one business day with a 30-minute fit call before anything is committed.</p>
+
+            <form id="auditForm" novalidate>
+              <!-- honeypot -->
+              <div class="hp"><label>Company website<input type="text" name="_company_website" tabindex="-1" autocomplete="off" /></label></div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label for="f-name">Name<span class="req">*</span></label>
+                  <input id="f-name" name="name" type="text" required minlength="2" autocomplete="name" />
+                  <div class="field-error">Please tell us your name.</div>
+                </div>
+                <div class="field">
+                  <label for="f-email">Work email<span class="req">*</span></label>
+                  <input id="f-email" name="email" type="email" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+" autocomplete="email" />
+                  <div class="field-error">Please use a valid work email.</div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label for="f-company">Company<span class="req">*</span></label>
+                  <input id="f-company" name="company" type="text" required minlength="2" autocomplete="organization" />
+                  <div class="field-error">Company name is required.</div>
+                </div>
+                <div class="field">
+                  <label for="f-role">Role<span class="req">*</span></label>
+                  <select id="f-role" name="role" required>
+                    <option value="">Select…</option>
+                    <option>CEO / MD</option>
+                    <option>CIO / CTO</option>
+                    <option>CDO / Head of Data</option>
+                    <option>CRO / CCO</option>
+                    <option>BU / Function Head</option>
+                    <option>Other senior</option>
+                  </select>
+                  <div class="field-error">Pick the closest match.</div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="f-platform">Current data platform<span class="req">*</span></label>
+                <select id="f-platform" name="platform" required>
+                  <option value="">Select…</option>
+                  <option>Microsoft Fabric</option>
+                  <option>Databricks</option>
+                  <option>Snowflake</option>
+                  <option>AWS / Redshift</option>
+                  <option>GCP / BigQuery</option>
+                  <option>On-prem / hybrid</option>
+                  <option>Evaluating — none yet</option>
+                </select>
+                <div class="field-error">Helps us route to the right team.</div>
+              </div>
+
+              <div class="field">
+                <label for="f-challenge">What are you stuck on?<span class="req">*</span></label>
+                <textarea id="f-challenge" name="challenge" required minlength="20" placeholder="One paragraph is enough — what worked, what didn't, what's the next milestone you can't get to."></textarea>
+                <div class="field-error">A short paragraph helps us prepare.</div>
+              </div>
+
+              <div class="field">
+                <label for="f-contact">Preferred contact<span class="req">*</span></label>
+                <select id="f-contact" name="contact_preference" required>
+                  <option value="">Select…</option>
+                  <option>Email — async</option>
+                  <option>Video call — 30 min</option>
+                  <option>Phone</option>
+                  <option>WhatsApp</option>
+                </select>
+                <div class="field-error">Pick one.</div>
+              </div>
+
+              <label class="field-check">
+                <input type="checkbox" id="f-consent" name="consent" required />
+                <span>I consent to Flexilytics processing my submission to schedule a fit call. We comply with India's DPDP Act and will not share my information.<span class="req">*</span></span>
+              </label>
+              <div class="field-error" id="consent-error" style="margin-left:26px">Consent is required to proceed.</div>
+
+              <button class="btn btn-primary submit-btn" type="submit">
+                Request the audit
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+
+              <div class="form-meta">Response within 1 business day · NDA on request · Mumbai time</div>
+            </form>
+          </div>
+
+          <div class="form-success" id="formSuccess">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M8 12.5l3 3 5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h3>We've got it.</h3>
+            <p>One of our partners will be in touch within a business day to set up a 30-minute fit call. If it doesn't make sense for either side, we'll say so.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-chip"><span class="n">§ 04</span><span>FAQ</span></div>
+      <h2 class="sec-h">Questions worth <em>asking</em>.</h2>
+    </div>
+    <div class="faq-list reveal d1">
+      <details class="faq-item">
+        <summary>What does the audit cost?</summary>
+        <div class="a">A fixed fee in the mid-five-figure USD range, scaled to organizational complexity (number of business units, regulatory load, platform footprint). We share a one-page commercial term sheet on the fit call. No retainer, no kickbacks from platform vendors.</div>
+      </details>
+      <details class="faq-item">
+        <summary>What if we're not ready to commit to a build engagement after?</summary>
+        <div class="a">Then you walk away with three documents that another firm — or your own team — can execute against. We've had clients run the roadmap with their existing systems integrator. We're not insulted. The audit is a standalone diagnostic.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How is this different from a McKinsey / BCG / Big-4 readiness assessment?</summary>
+        <div class="a">Three things. (1) We're operators, not strategists — every leader has shipped production AI/data systems inside regulated enterprises. (2) The deliverable is a context engineering map, not a strategy deck. (3) We stay through the build if you want us to. Most consultancies disappear at signoff.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How confidential is the engagement?</summary>
+        <div class="a">NDA on day one — both directions. We do not name clients in marketing without explicit written approval. We do not discuss your engagement with prospects. Data never leaves your environment; we work inside your tenancy on your platform.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Do you work outside India?</summary>
+        <div class="a">Yes — we deliver across India, the UAE, and Southeast Asia. Mumbai is our base; we travel for kickoff and the readout, and run the rest hybrid. We don't work in jurisdictions where our governance tooling can't comply with local data residency rules.</div>
+      </details>
+      <details class="faq-item">
+        <summary>What size of company is this for?</summary>
+        <div class="a">The audit makes most sense for organizations with ₹500 cr+ revenue, an existing data platform, and a leadership team that owns AI/analytics outcomes. Below that, the unit economics don't work — we'll tell you that on the fit call.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Who delivers the work?</summary>
+        <div class="a">A founding partner leads every audit — not a junior team. Two of our four founders are typically on the engagement directly. Total team is 3–4 people for two weeks; we don't pyramid.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLOSING NOTE ============ -->
+<section class="sec" style="padding-top:60px;padding-bottom:140px">
+  <div class="wrap">
+    <div class="reveal" style="max-width:780px;margin:0 auto;text-align:center;border-top:1px solid var(--line-1);padding-top:64px">
+      <p style="font-family:var(--ff-display);font-weight:300;font-size:clamp(22px,2.8vw,30px);line-height:1.4;color:#fff;letter-spacing:-0.015em;margin:0 0 24px;font-style:italic">"We won't sell you something that doesn't fit. If after two weeks the answer is <em style="color:var(--blue-xl)">don't build yet</em> — we'll say so, in writing."</p>
+      <div style="font-family:var(--ff-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)">— The Founding Partners</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-wm">
+        <img src="assets/logo-wide.png" alt="Flexilytics — Intelligence. Grounded." />
+        <div class="foot-tag">Context Engineering for regulated enterprises across India, UAE, and Southeast Asia.</div>
+      </div>
+      <div class="foot-col">
+        <h5>Approach</h5>
+        <ul>
+          <li><a href="approach.html">Strategy · Build · Run</a></li>
+          <li><a href="context-engineering.html">FlexiContext™</a></li>
+          <li><a href="trust-security.html">Trust &amp; Security</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Solutions</h5>
+        <ul>
+          <li><a href="solutions-data-governance.html">Data Governance</a></li>
+          <li><a href="solutions-modern-data-platform.html">Modern Data Platform</a></li>
+          <li><a href="solutions-ai-ml-engineering.html">AI &amp; ML Engineering</a></li>
+          <li><a href="solutions-analytics-bi.html">Analytics &amp; BI</a></li>
+          <li><a href="solutions-flexianalyst.html">FlexiAnalyst</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="leadership.html">Leadership</a></li>
+          <li><a href="insights.html">Insights</a></li>
+          <li><a href="bfsi.html">Industries · BFSI</a></li>
+          <li><a href="book-audit.html">Book Audit</a></li>
+          <li><a href="mailto:hello@flexilytics.ai">hello@flexilytics.ai</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 FLEXILYTICS PVT. LTD.</span>
+      <span class="m">INTELLIGENCE. GROUNDED.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ TWEAKS ============ -->
+<div class="tweaks" id="tweaks">
+  <h4>Tweaks <button id="tweaksClose" aria-label="Close">×</button></h4>
+  <div class="tweak-grp"><div class="tweak-lbl">Motion</div>
+    <div class="seg" id="motionSeg">
+      <button data-v="calm" class="active">Calm</button>
+      <button data-v="flow">Flow</button>
+      <button data-v="alive">Alive</button>
+    </div>
+  </div>
+  <div class="tweak-grp"><div class="tweak-lbl">Ambient field</div>
+    <div class="seg" id="ambientSeg">
+      <button data-v="on" class="active">On</button>
+      <button data-v="off">Off</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "motion": "calm",
+  "ambient": "on"
+}/*EDITMODE-END*/;
+window.__motionMode = TWEAK_DEFAULTS.motion;
+window.__ambientMode = TWEAK_DEFAULTS.ambient;
+</script>
+<script src="assets/site.js"></script>
+<script>
+  // Form validation — fixes P0 issue from the review.
+  (function(){
+    const form = document.getElementById('auditForm');
+    if(!form) return;
+    const success = document.getElementById('formSuccess');
+    const inner = document.getElementById('formInner');
+
+    function validateField(field){
+      const input = field.querySelector('input,select,textarea');
+      if(!input) return true;
+      const ok = input.checkValidity();
+      field.classList.toggle('invalid', !ok);
+      return ok;
+    }
+
+    form.querySelectorAll('.field').forEach(field => {
+      const input = field.querySelector('input,select,textarea');
+      if(!input) return;
+      input.addEventListener('blur', () => validateField(field));
+      input.addEventListener('input', () => { if(field.classList.contains('invalid')) validateField(field); });
+    });
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      // honeypot
+      if(form._company_website.value.trim() !== ''){
+        // silently "succeed" for bots
+        inner.style.display = 'none'; success.classList.add('on'); return;
+      }
+      let allOk = true;
+      form.querySelectorAll('.field').forEach(field => { if(!validateField(field)) allOk = false; });
+      // consent check
+      const consent = document.getElementById('f-consent');
+      const consentErr = document.getElementById('consent-error');
+      if(!consent.checked){ consentErr.style.display = 'block'; allOk = false; }
+      else { consentErr.style.display = 'none'; }
+      if(!allOk){
+        const firstInvalid = form.querySelector('.field.invalid input,.field.invalid select,.field.invalid textarea');
+        if(firstInvalid) firstInvalid.focus();
+        return;
+      }
+      // Simulate submit
+      inner.style.display = 'none';
+      success.classList.add('on');
+    });
+  })();
+</script>
+
+</body>
+</html>
