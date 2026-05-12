@@ -31,8 +31,10 @@
   .leader-bio{padding:0 22px 16px;font-size:13.5px;line-height:1.6;color:var(--mute)}
   .leader-prior{padding:0 22px 22px;display:flex;flex-wrap:wrap;gap:6px}
   .leader-prior .pill{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);padding:4px 9px;border:1px solid var(--line-2);border-radius:999px;background:rgba(255,255,255,0.02)}
-  .leader-linkedin{display:inline-flex;align-items:center;gap:7px;padding:0 22px 20px;font-family:var(--ff-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-lt);text-decoration:none;opacity:.65;transition:opacity .2s;margin-top:auto}
-  .leader-linkedin:hover{opacity:1}
+  .leader-name-wrap{display:flex;align-items:center;gap:8px;margin:0 0 4px}
+  .leader-name-wrap .leader-name{margin:0}
+  .li-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#0A66C2;border-radius:5px;color:#fff;font-family:var(--ff-display);font-weight:700;font-size:12px;letter-spacing:0;text-decoration:none;flex-shrink:0;transition:background .2s}
+  .li-badge:hover{background:#004182}
 
   /* metric strip — under team headline */
   .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line-1);border-radius:14px;overflow:hidden;background:rgba(5,6,10,0.4);margin:42px 0 28px}
@@ -280,48 +282,44 @@
         <div class="leader-photo"><img src="assets/team/ankush.jpeg" alt="Ankush Shah" loading="lazy" /></div>
         <div class="leader-meta">
           <div class="leader-role">CEO &amp; Founder</div>
-          <h3 class="leader-name">Ankush Shah</h3>
+          <div class="leader-name-wrap"><h3 class="leader-name">Ankush Shah</h3><a class="li-badge" href="https://www.linkedin.com/in/ankushshah/" target="_blank" rel="noopener noreferrer" aria-label="Ankush Shah on LinkedIn">in</a></div>
           <div class="leader-years">24+ years</div>
         </div>
         <p class="leader-bio">Twenty-four years as a data partner to large BFSI and manufacturing enterprises, globally. Columbia Business School. ICF-certified Leadership Coach.</p>
         <div class="leader-prior"><span class="pill">Delta Technologies</span><span class="pill">Exponentia.ai</span></div>
-        <a class="leader-linkedin" href="https://www.linkedin.com/in/ankushshah/" target="_blank" rel="noopener noreferrer" aria-label="Ankush Shah on LinkedIn"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
       </article>
 
       <article class="leader reveal d2">
         <div class="leader-photo"><img src="assets/team/vishal.jpeg" alt="Vishal Dhure" loading="lazy" /></div>
         <div class="leader-meta">
           <div class="leader-role">COO &amp; CRO</div>
-          <h3 class="leader-name">Vishal Dhure</h3>
+          <div class="leader-name-wrap"><h3 class="leader-name">Vishal Dhure</h3><a class="li-badge" href="https://www.linkedin.com/in/vishaldhure/" target="_blank" rel="noopener noreferrer" aria-label="Vishal Dhure on LinkedIn">in</a></div>
           <div class="leader-years">26 years</div>
         </div>
         <p class="leader-bio">Twenty-six years inside tier-one global IT services firms, leading large data and analytics delivery programs. Owns the commercial engine and delivery operations.</p>
         <div class="leader-prior"><span class="pill">Tech Mahindra</span><span class="pill">Polestar Solutions</span></div>
-        <a class="leader-linkedin" href="https://www.linkedin.com/in/vishaldhure/" target="_blank" rel="noopener noreferrer" aria-label="Vishal Dhure on LinkedIn"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
       </article>
 
       <article class="leader reveal d3">
         <div class="leader-photo"><img src="assets/team/arun.png" alt="Arun Bhatia" loading="lazy" /></div>
         <div class="leader-meta">
           <div class="leader-role">Chief Tech Program Manager</div>
-          <h3 class="leader-name">Arun Bhatia</h3>
+          <div class="leader-name-wrap"><h3 class="leader-name">Arun Bhatia</h3><a class="li-badge" href="https://www.linkedin.com/in/bhatiaarun/" target="_blank" rel="noopener noreferrer" aria-label="Arun Bhatia on LinkedIn">in</a></div>
           <div class="leader-years">33 years</div>
         </div>
         <p class="leader-bio">Thirty-three years inside tier-one IT services and product companies as a BI and data-architecture specialist. He predates the modern lakehouse by a decade.</p>
         <div class="leader-prior"><span class="pill">HP</span><span class="pill">DXC Technology</span><span class="pill">LTIMindtree</span></div>
-        <a class="leader-linkedin" href="https://www.linkedin.com/in/bhatiaarun/" target="_blank" rel="noopener noreferrer" aria-label="Arun Bhatia on LinkedIn"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
       </article>
 
       <article class="leader reveal d4">
         <div class="leader-photo"><img src="assets/team/arjun.jpeg" alt="Arjun Ghosh" loading="lazy" /></div>
         <div class="leader-meta">
           <div class="leader-role">Chief AI &amp; Tech Officer</div>
-          <h3 class="leader-name">Arjun Ghosh</h3>
+          <div class="leader-name-wrap"><h3 class="leader-name">Arjun Ghosh</h3><a class="li-badge" href="https://www.linkedin.com/in/arjunghosh/" target="_blank" rel="noopener noreferrer" aria-label="Arjun Ghosh on LinkedIn">in</a></div>
           <div class="leader-years">22+ years</div>
         </div>
         <p class="leader-bio">Twenty-two years across tier-one global IT services firms, leading enterprise AI and digital-transformation programs. XLRI · IIM Kozhikode · Cornell (Chief AI Officer programme).</p>
         <div class="leader-prior"><span class="pill">Accenture</span><span class="pill">EY</span></div>
-        <a class="leader-linkedin" href="https://www.linkedin.com/in/arjunghosh/" target="_blank" rel="noopener noreferrer" aria-label="Arjun Ghosh on LinkedIn"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
       </article>
     </div>
 
