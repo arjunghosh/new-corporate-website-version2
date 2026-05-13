@@ -7,8 +7,13 @@ export default defineConfig({
     include: ['src/**/*.test.ts'],
     coverage: {
       provider: 'v8',
-      include: ['src/lib/**', 'src/pages/api/**'],
-      exclude: ['src/lib/db.ts'], // requires live DB — integration only
+      include: ['src/lib/**/*.ts', 'src/pages/api/**/*.ts'],
+      exclude: [
+        'src/lib/db.ts',         // requires live DB — integration only
+        'src/lib/legacy-page.ts', // build-time HTML parser, not unit-testable
+        'src/lib/schema.sql',     // not JS/TS — excluded to avoid parse errors
+        'src/pages/api/**',       // Astro SSR routes — integration test territory
+      ],
     },
   },
   define: {
