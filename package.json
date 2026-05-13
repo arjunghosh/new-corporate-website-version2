@@ -2,13 +2,18 @@
   "name": "flexilytics-corporate-v2",
   "version": "0.1.0",
   "private": true,
-  "engines": { "node": "20.x" },
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@astrojs/vercel": "^7.8.0",
@@ -20,6 +25,8 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@types/node": "^22.0.0",
-    "typescript": "^5.6.0"
+    "@vitest/coverage-v8": "^4.1.6",
+    "typescript": "^5.6.0",
+    "vitest": "^4.1.6"
   }
 }
