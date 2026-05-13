@@ -3,7 +3,7 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import { waitlistSchema } from '@/lib/validation';
 import { insertWaitlist } from '@/lib/db';
-import { sendWaitlistConfirmation } from '@/lib/email';
+import { sendWaitlistConfirmation, sendWaitlistNotification } from '@/lib/email';
 import { checkRateLimit } from '@/lib/rate-limit';
 
 export const POST: APIRoute = async ({ request }) => {
@@ -51,9 +51,14 @@ export const POST: APIRoute = async ({ request }) => {
       role: data.role,
     });
 
-    await sendWaitlistConfirmation(data.email, data.name).catch((err) =>
-      console.error('[waitlist] confirmation email failed:', err)
-    );
+    await Promise.allSettled([
+      sendWaitlistConfirmation(data.email, data.name).catch((err) =>
+        console.error('[waitlist] confirmation email failed:', err)
+      ),
+      sendWaitlistNotification({ name: data.name, email: data.email, company: data.company, role: data.role }).catch((err) =>
+        console.error('[waitlist] admin notification failed:', err)
+      ),
+    ]);
 
     return new Response(JSON.stringify({ ok: true }), {
       status: 202,
