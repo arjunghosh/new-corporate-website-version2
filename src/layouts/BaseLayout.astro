@@ -89,9 +89,8 @@ const GA4_ID = import.meta.env.GA4_MEASUREMENT_ID as string | undefined;
 <Footer />
 
 <script is:inline>
-const TWEAK_DEFAULTS = { motion: 'calm', ambient: 'on' };
-window.__motionMode = TWEAK_DEFAULTS.motion;
-window.__ambientMode = TWEAK_DEFAULTS.ambient;
+window.__motionMode = 'calm';
+window.__ambientMode = 'on';
 </script>
 <script is:inline src="/assets/site.js"></script>
 
