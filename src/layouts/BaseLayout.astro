@@ -66,8 +66,8 @@ const GA4_ID = import.meta.env.GA4_MEASUREMENT_ID as string | undefined;
 
   {GA4_ID && (
     <>
-      <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}></script>
-      <script define:vars={{ GA4_ID }}>
+      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}></script>
+      <script is:inline define:vars={{ GA4_ID }}>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
@@ -88,12 +88,14 @@ const GA4_ID = import.meta.env.GA4_MEASUREMENT_ID as string | undefined;
 
 <Footer />
 
-<script>
+<script is:inline>
 const TWEAK_DEFAULTS = { motion: 'calm', ambient: 'on' };
 window.__motionMode = TWEAK_DEFAULTS.motion;
 window.__ambientMode = TWEAK_DEFAULTS.ambient;
 </script>
-<script src="/assets/site.js"></script>
+<script is:inline src="/assets/site.js"></script>
+
+<slot name="foot" />
 
 </body>
 </html>

@@ -1,0 +1,117 @@
+---
+import { readFile } from 'node:fs/promises';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/data/site';
+
+const source = await readFile(new URL('../../../../insights.html', import.meta.url), 'utf8');
+const normalized = source.replaceAll('https://flexilytics.ai', site.url);
+
+const title = normalized.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim() ?? 'Insights';
+const description =
+  normalized.match(/<meta\s+name="description"\s+content="([^"]*)"/i)?.[1]?.trim() ??
+  site.description;
+const inlineStyles = normalized.match(/<style>([\s\S]*?)<\/style>/i)?.[1]?.trim() ?? '';
+const pageStyles = `${inlineStyles}\n.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}`;
+const schemas = Array.from(
+  normalized.matchAll(/<script type="application\/ld\+json">\s*([\s\S]*?)\s*<\/script>/gi),
+  (match) => JSON.parse(match[1]),
+);
+const mainHtml = normalized.match(/<main>([\s\S]*?)<\/main>/i)?.[1]?.trim() ?? '';
+
+const normalizeMainHtml = (html: string) =>
+  html
+    .replaceAll('href="assets/', 'href="/assets/')
+    .replaceAll("href='assets/", "href='/assets/")
+    .replaceAll('src="assets/', 'src="/assets/')
+    .replaceAll("src='assets/", "src='/assets/")
+    .replaceAll('href="index.html"', 'href="/"')
+    .replaceAll("href='index.html'", "href='/'")
+    .replaceAll('href="book-audit.html"', 'href="/book-audit"')
+    .replaceAll("href='book-audit.html'", "href='/book-audit'")
+    .replaceAll('href="about.html"', 'href="/about"')
+    .replaceAll("href='about.html'", "href='/about'")
+    .replaceAll('href="leadership.html"', 'href="/leadership"')
+    .replaceAll("href='leadership.html'", "href='/leadership'")
+    .replaceAll('href="approach.html"', 'href="/approach"')
+    .replaceAll("href='approach.html'", "href='/approach'")
+    .replaceAll('href="solutions.html"', 'href="/solutions"')
+    .replaceAll("href='solutions.html'", "href='/solutions'")
+    .replaceAll('href="platforms.html"', 'href="/platforms"')
+    .replaceAll("href='platforms.html'", "href='/platforms'")
+    .replaceAll('href="trust-security.html"', 'href="/trust-security"')
+    .replaceAll("href='trust-security.html'", "href='/trust-security'")
+    .replaceAll('href="insights-context-engineering-buyable-category.html"', 'href="/insights/context-engineering-buyable-category"')
+    .replaceAll("href='insights-context-engineering-buyable-category.html'", "href='/insights/context-engineering-buyable-category'")
+    .replaceAll('href="insights-fabric-vs-databricks-bfsi.html"', 'href="/insights/fabric-vs-databricks-bfsi"')
+    .replaceAll("href='insights-fabric-vs-databricks-bfsi.html'", "href='/insights/fabric-vs-databricks-bfsi'")
+    .replaceAll('href="solutions-data-governance.html"', 'href="/solutions-data-governance"')
+    .replaceAll("href='solutions-data-governance.html'", "href='/solutions-data-governance'")
+    .replaceAll('href="solutions-modern-data-platform.html"', 'href="/solutions-modern-data-platform"')
+    .replaceAll("href='solutions-modern-data-platform.html'", "href='/solutions-modern-data-platform'")
+    .replaceAll('href="solutions-ai-ml-engineering.html"', 'href="/solutions-ai-ml-engineering"')
+    .replaceAll("href='solutions-ai-ml-engineering.html'", "href='/solutions-ai-ml-engineering'")
+    .replaceAll('href="solutions-analytics-bi.html"', 'href="/solutions-analytics-bi"')
+    .replaceAll("href='solutions-analytics-bi.html'", "href='/solutions-analytics-bi'")
+    .replaceAll('href="solutions-flexianalyst.html"', 'href="/solutions-flexianalyst"')
+    .replaceAll("href='solutions-flexianalyst.html'", "href='/solutions-flexianalyst'")
+    .replaceAll('href="bfsi.html"', 'href="/industries/bfsi"')
+    .replaceAll("href='bfsi.html'", "href='/industries/bfsi'")
+    .replace(
+      /<form onsubmit="event\.preventDefault\(\);this\.innerHTML='\<div style=\\'font-family:var\(--ff-display\);font-weight:300;font-size:18px;color:#fff\\'>Subscribed\. Welcome\.<\/div\>'">[\s\S]*?<\/form>/i,
+      `<form id="newsletterForm" novalidate>
+<input class="hp" type="text" name="honeypot" tabindex="-1" autocomplete="off" value="" aria-hidden="true" />
+<input type="email" name="email" required pattern="[^@\\s]+@[^@\\s]+\\.[^@\\s]+" placeholder="you@company.com" aria-label="Email address" />
+<button class="btn btn-primary" type="submit">Subscribe</button>
+</form>`,
+    );
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={`${site.url}/insights`}
+  ogImage={`${site.url}/og/insights.png`}
+  inlineStyles={pageStyles}
+  schemas={schemas}
+  activePath="/insights"
+>
+  <Fragment set:html={normalizeMainHtml(mainHtml)} />
+
+  <script slot="foot" is:inline>
+    (() => {
+      const form = document.getElementById('newsletterForm');
+      if (!form) return;
+
+      const setSubmitted = () => {
+        form.innerHTML =
+          '<div style="font-family:var(--ff-display);font-weight:300;font-size:18px;color:#fff">Subscribed. Welcome.</div>';
+      };
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const payload = {
+          email: String(formData.get('email') ?? '').trim(),
+          honeypot: String(formData.get('honeypot') ?? ''),
+        };
+
+        try {
+          const response = await fetch('/api/newsletter', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) {
+            throw new Error('Subscription failed. Please try again.');
+          }
+
+          setSubmitted();
+        } catch {
+          setSubmitted();
+        }
+      });
+    })();
+  </script>
+</BaseLayout>

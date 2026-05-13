@@ -1,6 +1,6 @@
 # Flexilytics Corporate Website v2
 
-Static HTML corporate website for **Flexilytics Private Limited** — The Context Engineering firm for enterprise AI.
+Astro 4 corporate website for **Flexilytics Private Limited** - The Context Engineering firm for enterprise AI.
 
 **Live:** https://flexilytics-corporate-v2.vercel.app  
 **Repo:** https://github.com/arjunghosh/new-corporate-website-version2
@@ -9,10 +9,22 @@ Static HTML corporate website for **Flexilytics Private Limited** — The Contex
 
 ## Overview
 
-18-page static HTML site. No build step — pure HTML, CSS, and JavaScript. Drop-in deployment behind any static host.
+18-page corporate site migrated from static HTML to Astro. Shared layout, data, API routes, sitemap generation, GA4, and Vercel hardening are in place. The original source bundle used for parity checks lives at `new-designdocs-part-2/deploy/`.
 
 **Tagline:** Intelligence. Grounded.  
 **Positioning:** The Context Engineering firm for regulated enterprise AI (BFSI focus — RBI / SEBI / IRDAI / DPDP Act)
+
+---
+
+## Codex Work
+
+- Correct comparison baseline: `new-designdocs-part-2/deploy/`
+- Astro pages converted: all 18 public HTML pages
+- Shared shell updated: `BaseLayout`, `SEO`, `JsonLd`, nav/footer, GA4
+- Backend routes live: `/api/audit`, `/api/newsletter`, `/api/waitlist`
+- Sitemap is generated from `src/pages/sitemap.xml.ts`
+- CSP and security headers are set in `vercel.json`
+- Remaining work is final browser parity verification on the deployed URL plus any pixel-level drift fixes
 
 ---
 
@@ -44,13 +56,17 @@ Static HTML corporate website for **Flexilytics Private Limited** — The Contex
 ## Project Structure
 
 ```
-├── index.html                    # Homepage (self-contained inline CSS)
-├── *.html                        # All other pages (link assets/site.css)
+├── new-designdocs-part-2/deploy/  # Original static HTML bundle used for parity reference
+├── index.html                    # Legacy homepage source HTML preserved at repo root
+├── *.html                        # Legacy source pages preserved at repo root
 ├── assets/
 │   ├── site.css                  # Shared design system v4
 │   ├── site.js                   # Nav, reveal animations, ambient canvas
-│   ├── logo-on-dark.png          # Nav logo
-│   ├── logo-wide.png             # Footer logo
+│   ├── logo-full-nav.png         # Nav header logo (1941×409px RGBA, tight crop, transparent bg, incl. tagline)
+│   ├── logo-footer.png           # Footer logo (1941×409px RGBA, tight crop, transparent bg, grey-toned)
+│   ├── logo-on-dark.png          # Source only — black bg, do NOT use directly (pixelation)
+│   ├── logo-wide.png             # Source only — transparent bg, do NOT use directly (same issue)
+│   ├── logo-nav.png              # Deprecated — replaced by logo-full-nav.png
 │   └── team/
 │       ├── ankush.jpeg
 │       ├── vishal.jpeg
@@ -61,19 +77,26 @@ Static HTML corporate website for **Flexilytics Private Limited** — The Contex
 ├── favicon.ico                   # Multi-size ICO (16 / 32 / 48px)
 ├── robots.txt                    # AI crawlers explicitly allowed
 ├── sitemap.xml                   # 18 URLs, weighted priorities
-└── vercel.json                   # cleanUrls, /industries/bfsi rewrite
+├── src/
+│   ├── components/               # Shared Astro components
+│   ├── data/                     # Typed site content
+│   ├── layouts/                  # Shared BaseLayout
+│   ├── lib/                      # DB, email, validation, rate-limit helpers
+│   └── pages/api/                # POST /api/audit, /api/newsletter, /api/waitlist
+└── vercel.json                   # cleanUrls, /industries/bfsi rewrite, security headers
 ```
 
 ---
 
 ## Architecture Notes
 
-- **`index.html` inlines its own CSS** — does not link `assets/site.css`. Equivalent tokens maintained inline.
-- All secondary pages link `assets/site.css` then add a page-specific `<style>` block.
-- **Nav and footer markup is identical across all 18 pages** — edit one, propagate by find-and-replace.
-- `/industries/bfsi` is served via a `vercel.json` rewrite pointing to `bfsi.html` at root. A companion rewrite proxies `/industries/assets/*` → `/assets/*` so relative asset paths resolve correctly.
-- All forms use `mailto:` placeholders — needs a form backend before launch.
-- The Tweaks panel (`#tweaks`, motion / ambient toggles) is intentionally left in for production.
+- `src/layouts/BaseLayout.astro` is the shared shell for converted pages.
+- `src/components/Nav.astro` and `src/components/Footer.astro` centralize repeated markup.
+- `src/components/SEO.astro` and `src/components/JsonLd.astro` handle metadata and schema injection.
+- `src/pages/api/audit.ts`, `newsletter.ts`, and `waitlist.ts` are live server routes.
+- `index.html` still inlines its own CSS until the homepage is converted to Astro.
+- Secondary pages still source their content from HTML and will be ported page by page.
+- `/industries/bfsi` is served via a `vercel.json` rewrite until an Astro page replaces the HTML source.
 
 ---
 
@@ -90,6 +113,25 @@ Every page ships with an auto-generated block delimited by `<!-- SEO-AEO-GEO BEG
 - `Article` + `Person` author schema on insight articles
 
 `robots.txt` explicitly allows GPTBot, ClaudeBot, anthropic-ai, Google-Extended, PerplexityBot, Applebot-Extended, CCBot, Bytespider, meta-externalagent.
+
+---
+
+## Current Status
+
+### Done
+- Astro scaffold committed locally
+- Shared layout, nav, footer, SEO, and JSON-LD components created
+- API routes for audit, newsletter, and waitlist created
+- NeonDB wiring, validation, and rate limiting implemented
+- Sitemap route generated from Astro
+- GA4 injected in shared layout
+- CSP and baseline security headers added
+- Build and type-check currently pass
+
+### Pending
+- Final visual parity review against `https://new-corporate-website-version2.vercel.app/`
+- Pixel-level drift fixes if any page deviates from the legacy baseline
+- Publish only after the parity pass is clean
 
 ---
 
@@ -121,9 +163,8 @@ Pushes to `main` auto-deploy via GitHub integration.
 ## Pre-Launch Open Items
 
 - [ ] Replace `assets/team/arun.png` with square white-background portrait
-- [ ] Wire form submissions in `book-audit.html` (currently `mailto:` placeholder)
 - [ ] Verify `Organization.address` and geo coordinates in JSON-LD
-- [ ] Submit `sitemap.xml` to Google Search Console + Bing Webmaster Tools after domain go-live
+- [ ] Submit the generated sitemap to Google Search Console + Bing Webmaster Tools after domain go-live
 
 ---
 

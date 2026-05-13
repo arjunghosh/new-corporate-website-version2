@@ -1,0 +1,19 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/data/site';
+import { loadLegacyPage } from '@/lib/legacy-page';
+
+const page = await loadLegacyPage('trust-security.html');
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  canonical={`${site.url}/trust-security`}
+  ogImage={`${site.url}/og/trust-security.png`}
+  inlineStyles={page.inlineStyles}
+  schemas={page.schemas}
+  activePath="/trust-security"
+>
+  <Fragment set:html={page.mainHtml} />
+</BaseLayout>

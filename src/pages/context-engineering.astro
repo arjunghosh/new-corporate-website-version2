@@ -1,0 +1,18 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/data/site';
+import { loadLegacyPage } from '@/lib/legacy-page';
+
+const page = await loadLegacyPage('context-engineering.html');
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  canonical={`${site.url}/context-engineering`}
+  ogImage={`${site.url}/og/context-engineering.png`}
+  inlineStyles={page.inlineStyles}
+  schemas={page.schemas}
+>
+  <Fragment set:html={page.mainHtml} />
+</BaseLayout>

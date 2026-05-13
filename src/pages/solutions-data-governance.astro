@@ -1,0 +1,19 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/data/site';
+import { loadLegacyPage } from '@/lib/legacy-page';
+
+const page = await loadLegacyPage('solutions-data-governance.html');
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  canonical={`${site.url}/solutions-data-governance`}
+  ogImage={`${site.url}/og/solutions-governance.png`}
+  inlineStyles={page.inlineStyles}
+  schemas={page.schemas}
+  activePath="/solutions"
+>
+  <Fragment set:html={page.mainHtml} />
+</BaseLayout>

@@ -1,0 +1,20 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/data/site';
+import { loadLegacyPage } from '@/lib/legacy-page';
+
+const page = await loadLegacyPage('insights-context-engineering-buyable-category.html');
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  canonical={`${site.url}/insights/context-engineering-buyable-category`}
+  ogImage={`${site.url}/og/insight-context-engineering.png`}
+  ogType="article"
+  inlineStyles={page.inlineStyles}
+  schemas={page.schemas}
+  activePath="/insights"
+>
+  <Fragment set:html={page.mainHtml} />
+</BaseLayout>

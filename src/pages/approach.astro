@@ -1,0 +1,19 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/data/site';
+import { loadLegacyPage } from '@/lib/legacy-page';
+
+const page = await loadLegacyPage('approach.html');
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  canonical={`${site.url}/approach`}
+  ogImage={`${site.url}/og/approach.png`}
+  inlineStyles={page.inlineStyles}
+  schemas={page.schemas}
+  activePath="/approach"
+>
+  <Fragment set:html={page.mainHtml} />
+</BaseLayout>

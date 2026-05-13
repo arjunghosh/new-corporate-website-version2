@@ -1,0 +1,94 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/data/site';
+import { loadLegacyPage } from '@/lib/legacy-page';
+
+const page = await loadLegacyPage('solutions-flexianalyst.html');
+const inlineStyles = `${page.inlineStyles}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+.waitlist-status{min-height:1.2rem;font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-top:6px}
+.waitlist-status.error{color:var(--rose)}
+.waitlist-success{display:none;text-align:center;padding:30px 0}
+.waitlist-success.on{display:block}
+.waitlist-success .title{font-family:var(--ff-display);font-weight:300;font-size:24px;color:#fff;margin-bottom:10px}
+.waitlist-success .sub{color:var(--mute);font-size:14.5px}`;
+
+const mainHtml = page.mainHtml.replace(
+  /<form class="waitlist reveal d1"[\s\S]*?<\/form>/i,
+  `<form class="waitlist reveal d1" id="waitlistForm" novalidate>
+<input class="hp" type="text" name="honeypot" tabindex="-1" autocomplete="off" value="" aria-hidden="true" />
+<div class="form-row">
+<div class="field"><label>Name <span style="color:var(--rose)">*</span></label><input name="name" type="text" required minlength="2" /></div>
+<div class="field"><label>Work email <span style="color:var(--rose)">*</span></label><input name="email" type="email" required pattern="[^@\\s]+@[^@\\s]+\\.[^@\\s]+" /></div>
+</div>
+<div class="form-row">
+<div class="field"><label>Company <span style="color:var(--rose)">*</span></label><input name="company" type="text" required minlength="2" /></div>
+<div class="field"><label>Role <span style="color:var(--rose)">*</span></label><select name="role" required><option value="">Select…</option><option>CRO / VP Sales</option><option>Sales Operations</option><option>CDO / Head of Data</option><option>Other senior</option></select></div>
+</div>
+<button class="btn btn-primary" type="submit" style="width:100%;justify-content:center;margin-top:6px">Join the waitlist
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<div class="waitlist-status" id="waitlistStatus" aria-live="polite"></div>
+</form>`,
+);
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  canonical={`${site.url}/solutions-flexianalyst`}
+  ogImage={`${site.url}/og/solutions-flexianalyst.png`}
+  inlineStyles={inlineStyles}
+  schemas={page.schemas}
+  activePath="/solutions"
+>
+  <Fragment set:html={mainHtml} />
+
+  <script slot="foot" is:inline>
+    (() => {
+      const form = document.getElementById('waitlistForm');
+      if (!form) return;
+      const status = document.getElementById('waitlistStatus');
+
+      const setStatus = (message, isError = false) => {
+        if (!status) return;
+        status.textContent = message;
+        status.classList.toggle('error', isError);
+      };
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        setStatus('');
+
+        const formData = new FormData(form);
+        const payload = {
+          name: String(formData.get('name') ?? '').trim(),
+          email: String(formData.get('email') ?? '').trim(),
+          company: String(formData.get('company') ?? '').trim(),
+          role: String(formData.get('role') ?? '').trim(),
+          honeypot: String(formData.get('honeypot') ?? ''),
+        };
+
+        if (payload.honeypot) {
+          form.innerHTML = `<div class="waitlist-success on"><div class="title">You are on the list.</div><div class="sub">We'll write the moment a Q4 slot opens.</div></div>`;
+          return;
+        }
+
+        try {
+          const response = await fetch('/api/waitlist', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) {
+            throw new Error('Waitlist submission failed. Please try again.');
+          }
+
+          form.innerHTML = `<div class="waitlist-success on"><div class="title">You are on the list.</div><div class="sub">We'll write the moment a Q4 slot opens.</div></div>`;
+        } catch (error) {
+          setStatus(error instanceof Error ? error.message : 'Waitlist submission failed. Please try again.', true);
+        }
+      });
+    })();
+  </script>
+</BaseLayout>

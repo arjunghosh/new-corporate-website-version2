@@ -1,0 +1,19 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/data/site';
+import { loadLegacyPage } from '@/lib/legacy-page';
+
+const page = await loadLegacyPage('solutions-modern-data-platform.html');
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  canonical={`${site.url}/solutions-modern-data-platform`}
+  ogImage={`${site.url}/og/solutions-mdp.png`}
+  inlineStyles={page.inlineStyles}
+  schemas={page.schemas}
+  activePath="/solutions"
+>
+  <Fragment set:html={page.mainHtml} />
+</BaseLayout>
