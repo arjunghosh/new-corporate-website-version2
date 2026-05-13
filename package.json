@@ -1,0 +1,24 @@
+{
+  "name": "flexilytics-corporate-v2",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@astrojs/vercel": "^7.8.0",
+    "@neondatabase/serverless": "^0.9.5",
+    "astro": "^4.16.0",
+    "resend": "^4.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}

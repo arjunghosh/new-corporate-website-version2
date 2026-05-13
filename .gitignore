@@ -3,3 +3,5 @@
 .vercel
 .playwright-mcp/
 test-*.png
+CHANGES.md
+plan-change.md

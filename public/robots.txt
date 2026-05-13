@@ -1,0 +1,38 @@
+# Flexilytics — robots.txt
+# Production: flexilytics.ai
+User-agent: *
+Allow: /
+
+# AI / answer-engine crawlers — explicitly welcomed.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+# Sitemap
+Sitemap: https://flexilytics.ai/sitemap.xml
+
+# Block staging / preview hosts at the network layer; the meta robots on those
+# environments should be 'noindex'. This file is for production only.

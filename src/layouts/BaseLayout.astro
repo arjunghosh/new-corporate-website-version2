@@ -1,0 +1,99 @@
+---
+import Nav from '@/components/Nav.astro';
+import Footer from '@/components/Footer.astro';
+import SEO from '@/components/SEO.astro';
+import JsonLd from '@/components/JsonLd.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  robots?: string;
+  noindex?: boolean;
+  schemas?: Record<string, unknown>[];
+  bodyClass?: string;
+  inlineStyles?: string;
+  activePath?: string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage,
+  ogType,
+  robots,
+  noindex,
+  schemas = [],
+  bodyClass = '',
+  inlineStyles,
+  activePath,
+} = Astro.props;
+
+const GA4_ID = import.meta.env.GA4_MEASUREMENT_ID as string | undefined;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/site.css" />
+
+  <SEO
+    title={title}
+    description={description}
+    canonical={canonical}
+    ogImage={ogImage}
+    ogType={ogType}
+    robots={robots}
+    noindex={noindex}
+  />
+
+  {schemas.map((s) => <JsonLd schema={s} />)}
+
+  {inlineStyles && <style set:html={inlineStyles} />}
+
+  <slot name="head" />
+
+  {GA4_ID && (
+    <>
+      <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}></script>
+      <script define:vars={{ GA4_ID }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', GA4_ID);
+      </script>
+    </>
+  )}
+</head>
+<body class={bodyClass || undefined}>
+
+<canvas id="ambient" aria-hidden="true"></canvas>
+
+<Nav activePath={activePath} />
+
+<main>
+  <slot />
+</main>
+
+<Footer />
+
+<script>
+const TWEAK_DEFAULTS = { motion: 'calm', ambient: 'on' };
+window.__motionMode = TWEAK_DEFAULTS.motion;
+window.__ambientMode = TWEAK_DEFAULTS.ambient;
+</script>
+<script src="/assets/site.js"></script>
+
+</body>
+</html>

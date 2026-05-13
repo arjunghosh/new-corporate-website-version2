@@ -1,0 +1,28 @@
+---
+import { navLinks, navCta } from '@/data/navigation';
+
+interface Props {
+  activePath?: string;
+}
+
+const { activePath = '' } = Astro.props;
+---
+
+<header class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="/" aria-label="Flexilytics home">
+      <img class="brand-mark" src="/assets/logo-full-nav.png" alt="Flexilytics" />
+    </a>
+    <nav class="nav-links">
+      {navLinks.map((link) => (
+        <a href={link.href} class={activePath === link.href ? 'active' : undefined}>
+          {link.label}
+        </a>
+      ))}
+    </nav>
+    <div class="nav-spacer"></div>
+    <a class="nav-cta" href={navCta.href}>
+      {navCta.label} <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</header>

@@ -1,0 +1,60 @@
+---
+import { footerLinks } from '@/data/navigation';
+---
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-wm">
+        <img src="/assets/logo-footer.png" alt="Flexilytics — Intelligence. Grounded." />
+        <div class="foot-tag">Context Engineering for regulated enterprises across India, UAE, and Southeast Asia.</div>
+      </div>
+      <div class="foot-col">
+        <h5>Approach</h5>
+        <ul>
+          {footerLinks.approach.map((link) => (
+            <li><a href={link.href}>{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Solutions</h5>
+        <ul>
+          {footerLinks.solutions.map((link) => (
+            <li><a href={link.href}>{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <ul>
+          {footerLinks.company.map((link) => (
+            <li><a href={link.href}>{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 FLEXILYTICS PVT. LTD.</span>
+      <span class="m">INTELLIGENCE. GROUNDED.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Tweaks panel (shared across all pages) -->
+<div class="tweaks" id="tweaks">
+  <h4>Tweaks <button id="tweaksClose" aria-label="Close">×</button></h4>
+  <div class="tweak-grp"><div class="tweak-lbl">Motion</div>
+    <div class="seg" id="motionSeg">
+      <button data-v="calm" class="active">Calm</button>
+      <button data-v="flow">Flow</button>
+      <button data-v="alive">Alive</button>
+    </div>
+  </div>
+  <div class="tweak-grp"><div class="tweak-lbl">Ambient field</div>
+    <div class="seg" id="ambientSeg">
+      <button data-v="on" class="active">On</button>
+      <button data-v="off">Off</button>
+    </div>
+  </div>
+</div>

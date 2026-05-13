@@ -1,0 +1,51 @@
+---
+import { site } from '@/data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  robots?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = `${site.url}/og/home.png`,
+  ogType = 'website',
+  robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+  noindex = false,
+} = Astro.props;
+
+const robotsContent = noindex ? 'noindex, nofollow' : robots;
+---
+
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={robotsContent} />
+<meta name="author" content="Flexilytics" />
+
+<!-- Open Graph -->
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content="Flexilytics" />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content={site.locale} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<!-- Geo -->
+<meta name="geo.region" content={site.geo.region} />
+<meta name="geo.placename" content="Mumbai" />
+<meta name="ICBM" content={site.geo.icbm} />
