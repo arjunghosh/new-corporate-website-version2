@@ -13,6 +13,7 @@ const description =
   site.description;
 const inlineStyles = normalized.match(/<style>([\s\S]*?)<\/style>/i)?.[1]?.trim() ?? '';
 const mainHtml = normalized.match(/<main>([\s\S]*?)<\/main>/i)?.[1]?.trim() ?? '';
+const tweaksHtml = normalized.match(/<!--\s*={3,}\s*TWEAKS\s*={3,}\s*-->([\s\S]*?)(?=<script>)/i)?.[0]?.trim() ?? '';
 const footScript = normalized.match(/<script>\s*([\s\S]*?)\s*<\/script>\s*<\/body>/i)?.[1]?.trim() ?? '';
 const schemas = Array.from(
   normalized.matchAll(/<script type="application\/ld\+json">\s*([\s\S]*?)\s*<\/script>/gi),
@@ -31,5 +32,6 @@ const schemas = Array.from(
   activePath="/"
 >
   <Fragment set:html={mainHtml} />
+  <Fragment slot="foot" set:html={tweaksHtml} />
   <script slot="foot" is:inline set:html={footScript} />
 </BaseLayout>
