@@ -133,7 +133,7 @@ main{position:relative;z-index:1}
 .foot{border-top:1px solid var(--line-1);padding:72px 0 44px;color:var(--mute);font-size:13.5px;background:var(--bg-0);position:relative;z-index:2}
 .foot-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:44px;margin-bottom:52px}
 @media (max-width:900px){.foot-top{grid-template-columns:1fr 1fr;gap:36px}}
-.foot-wm img{height:68px;margin-bottom:18px}
+.foot-wm img{height:42px;margin-bottom:18px}
 .foot-tag{font-family:var(--ff-display);font-weight:300;font-size:15px;color:var(--mute);max-width:340px;line-height:1.55}
 .foot-col h5{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin:0 0 18px;font-weight:500}
 .foot-col ul{list-style:none;padding:0;margin:0}
