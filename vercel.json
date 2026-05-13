@@ -31,9 +31,5 @@
         }
       ]
     }
-  ],
-  "rewrites": [
-    { "source": "/industries/assets/:path*", "destination": "/assets/:path*" },
-    { "source": "/industries/bfsi", "destination": "/bfsi" }
   ]
 }

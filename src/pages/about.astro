@@ -1,9 +1,10 @@
 ---
 import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { site } from '@/data/site';
 
-const source = await readFile(new URL('../../../../about.html', import.meta.url), 'utf8');
+const source = await readFile(join(process.cwd(), 'about.html'), 'utf8');
 const normalized = source.replaceAll('https://flexilytics.ai', site.url);
 
 const title = normalized.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim() ?? 'About Flexilytics';

@@ -1,9 +1,10 @@
 ---
 import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { site } from '@/data/site';
 
-const source = await readFile(new URL('../../../../insights.html', import.meta.url), 'utf8');
+const source = await readFile(join(process.cwd(), 'insights.html'), 'utf8');
 const normalized = source.replaceAll('https://flexilytics.ai', site.url);
 
 const title = normalized.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim() ?? 'Insights';
@@ -104,12 +105,19 @@ const normalizeMainHtml = (html: string) =>
           });
 
           if (!response.ok) {
-            throw new Error('Subscription failed. Please try again.');
+            const el = document.createElement('div');
+            el.style.cssText = 'font-family:var(--ff-display);font-weight:300;font-size:18px;color:#f87171';
+            el.textContent = 'Something went wrong. Please try again.';
+            form.replaceChildren(el);
+            return;
           }
 
           setSubmitted();
         } catch {
-          setSubmitted();
+          const el = document.createElement('div');
+          el.style.cssText = 'font-family:var(--ff-display);font-weight:300;font-size:18px;color:#f87171';
+          el.textContent = 'Something went wrong. Please try again.';
+          form.replaceChildren(el);
         }
       });
     })();
