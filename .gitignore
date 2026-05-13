@@ -1,7 +1,16 @@
 .DS_Store
 **/.DS_Store
 .vercel
+.astro/
 .playwright-mcp/
+node_modules/
+.env.local
 test-*.png
+*.jpeg
+archive/
 CHANGES.md
 plan-change.md
+AGENTS.md
+CLAUDE.md
+CODEX.md
+.agents/
