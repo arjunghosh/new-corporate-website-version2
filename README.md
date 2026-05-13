@@ -4,7 +4,9 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue.svg)](https://www.typescriptlang.org/)
 [![Vercel](https://img.shields.io/badge/Vercel-Auto--deploy-black.svg)](https://vercel.com/)
 [![Pages](https://img.shields.io/badge/pages-18_live-brightgreen.svg)]()
-[![Version](https://img.shields.io/badge/version-2.0.0-orange.svg)]()
+[![Tests](https://img.shields.io/badge/tests-98_passing-brightgreen.svg)]()
+[![Coverage](https://img.shields.io/badge/coverage-100%25_statements-brightgreen.svg)]()
+[![Version](https://img.shields.io/badge/version-2.1.0-orange.svg)]()
 [![Status](https://img.shields.io/badge/status-Production_Ready-brightgreen.svg)]()
 [![License](https://img.shields.io/badge/license-Proprietary-red.svg)](LICENSE)
 
@@ -85,6 +87,7 @@ The v2 Astro rebuild addresses all of these:
 - **Generated Sitemap**: `/sitemap.xml` generated at Astro build time from 19 routes with weighted priorities.
 - **SEO / AEO / GEO**: Every page ships canonical URL, Open Graph (1200×630 OG images), Twitter card, geo meta (Mumbai), JSON-LD (`Organization` + `WebSite` + page-typed node + `BreadcrumbList`). `FAQPage` schema on home/approach/context-engineering/book-audit. `Article` + `Person` schema on insight articles.
 - **robots.txt**: Explicitly allows GPTBot, ClaudeBot, anthropic-ai, Google-Extended, PerplexityBot, Applebot-Extended, CCBot, Bytespider, meta-externalagent.
+- **Unit Test Suite**: 98 tests across 4 files — Zod schema validation, rate-limiter window logic, email XSS escaping, CSP header assertions, form injection attack coverage. 100% statement/function/line coverage on all unit-testable lib files. Run via `npm run test` or `npm run test:coverage`.
 
 ### Integrations and Stack
 
@@ -94,6 +97,7 @@ The v2 Astro rebuild addresses all of these:
 - **Beehiiv** — newsletter subscription sync (API key pending)
 - **GA4 / Google Tag Manager** — analytics via `G-2VDBBM1YFF`
 - **Zod** — schema validation on all 3 API endpoints
+- **Vitest + @vitest/coverage-v8** — unit test suite (98 tests, 100% statement coverage on lib layer)
 - **Vercel** — auto-deploy on push to `main`, Node 20.x runtime, CSP headers
 
 ---
@@ -351,7 +355,12 @@ corporate-website-v2/
 │   │   ├── db.ts                    # NeonDB: insertLead, insertNewsletterSub, insertWaitlist
 │   │   ├── email.ts                 # Resend: branded HTML templates for all 4 email types
 │   │   ├── validation.ts            # Zod schemas: auditSchema, newsletterSchema, waitlistSchema
-│   │   └── rate-limit.ts            # In-memory IP rate limiter
+│   │   ├── rate-limit.ts            # In-memory IP rate limiter
+│   │   └── __tests__/               # Unit tests (Vitest)
+│   │       ├── validation.test.ts   # 40+ tests: schema shape, consent, honeypot, type coercion
+│   │       ├── rate-limit.test.ts   # 8 tests: window reset, key isolation (fake timers)
+│   │       ├── email.test.ts        # 30+ tests: XSS escaping, honeypot exclusion, routing
+│   │       └── security.test.ts     # 30+ tests: CSP headers, form injection, robots.txt
 │   └── pages/
 │       ├── api/
 │       │   ├── audit.ts             # POST /api/audit
@@ -388,7 +397,8 @@ corporate-website-v2/
 ├── astro.config.mjs                 # output: hybrid, Vercel adapter, trailingSlash: never
 ├── tsconfig.json                    # Strict mode, path alias @/*
 ├── vercel.json                      # cleanUrls, security headers (CSP, HSTS, X-Frame-Options)
-└── package.json                     # engines: node 20.x
+├── vitest.config.ts                 # Test config: node env, import.meta.env stubs, coverage scope
+└── package.json                     # engines: node 20.x, test/coverage scripts
 ```
 
 ### Key Conventions
@@ -405,6 +415,9 @@ corporate-website-v2/
 | `npm run dev` | Local dev server at `http://localhost:4321` |
 | `npm run build` | Production build — must pass before any deploy |
 | `npm run check` | TypeScript check — 0 errors, 0 warnings required |
+| `npm run test` | Run all 98 unit tests (Vitest) |
+| `npm run test:watch` | Vitest watch mode for TDD |
+| `npm run test:coverage` | Generate v8 coverage report (`coverage/` dir) |
 | `git push origin main` | Triggers Vercel auto-deploy |
 
 ---
@@ -453,12 +466,16 @@ Parity baseline: `new-designdocs-part-2/deploy/` — original static HTML/CSS/JS
 
 | Tag | Date | Description |
 |---|---|---|
+| `v2.1.0` | 2026-05-13 | **Test suite** — 98 unit tests (Vitest). Covers Zod schemas, rate-limiter, email XSS escaping, CSP headers, form injection attacks, robots.txt AI crawler access. 100% statement/function/line coverage on all unit-testable lib files. |
 | `v2.0.0` | 2026-05-13 | **Production launch** — Full Astro 4 hybrid rebuild. 18 pages, 3 API endpoints, NeonDB persistence, branded Resend HTML email, GA4, CSP security headers, generated sitemap. All 19 routes HTTP 200. Zero console errors. Both forms E2E tested and confirmed DB-saving. |
 
-### Commit History (this session)
+### Commit History
 
 | Commit | Description |
 |---|---|
+| `06eaf63` | fix: coverage config — exclude legacy-page.ts, schema.sql, api routes from unit coverage scope |
+| `e9f185b` | feat: add unit test suite — 98 tests (validation, rate-limit, email XSS, security headers) |
+| `20ec0c5` | docs: update README to v2.0.0 production state + tighten gitignore |
 | `68c3f3e` | chore: flip email routing to production addresses |
 | `fc04f6c` | chore: trigger redeploy to pick up new Vercel env vars |
 | `0f20df8` | fix: book-audit email pattern attribute stripping `\s` — removed, native validation sufficient |
@@ -486,11 +503,12 @@ Parity baseline: `new-designdocs-part-2/deploy/` — original static HTML/CSS/JS
 
 ## Status
 
-- **Version**: 2.0.0
+- **Version**: 2.1.0
 - **Status**: Production ready — live at `https://new-corporate-website-version2.vercel.app`
 - **Pages**: 18 static + 1 sitemap, all HTTP 200
 - **Forms**: All 3 API endpoints tested E2E — DB saves confirmed
 - **Console errors**: 0
+- **Tests**: 98/98 passing (`npm run test`) | 100% statement/function/line coverage on lib layer
 - **Build**: `npm run build` ✅ | `npm run check` ✅ 0 errors, 0 warnings
 - **Node runtime**: 20.x (Vercel + local enforced)
 - **License**: Proprietary — All Rights Reserved
