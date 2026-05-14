@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { createHash } from 'node:crypto';
 import { auditSchema, newsletterSchema, waitlistSchema } from '../validation';
 
 const ROOT = join(process.cwd());
@@ -165,6 +166,41 @@ describe('form injection hardening via Zod schemas', () => {
       name: null, email: 'a@b.com',
       company: 'Co', role: 'R', challenge: 'X', consent: true,
     }).success).toBe(false);
+  });
+});
+
+// ── Favicon integrity ─────────────────────────────────────────────────────
+
+describe('favicon asset integrity', () => {
+  const faviconPath = join(ROOT, 'public', 'favicon.ico');
+  const faviconBuf = readFileSync(faviconPath);
+
+  it('favicon exists at public/favicon.ico', () => {
+    const stat = statSync(faviconPath);
+    expect(stat.isFile()).toBe(true);
+  });
+
+  it('favicon is brand ICO (9681 bytes) — not placeholder (707 bytes) or wrong triangle asset (25931 bytes)', () => {
+    expect(faviconBuf.byteLength).toBe(9681);
+  });
+
+  it('favicon MD5 matches known-good brand asset (teal F logo, RGBA, 4-frame)', () => {
+    const md5 = createHash('md5').update(faviconBuf).digest('hex');
+    expect(md5).toBe('397fe0d9ef235cdffd2e9fc47f3298ef');
+  });
+
+  it('favicon has valid ICO magic bytes (00 00 01 00)', () => {
+    // ICO format: reserved=0x0000, type=0x0001 (icon)
+    expect(faviconBuf[0]).toBe(0x00);
+    expect(faviconBuf[1]).toBe(0x00);
+    expect(faviconBuf[2]).toBe(0x01);
+    expect(faviconBuf[3]).toBe(0x00);
+  });
+
+  it('favicon is multi-resolution ICO (≥4 frames)', () => {
+    // Bytes 4-5 (little-endian uint16) = number of images in ICO
+    const frameCount = faviconBuf[4] + (faviconBuf[5] << 8);
+    expect(frameCount).toBeGreaterThanOrEqual(4);
   });
 });
 
