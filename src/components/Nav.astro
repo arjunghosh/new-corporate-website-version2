@@ -24,5 +24,33 @@ const { activePath = '' } = Astro.props;
     <a class="nav-cta" href={navCta.href}>
       {navCta.label} <span aria-hidden="true">→</span>
     </a>
+    <button class="nav-burger" id="navBurger" aria-label="Open navigation menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </header>
+
+<div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+<nav class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="Mobile navigation">
+  <div class="nav-drawer-head">
+    <a href="/" class="nav-drawer-logo">
+      <img src="/assets/logo-full-nav.png" alt="Flexilytics" />
+    </a>
+    <button class="nav-drawer-close" id="navDrawerClose" aria-label="Close navigation menu">×</button>
+  </div>
+  <div class="nav-drawer-links">
+    {navLinks.map((link) => (
+      <a href={link.href} class={activePath === link.href ? 'active' : undefined}>
+        {link.label}
+      </a>
+    ))}
+  </div>
+  <div class="nav-drawer-footer">
+    <a href={navCta.href} class="btn btn-primary">
+      {navCta.label} <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</nav>
