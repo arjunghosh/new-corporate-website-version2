@@ -2,7 +2,7 @@ export const site = {
   name: 'Flexilytics',
   tagline: 'Intelligence. Grounded.',
   description: 'The Context Engineering firm for regulated enterprise AI.',
-  url: 'https://flexilytics-corporate-v2.vercel.app',
+  url: 'https://www.flexilytics.ai',
   locale: 'en_IN',
   geo: {
     region: 'IN-MH',

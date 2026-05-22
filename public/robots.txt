@@ -1,5 +1,5 @@
 # Flexilytics — robots.txt
-# Production: flexilytics-corporate-v2.vercel.app
+# Production: www.flexilytics.ai
 User-agent: *
 Allow: /
 
@@ -11,6 +11,9 @@ User-agent: ClaudeBot
 Allow: /
 
 User-agent: anthropic-ai
+Allow: /
+
+User-agent: ChatGPT-User
 Allow: /
 
 User-agent: Google-Extended
@@ -31,8 +34,14 @@ Allow: /
 User-agent: meta-externalagent
 Allow: /
 
+User-agent: YouBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
 # Sitemap
-Sitemap: https://flexilytics-corporate-v2.vercel.app/sitemap.xml
+Sitemap: https://www.flexilytics.ai/sitemap.xml
 
 # Block staging / preview hosts at the network layer; the meta robots on those
 # environments should be 'noindex'. This file is for production only.

@@ -6,7 +6,7 @@ export default defineConfig({
   adapter: vercel({
     webAnalytics: { enabled: false }
   }),
-  site: 'https://flexilytics-corporate-v2.vercel.app',
+  site: 'https://www.flexilytics.ai',
   trailingSlash: 'never',
   publicDir: 'public',
 });
