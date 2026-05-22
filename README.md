@@ -6,7 +6,7 @@
 [![Pages](https://img.shields.io/badge/pages-20_live-brightgreen.svg)]()
 [![Tests](https://img.shields.io/badge/tests-103_passing-brightgreen.svg)]()
 [![Coverage](https://img.shields.io/badge/coverage-100%25_statements-brightgreen.svg)]()
-[![Version](https://img.shields.io/badge/version-3.0.0-orange.svg)]()
+[![Version](https://img.shields.io/badge/version-3.0.1-orange.svg)]()
 [![Status](https://img.shields.io/badge/status-Production_Live-brightgreen.svg)]()
 [![License](https://img.shields.io/badge/license-Proprietary-red.svg)](LICENSE)
 
@@ -101,7 +101,7 @@ The v2 Astro rebuild addresses all of these:
 - **IndexNow** — key `00d6af46d60a454eb2b84a57ed974c79`, 18 production URLs submitted
 - **Zod** — schema validation on all 3 API endpoints
 - **Vitest + @vitest/coverage-v8** — unit test suite (103 tests, 100% statement coverage on lib layer)
-- **Vercel** — project `flexilytics-corporate-v2` (`prj_8XYeFadepmDhHPMgeKZulneP6en6`), Node 20.x runtime, CSP headers, custom domain `www.flexilytics.ai`
+- **Vercel** — project `new-corporate-website-version2` (`prj_5ocS7Xo1u1OKJWHMVmnN2uzz8S16`), Node 20.x runtime, CSP headers, custom domain `www.flexilytics.ai`
 
 ---
 
@@ -186,12 +186,15 @@ All configuration is environment-variable driven. Copy `.env.example` to `.env.l
 
 ### Vercel Project (Production)
 
-- **Project name**: `flexilytics-corporate-v2`
-- **Project ID**: `prj_8XYeFadepmDhHPMgeKZulneP6en6`
+- **Project name**: `new-corporate-website-version2`
+- **Project ID**: `prj_5ocS7Xo1u1OKJWHMVmnN2uzz8S16`
 - **Org**: `arjun-ghoshs-projects` (team `team_EHreeMT1SqlaWSL25Rzh9vQT`)
-- **Custom domain**: `www.flexilytics.ai`
+- **Custom domain**: `www.flexilytics.ai` (owns domain — auto-deploys on every `git push origin main`)
+- **Project alias**: `https://new-corporate-website-version2.vercel.app`
 - **Node runtime**: 20.x (enforced via `astro.config.mjs` `nodeVersion: '20'` + `package.json` `engines.node`)
-- **`.vercel/project.json`**: gitignored — must be present locally before `vercel deploy --prebuilt`
+- **`.vercel/project.json`**: gitignored — run `vercel link --project new-corporate-website-version2` on fresh clone
+
+> **Note:** `flexilytics-corporate-v2` (`prj_8XYeFadepmDhHPMgeKZulneP6en6`) was an orphaned Vercel project with no domain and no production deployment. It was deleted 2026-05-22. All references to it in earlier docs/memory are stale.
 
 Production email routing:
 - `LEAD_NOTIFY_EMAIL` = `hello@flexilytics.ai`
@@ -206,12 +209,20 @@ Production email routing:
 | Environment | URL |
 |---|---|
 | **Production** | `https://www.flexilytics.ai` |
-| **Vercel project alias** | `https://flexilytics-corporate-v2.vercel.app` |
+| **Vercel project alias** | `https://new-corporate-website-version2.vercel.app` |
 | **Local Dev** | `http://localhost:4321` |
 
-### Deploy (Prebuilt — Required)
+### Deploy (Primary — Git Auto-Deploy)
 
-This project uses the `@astrojs/vercel` serverless adapter which generates `.vercel/output/` at build time. Always deploy prebuilt — never upload source.
+The Vercel project `new-corporate-website-version2` is git-connected to `arjunghosh/new-corporate-website-version2` (`origin`). Every push to `main` triggers an automatic build and deployment to `www.flexilytics.ai` — no manual steps needed.
+
+```bash
+git push origin main   # Vercel auto-builds and deploys → www.flexilytics.ai updated (~60s)
+```
+
+### Deploy (Fallback — Manual Prebuilt)
+
+Only needed if git auto-deploy is blocked. Requires `.vercel/project.json` to point at `new-corporate-website-version2` (run `vercel link --project new-corporate-website-version2` on fresh clone).
 
 ```bash
 # 1. Build (generates .vercel/output/)
@@ -222,12 +233,6 @@ vercel deploy --prebuilt --prod
 ```
 
 > **Node runtime note:** The Astro adapter generates `nodejs18.x` in `.vercel/output/functions/_render.func/.vc-config.json` if `nodeVersion` is not set. The `astro.config.mjs` adapter config includes `nodeVersion: '20'` to override this. If you upgrade the adapter, verify `.vc-config.json` still shows `nodejs20.x` before deploying.
-
-### Auto-Deploy via Git
-
-```bash
-git push origin main   # Vercel picks up and deploys automatically (Git integration)
-```
 
 ### Post-Deploy Verification Checklist
 
@@ -292,7 +297,7 @@ Browser / AI Answer Engine
 | Newsletter | Beehiiv REST API v2 |
 | SEO | Canonical meta, OG/Twitter tags, JSON-LD (Organization/WebSite/WebPage/BreadcrumbList/FAQPage/HowTo/Person) |
 | AEO/GEO | llms.txt, llms-full.txt, IndexNow, AI-crawler robots.txt |
-| Deploy | Vercel — prebuilt deploy (`vercel deploy --prebuilt --prod`) |
+| Deploy | Vercel — git auto-deploy (`git push origin main`), fallback: `vercel deploy --prebuilt --prod` |
 | Node runtime | 20.x (pinned via adapter + package.json engines) |
 
 ### Database Schema (NeonDB)
@@ -487,7 +492,7 @@ corporate-website-v2/
 - **`type="email"` inputs**: Use browser-native validation only — do NOT add `pattern` attribute (Astro strips `\s` in attribute strings).
 - **API responses**: `{ ok: true }` (202) or `{ error: string }` (4xx/5xx) envelope.
 - **Email sends**: `Promise.allSettled` on all sends — DB insert failure throws, email failure is logged and swallowed.
-- **Deploy**: Always prebuilt (`npm run build` → `vercel deploy --prebuilt --prod`). Never source upload — the repo is 900MB+ with `node_modules`.
+- **Deploy**: Primary = `git push origin main` (Vercel auto-deploys via git integration). Fallback = `npm run build` → `vercel deploy --prebuilt --prod` (requires `.vercel/project.json` linked to `new-corporate-website-version2`).
 
 ### Scripts
 
@@ -499,7 +504,8 @@ corporate-website-v2/
 | `npm run test` | Run all 103 unit tests (Vitest) |
 | `npm run test:watch` | Vitest watch mode for TDD |
 | `npm run test:coverage` | Generate v8 coverage report (`coverage/` dir) |
-| `vercel deploy --prebuilt --prod` | Deploy prebuilt output to production |
+| `git push origin main` | **Primary deploy** — Vercel auto-builds and deploys to `www.flexilytics.ai` |
+| `vercel deploy --prebuilt --prod` | Fallback deploy — prebuilt output, requires `.vercel/project.json` linked |
 
 ---
 
@@ -536,6 +542,7 @@ Unauthorized copying, modification, distribution, or use of this software in any
 
 | Tag | Date | Description |
 |---|---|---|
+| `v3.0.1` | 2026-05-22 | **Infrastructure audit + Vercel project correction.** Identified and corrected wrong Vercel project mapping (`.vercel/project.json` was pointing to orphaned `flexilytics-corporate-v2` instead of production `new-corporate-website-version2`). Deleted 2 orphaned Vercel projects (`flexilytics-corporate-v2`, `flexilytics-corporate-website`). Diagnosed and fixed production redirect loop (`www.flexilytics.ai` ↔ `flexilytics.ai`) triggered by orphaned project deletion. Changed 307 Temporary → 308 Permanent Redirect for `flexilytics.ai → www.flexilytics.ai` (SEO link equity pass-through). Verified Namecheap DNS is correctly configured (no changes needed). Updated all agent instruction files (CLAUDE.md, AGENTS.md, CODEX.md) with verified project mapping and 5 Vercel verification rules. README corrected with accurate deploy runbook. |
 | `v3.0.0` | 2026-05-22 | **New design + CEO audit + SEO/GEO remediation.** New design UI (full mobile/responsive optimisation), brand favicon, CEO-requested content updates (disambiguation, founder credential enrichment, HowTo schema), full SEO/AEO/GEO stack fix (canonical URLs from staging → www.flexilytics.ai, llms.txt/llms-full.txt, IndexNow, Person schemas, HowTo schema, robots.txt with 11 AI crawlers). 103 tests passing. |
 | `v2.1.0` | 2026-05-13 | **Test suite** — 98 unit tests (Vitest). Covers Zod schemas, rate-limiter, email XSS escaping, CSP headers, form injection attacks, robots.txt AI crawler access. 100% statement/function/line coverage on all unit-testable lib files. |
 | `v2.0.0` | 2026-05-13 | **Production launch** — Full Astro 4 hybrid rebuild. 18 pages, 3 API endpoints, NeonDB persistence, branded Resend HTML email, GA4, CSP security headers, generated sitemap. All 19 routes HTTP 200. |
@@ -544,6 +551,8 @@ Unauthorized copying, modification, distribution, or use of this software in any
 
 | Commit | Description |
 |---|---|
+| `(v3.0.1)` | docs(infra): README v3.0.1 — correct Vercel project mapping, deploy runbook, Session 4 infra audit |
+| `504d6b1` | docs(v3.0.0): update README to v3.0.0 milestone + tighten .gitignore |
 | `305f133` | fix(build): set Astro Vercel adapter nodeVersion to 20 — prevents nodejs18.x runtime rejection on Vercel |
 | `8df61f8` | feat(seo): fix canonical URLs, enrich schemas, add llms.txt — L5 audit remediation |
 | `ec3c63d` | feat: add full mobile/responsive optimisation across all breakpoints |
@@ -569,25 +578,35 @@ Unauthorized copying, modification, distribution, or use of this software in any
 
 ## Open Items
 
-| Item | Priority | Notes |
-|---|---|---|
-| GSC sitemap resubmission | P0 | Manual: GSC UI → Sitemaps → submit `https://www.flexilytics.ai/sitemap.xml` |
-| Beehiiv API key | P1 | Newsletter DB-only until key received. Add `BEEHIIV_API_KEY` Vercel env var. |
-| Crunchbase/G2 profiles | P1 | Create profiles, then add URLs to `sameAs` in `leadership.html` Organization schema |
-| Content articles | P1 | Articles 3–10 — writing task, not engineering |
-| Backlinks / guest posts | P2 | Marketing task |
-| Founder videos | P2 | Production task |
-| Service schemas on solutions pages | P2 | Add `Service` JSON-LD to each solutions `.html` file |
-| Replace `assets/team/arun.png` | P3 | Non-standardised portrait — replace with square white-bg photo |
+| Item | Priority | Status | Notes |
+|---|---|---|---|
+| GSC sitemap resubmission | P0 | Pending (Ankush) | Manual: GSC UI → Sitemaps → submit `https://www.flexilytics.ai/sitemap.xml` |
+| Beehiiv API key | P1 | Pending (Ankush) | Newsletter DB-only until key received. Add `BEEHIIV_API_KEY` Vercel env var. |
+| Crunchbase/G2/Tracxn profiles | P1 | Pending (Ankush) | Create profiles, then add URLs to `sameAs` in `leadership.html` Organization schema |
+| Content articles | P1 | Pending (Ankush) | Articles 3–10 — writing task, not engineering |
+| Backlinks / guest posts | P2 | Pending (Marketing) | AnalyticsIndiaMag, ETCISO, BFSI.eletsonline, Clutch, Goodfirms |
+| Founder videos | P2 | Pending (Ankush) | 4 × 90-second videos — production task |
+| Service schemas on solutions pages | P2 | Engineering | Add `Service` JSON-LD to each solutions `.html` file (~30 min) |
+| FAQPage schemas (BFSI, Solutions, Leadership) | P2 | Engineering | Add 3–4 Q&As per page (~3-4 hrs) |
+| Replace `assets/team/arun.png` | P3 | Pending (Ankush) | Non-standardised portrait — replace with square white-bg photo |
+| ✅ Vercel project mapping corrected | Done | 2026-05-22 | `.vercel/project.json` relinked to `new-corporate-website-version2` |
+| ✅ Orphaned Vercel projects deleted | Done | 2026-05-22 | `flexilytics-corporate-v2` + `flexilytics-corporate-website` deleted |
+| ✅ Production redirect loop fixed | Done | 2026-05-22 | `www.flexilytics.ai` ↔ `flexilytics.ai` loop resolved via manual alias |
+| ✅ 307 → 308 Permanent Redirect | Done | 2026-05-22 | `flexilytics.ai → www.flexilytics.ai` now passes SEO link equity |
+| ✅ Namecheap DNS verified | Done | 2026-05-22 | A `@` → `76.76.21.21`, CNAME `www` → `cname.vercel-dns.com.` — correct, no change needed |
+| ✅ L5 audit P0 engineering | Done | 2026-05-22 | All P0 items complete (canonical URL, llms.txt, disambiguation, schemas, IndexNow) |
 
 ---
 
 ## Status
 
-- **Version**: 3.0.0
-- **Tag**: `v3.0.0`
+- **Version**: 3.0.1
+- **Tag**: `v3.0.1`
 - **Production URL**: `https://www.flexilytics.ai`
-- **Vercel deployment**: `dpl_P42ajrNtaeiies3fzZaK4qLWZoiu`
+- **Vercel project**: `new-corporate-website-version2` (`prj_5ocS7Xo1u1OKJWHMVmnN2uzz8S16`) ✅
+- **Auto-deploy**: `git push origin main` → Vercel auto-builds → `www.flexilytics.ai` updated ✅
+- **Domain redirects**: `flexilytics.ai` → 308 Permanent → `www.flexilytics.ai` → 200 ✅
+- **DNS**: Namecheap A `@`→`76.76.21.21`, CNAME `www`→`cname.vercel-dns.com.` (verified correct) ✅
 - **Pages**: 18 static + sitemap + llms.txt + llms-full.txt, all HTTP 200
 - **Forms**: All 3 API endpoints tested E2E — DB saves confirmed
 - **Console errors**: 0
@@ -596,6 +615,7 @@ Unauthorized copying, modification, distribution, or use of this software in any
 - **Canonical URL**: `https://www.flexilytics.ai` on all pages ✅
 - **IndexNow**: 18 URLs submitted, HTTP 200 ✅
 - **Node runtime**: 20.x (Vercel + local enforced)
+- **L5 audit P0**: Engineering complete — GSC resubmission + content velocity pending (Ankush)
 - **License**: Proprietary — All Rights Reserved
 - **Owner**: Flexilytics Private Limited
 
