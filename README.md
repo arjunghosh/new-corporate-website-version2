@@ -3,18 +3,20 @@
 [![Astro](https://img.shields.io/badge/Astro-4.16-orange.svg)](https://astro.build/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue.svg)](https://www.typescriptlang.org/)
 [![Vercel](https://img.shields.io/badge/Vercel-Auto--deploy-black.svg)](https://vercel.com/)
-[![Pages](https://img.shields.io/badge/pages-18_live-brightgreen.svg)]()
-[![Tests](https://img.shields.io/badge/tests-98_passing-brightgreen.svg)]()
+[![Pages](https://img.shields.io/badge/pages-20_live-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/tests-103_passing-brightgreen.svg)]()
 [![Coverage](https://img.shields.io/badge/coverage-100%25_statements-brightgreen.svg)]()
-[![Version](https://img.shields.io/badge/version-2.1.0-orange.svg)]()
-[![Status](https://img.shields.io/badge/status-Production_Ready-brightgreen.svg)]()
+[![Version](https://img.shields.io/badge/version-3.0.0-orange.svg)]()
+[![Status](https://img.shields.io/badge/status-Production_Live-brightgreen.svg)]()
 [![License](https://img.shields.io/badge/license-Proprietary-red.svg)](LICENSE)
 
 ## Executive Summary
 
 ### Objective
 
-**Flexilytics Corporate Website v2** is the production Astro 4 rebuild of the Flexilytics company website — replacing a hand-authored static HTML bundle with a maintainable, type-safe, server-capable Astro hybrid site. It preserves 100% visual and content parity with the original design while adding dynamic form handling, database persistence, branded transactional email, and enterprise-grade security headers — all auto-deployed to Vercel on every push to `main`.
+**Flexilytics Corporate Website v2** is the production Astro 4 rebuild of the Flexilytics company website — replacing a hand-authored static HTML bundle with a maintainable, type-safe, server-capable Astro hybrid site. It preserves 100% visual parity with the new design (Ankush Shah v3.0 redesign) while adding dynamic form handling, database persistence, branded transactional email, enterprise-grade security headers, full SEO/AEO/GEO infrastructure, and LLM discoverability — all auto-deployed to Vercel on every push to `main`.
+
+**Live at:** `https://www.flexilytics.ai`
 
 ### Problem Statement
 
@@ -26,28 +28,27 @@ The v1 static HTML site had several structural limitations:
 - **Unmaintainable markup**: 18 separate HTML files with duplicated nav, footer, and `<head>` — every global change required editing 18 files.
 - **No type safety**: Pure HTML/JS with no build-time checks — regressions were invisible until production.
 - **Weak security posture**: No CSP headers, no HSTS, no rate limiting on any endpoint.
-- **No SEO infrastructure**: OG images, JSON-LD schemas, and canonical URLs were inconsistent across pages.
+- **Broken SEO infrastructure**: Canonical URLs, OG images, and JSON-LD schemas pointed to staging (`.vercel.app`) instead of `www.flexilytics.ai`. No LLM context files. No HowTo or Person schemas.
 
 ### Solution
 
 The v2 Astro rebuild addresses all of these:
 
-- **Shared layout system**: Single `BaseLayout.astro` + `Nav.astro` + `Footer.astro` — one edit, all 18 pages updated.
+- **Shared layout system**: Single `BaseLayout.astro` + `Nav.astro` + `Footer.astro` — one edit, all pages updated.
 - **Live API endpoints**: `POST /api/audit`, `/api/newsletter`, `/api/waitlist` — all wired to NeonDB and Resend.
 - **Branded HTML emails**: Dark-header template with logo, formatted key-value tables, and plain-text fallback — sent via Resend on every submission.
 - **NeonDB persistence**: All leads, newsletter subscribers, and waitlist entries stored in Postgres.
 - **Zod validation + honeypot + rate limiting**: Every API endpoint is schema-validated, bot-protected, and IP rate-limited.
 - **CSP + HSTS + security headers**: Full header suite enforced via `vercel.json` for all routes.
-- **Generated sitemap**: `src/pages/sitemap.xml.ts` generates `/sitemap.xml` at build time from all 18 page URLs.
+- **Full SEO/AEO/GEO stack**: Canonical URLs (`https://www.flexilytics.ai`), per-page OG images, JSON-LD (Organization, WebSite, WebPage, BreadcrumbList, FAQPage, HowTo, Person), geo meta (Mumbai), robots.txt with 11 AI crawlers explicitly welcomed.
+- **LLM discoverability**: `llms.txt` (concise) and `llms-full.txt` (10-section, ~3KB) for AI answer engine context.
+- **IndexNow**: Key file live, 18 URLs submitted to Bing/Yandex IndexNow network.
+- **CEO-requested content updates**: Disambiguation copy (Not FlexAI), founder credential enrichment, Two-Week Audit HowTo schema.
 - **GA4 analytics**: Injected in shared layout, CSP updated to allow GA4/GTM domains.
 
 ### Mission Statement
 
-**To present Flexilytics as the definitive Context Engineering firm for regulated enterprise AI — with a website that captures every inbound lead, reflects the brand's precision and credibility, and requires zero manual deployment effort.**
-
-### Vision Statement
-
-**A corporate web presence that operates as infrastructure: auto-deployed, observable, lead-capturing, and maintainable by any developer without touching 18 separate HTML files.**
+**To present Flexilytics as the definitive Context Engineering firm for regulated enterprise AI — with a website that captures every inbound lead, is discoverable by LLMs and AI answer engines, reflects the brand's precision and credibility, and requires zero manual deployment effort.**
 
 ### Target Personas
 
@@ -58,17 +59,8 @@ The v2 Astro rebuild addresses all of these:
 | **Enterprise Prospects** | CDOs, CIOs, Heads of Data at regulated firms | Browse solutions, book the 2-Week AI Readiness Audit | Low-friction path from awareness to qualified lead |
 | **BFSI Decision-Makers** | RBI/SEBI/IRDAI-regulated orgs | Industries → BFSI page, Trust & Security page | Industry-specific regulatory AI context |
 | **Sales Analysts / Data Leaders** | Evaluate FlexiAnalyst product | Solutions → FlexiAnalyst page, join waitlist | Product awareness + captured interest |
+| **AI Answer Engines** | GPT, Claude, Perplexity, Gemini | `llms.txt`, `llms-full.txt`, JSON-LD schemas | Accurate Flexilytics representation in AI-generated answers |
 | **Flexilytics Team** | Internal ops | Read form submissions via email + NeonDB | All leads in one place, no manual tracking |
-
-#### What the Rebuild Replaces
-
-| Legacy | Problem | Replacement |
-|--------|---------|-------------|
-| 18 separate HTML files | Any global change = 18 edits | `BaseLayout.astro` shared shell |
-| Google Forms / no form | Leads lost, no email confirmation | `/api/audit`, `/api/waitlist`, `/api/newsletter` |
-| No email | Prospects got no confirmation | Resend branded HTML email on every submit |
-| No DB | Zero lead history | NeonDB `leads` + `waitlist` + `newsletter_subscriptions` |
-| No CSP/HSTS | Open to clickjacking, injection | Full header suite in `vercel.json` |
 
 ---
 
@@ -76,29 +68,40 @@ The v2 Astro rebuild addresses all of these:
 
 ### Core Capabilities
 
-- **18 Static Pages**: All pages pre-rendered at build time via Astro hybrid output — fast CDN delivery, zero runtime cost.
-- **3 Live API Endpoints**: SSR routes for form submissions with Zod validation, honeypot bot detection, and in-memory IP rate limiting (5 req/min).
+- **20 Pages / Routes**: 18 public pages + `sitemap.xml` + `llms.txt` + `llms-full.txt` — all pre-rendered at build time via Astro hybrid output.
+- **3 Live API Endpoints**: SSR routes for form submissions with Zod validation, honeypot bot detection, and IP rate limiting (5 req/min).
 - **NeonDB Lead Persistence**: Every audit booking, waitlist signup, and newsletter subscription saved to Postgres with timestamp and user-agent.
-- **Branded Transactional Email**: Dark-header HTML email template (logo, formatted table, CTA button, plain-text companion) sent via Resend on every submission — both user confirmation and admin notification.
-- **Admin Email Routing**: Admin notifications CC'd to `ankush.shah@flexilytics.ai`, `hello@flexilytics.ai`, `arjun.ghosh@flexilytics.ai`.
-- **Beehiiv Newsletter Integration**: Newsletter API wired — activates on `BEEHIIV_API_KEY` env var. DB-only mode until key received.
-- **GA4 Analytics**: Google Analytics 4 injected in shared layout (`G-2VDBBM1YFF`).
-- **CSP Security Headers**: Full Content Security Policy including GA4/GTM domains, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy — all via `vercel.json`.
-- **Generated Sitemap**: `/sitemap.xml` generated at Astro build time from 19 routes with weighted priorities.
-- **SEO / AEO / GEO**: Every page ships canonical URL, Open Graph (1200×630 OG images), Twitter card, geo meta (Mumbai), JSON-LD (`Organization` + `WebSite` + page-typed node + `BreadcrumbList`). `FAQPage` schema on home/approach/context-engineering/book-audit. `Article` + `Person` schema on insight articles.
-- **robots.txt**: Explicitly allows GPTBot, ClaudeBot, anthropic-ai, Google-Extended, PerplexityBot, Applebot-Extended, CCBot, Bytespider, meta-externalagent.
-- **Unit Test Suite**: 98 tests across 4 files — Zod schema validation, rate-limiter window logic, email XSS escaping, CSP header assertions, form injection attack coverage. 100% statement/function/line coverage on all unit-testable lib files. Run via `npm run test` or `npm run test:coverage`.
+- **Branded Transactional Email**: Dark-header HTML email template sent via Resend on every submission — both user confirmation and admin notification.
+- **Full SEO / AEO / GEO Stack**:
+  - Canonical URL: `https://www.flexilytics.ai` on every page (fixed from staging URL leak)
+  - OG images: per-page 1200×630px images (`/og/*.png`)
+  - JSON-LD schemas: `Organization`, `WebSite`, `WebPage`, `BreadcrumbList`, `FAQPage` on every qualifying page
+  - `HowTo` schema: Two-Week Readiness Audit (3 steps, P14D) on `/approach`
+  - `Person` schemas: All 4 founding partners on `/leadership` with `alumniOf`, `knowsAbout`, `sameAs` (LinkedIn)
+  - Geo meta: `IN-MH`, Mumbai, ICBM coordinates on every page
+- **LLM Context Files**:
+  - `/llms.txt`: Concise AI context (~900 chars) — identity, framework, team, pages
+  - `/llms-full.txt`: Full 10-section context (~3KB) — complete entity description for AI answer engines
+- **IndexNow**: Key file live at `/00d6af46d60a454eb2b84a57ed974c79.txt`. 18 URLs submitted (HTTP 200 accepted).
+- **robots.txt**: 11 AI crawlers explicitly welcomed: GPTBot, ClaudeBot, anthropic-ai, ChatGPT-User, Google-Extended, PerplexityBot, Applebot-Extended, CCBot, Bytespider, meta-externalagent, YouBot, cohere-ai.
+- **CEO Content Updates (v3.0.0)**:
+  - "Not FlexAI" disambiguation in About → Why We Exist section
+  - Footer disambiguation: "Flexilytics is a Context Engineering consultancy — not FlexAI, not an AI product company."
+  - New design UI: full mobile/responsive optimisation across all breakpoints
+  - Accurate brand favicon (Flexilytics brand teal-F logo)
+- **Unit Test Suite**: 103 tests across 4 files (Vitest). Covers Zod schemas, rate-limiter, email XSS escaping, CSP headers, form injection attacks. 100% statement/function/line coverage on all unit-testable lib files.
 
 ### Integrations and Stack
 
-- **Astro 4.16** — hybrid output, `@astrojs/vercel` serverless adapter, TypeScript strict mode
+- **Astro 4.16** — hybrid output, `@astrojs/vercel` serverless adapter (`nodeVersion: '20'`), TypeScript strict mode
 - **NeonDB (Serverless Postgres)** — `@neondatabase/serverless`, `leads` + `waitlist` + `newsletter_subscriptions` tables
 - **Resend** — transactional email, sender domain `notify.flexilytics.ai`
 - **Beehiiv** — newsletter subscription sync (API key pending)
 - **GA4 / Google Tag Manager** — analytics via `G-2VDBBM1YFF`
+- **IndexNow** — key `00d6af46d60a454eb2b84a57ed974c79`, 18 production URLs submitted
 - **Zod** — schema validation on all 3 API endpoints
-- **Vitest + @vitest/coverage-v8** — unit test suite (98 tests, 100% statement coverage on lib layer)
-- **Vercel** — auto-deploy on push to `main`, Node 20.x runtime, CSP headers
+- **Vitest + @vitest/coverage-v8** — unit test suite (103 tests, 100% statement coverage on lib layer)
+- **Vercel** — project `flexilytics-corporate-v2` (`prj_8XYeFadepmDhHPMgeKZulneP6en6`), Node 20.x runtime, CSP headers, custom domain `www.flexilytics.ai`
 
 ---
 
@@ -110,11 +113,11 @@ The v2 Astro rebuild addresses all of these:
 - [Architecture](#architecture)
 - [Pages](#pages)
 - [API Endpoints](#api-endpoints)
+- [SEO and AEO Infrastructure](#seo-and-aeo-infrastructure)
 - [Development](#development)
 - [Contributing](#contributing)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
-- [Documentation](#documentation)
 - [Git Tags and Releases](#git-tags-and-releases)
 - [Status](#status)
 
@@ -153,8 +156,9 @@ npm run dev
 ### Verify Build
 
 ```bash
-npm run build   # must complete with 0 errors
-npm run check   # TypeScript — must be 0 errors, 0 warnings
+npm run build     # must complete with 0 errors
+npm run typecheck # TypeScript — must be 0 errors
+npm run test      # 103 tests must pass
 ```
 
 ---
@@ -167,20 +171,27 @@ All configuration is environment-variable driven. Copy `.env.example` to `.env.l
 
 | Variable | Required | Description |
 |---|---|---|
+| `PUBLIC_SITE_URL` | ✅ | Canonical site URL — **must be `https://www.flexilytics.ai`** (with www) |
 | `DATABASE_URL` | ✅ | NeonDB PostgreSQL connection string |
 | `RESEND_API_KEY` | ✅ | Resend API key for transactional email |
 | `RESEND_SENDER_EMAIL` | ✅ | Sender address (e.g. `no-reply@notify.flexilytics.ai`) |
 | `LEAD_NOTIFY_EMAIL` | ✅ | Primary recipient for admin lead notifications |
-| `ADMIN_CC_EMAILS` | ✅ | CC recipients — comma-separated or JSON array |
+| `ADMIN_CC_EMAILS` | ✅ | CC recipients — comma-separated |
 | `BEEHIIV_PUBLICATION_ID` | ✅ | Beehiiv publication ID for newsletter sync |
 | `BEEHIIV_API_KEY` | pending | Beehiiv API key — DB-only mode until set |
 | `GA4_MEASUREMENT_ID` | ✅ | Google Analytics 4 measurement ID |
 | `IP_HASH_SALT` | ✅ | Random hex string for IP hashing in rate limiter |
-| `PUBLIC_SITE_URL` | ✅ | Canonical site URL for sitemap and OG tags |
 
-### Vercel Environment (Production)
+> **Critical:** `PUBLIC_SITE_URL` must use the `www` subdomain. Non-www causes canonical/OG/sitemap URLs to diverge from the production domain. `src/data/site.ts` is the authoritative URL — keep it in sync.
 
-All 9 env vars above are set on the `new-corporate-website-version2` Vercel project for production, preview, and development environments. Set via Vercel dashboard → Project Settings → Environment Variables.
+### Vercel Project (Production)
+
+- **Project name**: `flexilytics-corporate-v2`
+- **Project ID**: `prj_8XYeFadepmDhHPMgeKZulneP6en6`
+- **Org**: `arjun-ghoshs-projects` (team `team_EHreeMT1SqlaWSL25Rzh9vQT`)
+- **Custom domain**: `www.flexilytics.ai`
+- **Node runtime**: 20.x (enforced via `astro.config.mjs` `nodeVersion: '20'` + `package.json` `engines.node`)
+- **`.vercel/project.json`**: gitignored — must be present locally before `vercel deploy --prebuilt`
 
 Production email routing:
 - `LEAD_NOTIFY_EMAIL` = `hello@flexilytics.ai`
@@ -194,28 +205,47 @@ Production email routing:
 
 | Environment | URL |
 |---|---|
-| **Production** | `https://new-corporate-website-version2.vercel.app` |
+| **Production** | `https://www.flexilytics.ai` |
+| **Vercel project alias** | `https://flexilytics-corporate-v2.vercel.app` |
 | **Local Dev** | `http://localhost:4321` |
 
-### Deploy
+### Deploy (Prebuilt — Required)
+
+This project uses the `@astrojs/vercel` serverless adapter which generates `.vercel/output/` at build time. Always deploy prebuilt — never upload source.
 
 ```bash
-# Auto-deploy (recommended)
-git push origin main   # Vercel picks up and deploys automatically
+# 1. Build (generates .vercel/output/)
+npm run build
 
-# Manual
-vercel --prod
+# 2. Deploy prebuilt output
+vercel deploy --prebuilt --prod
 ```
 
-### Post-Deploy Self-Test
+> **Node runtime note:** The Astro adapter generates `nodejs18.x` in `.vercel/output/functions/_render.func/.vc-config.json` if `nodeVersion` is not set. The `astro.config.mjs` adapter config includes `nodeVersion: '20'` to override this. If you upgrade the adapter, verify `.vc-config.json` still shows `nodejs20.x` before deploying.
 
-After every push, verify on the production alias (not hash URL — Vercel SSO blocks hash URLs):
+### Auto-Deploy via Git
 
+```bash
+git push origin main   # Vercel picks up and deploys automatically (Git integration)
 ```
-https://new-corporate-website-version2.vercel.app
-```
 
-Check: all pages load, 0 console errors, forms submit successfully, branded email received.
+### Post-Deploy Verification Checklist
+
+After every deploy, confirm:
+
+```bash
+# 1. Canonical URL correct (must be www.flexilytics.ai, NOT *.vercel.app)
+curl -s https://www.flexilytics.ai | grep 'canonical'
+
+# 2. llms.txt serving correctly
+curl -s https://www.flexilytics.ai/llms.txt | head -5
+
+# 3. Sitemap URLs are www
+curl -s https://www.flexilytics.ai/sitemap.xml | grep '<loc>' | head -3
+
+# 4. IndexNow key file accessible
+curl https://www.flexilytics.ai/00d6af46d60a454eb2b84a57ed974c79.txt
+```
 
 ---
 
@@ -224,40 +254,46 @@ Check: all pages load, 0 console errors, forms submit successfully, branded emai
 ### System Overview
 
 ```
-Browser
+Browser / AI Answer Engine
   │
-  ├── Static pages (18) ──── Vercel CDN (pre-rendered at build)
+  ├── Static pages (18) ──────── Vercel CDN (pre-rendered at build)
+  ├── /llms.txt ────────────────► Vercel CDN (static, AI context)
+  ├── /llms-full.txt ──────────► Vercel CDN (static, AI context)
+  ├── /sitemap.xml ────────────► Vercel CDN (static, generated at build)
   │
-  └── API routes (3) ──────► Vercel Serverless Function (Node 20.x)
-                                │
-                                ├── Zod validation
-                                ├── Honeypot check
-                                ├── IP rate limit (in-memory)
-                                ├── NeonDB (Postgres) ──► leads / waitlist / newsletter_subscriptions
-                                └── Resend ──────────────► Branded HTML email (user + admin)
-                                          └── Beehiiv ──► Newsletter sync (API key pending)
+  └── API routes (3) ──────────► Vercel Serverless Function (Node 20.x)
+                                    │
+                                    ├── Zod validation
+                                    ├── Honeypot check
+                                    ├── IP rate limit (in-memory, 5 req/60s)
+                                    ├── NeonDB (Postgres) ──► leads / waitlist / newsletter_subscriptions
+                                    └── Resend ──────────────► Branded HTML email (user + admin)
+                                              └── Beehiiv ──► Newsletter sync (API key pending)
 ```
 
 ### Astro Hybrid Architecture
 
-- **Static (pre-rendered)**: All 18 public pages — `index.astro`, `about.astro`, `leadership.astro`, `insights.astro`, all solutions/platforms/industries pages. Built at deploy time, served from CDN.
+- **Static (pre-rendered)**: All 18 public pages + sitemap + llms.txt + llms-full.txt. Built at deploy time, served from CDN.
 - **SSR (server-rendered)**: `src/pages/api/*.ts` — 3 API routes with `export const prerender = false`. Run as Vercel serverless functions.
-- **Adapter**: `@astrojs/vercel` serverless — Node 20.x runtime enforced via `engines.node` in `package.json`.
+- **HTML-source pattern**: Every `.astro` page (e.g. `index.astro`) reads its matching `.html` file from the repo root at build time, normalises `https://flexilytics.ai` → `site.url`, extracts schemas, styles, and `<main>` content, then injects into `BaseLayout.astro`. The `.html` files are the canonical content source — edit them, not the `.astro` wrappers.
+- **Adapter**: `@astrojs/vercel` serverless — Node 20.x runtime enforced via `nodeVersion: '20'` in adapter config and `engines.node` in `package.json`.
 
 ### Technology Stack
 
 | Layer | Technology |
 |---|---|
 | Framework | Astro 4.16, TypeScript strict |
-| Adapter | @astrojs/vercel serverless |
+| Adapter | @astrojs/vercel serverless, nodeVersion: 20 |
 | Database | NeonDB (Serverless Postgres) via @neondatabase/serverless |
 | Email | Resend SDK — branded HTML + plain text |
 | Validation | Zod — schema on all 3 API routes |
 | Security | CSP + HSTS + X-Frame-Options + Referrer-Policy + Permissions-Policy (vercel.json) |
 | Analytics | GA4 via GTM script in BaseLayout |
 | Newsletter | Beehiiv REST API v2 |
-| Deploy | Vercel — auto-deploy on push to `main` |
-| Node runtime | 20.x (pinned in package.json `engines`) |
+| SEO | Canonical meta, OG/Twitter tags, JSON-LD (Organization/WebSite/WebPage/BreadcrumbList/FAQPage/HowTo/Person) |
+| AEO/GEO | llms.txt, llms-full.txt, IndexNow, AI-crawler robots.txt |
+| Deploy | Vercel — prebuilt deploy (`vercel deploy --prebuilt --prod`) |
+| Node runtime | 20.x (pinned via adapter + package.json engines) |
 
 ### Database Schema (NeonDB)
 
@@ -297,27 +333,30 @@ newsletter_subscriptions (
 
 All 18 public pages live at clean URLs (no `.html` extension). All return HTTP 200 in production.
 
-| Page | Clean URL | Astro File |
+| Page | Clean URL | Source File |
 |---|---|---|
-| Homepage | `/` | `src/pages/index.astro` |
-| Approach | `/approach` | `src/pages/approach.astro` |
-| Context Engineering | `/context-engineering` | `src/pages/context-engineering.astro` |
-| Solutions Hub | `/solutions` | `src/pages/solutions.astro` |
-| Data Governance | `/solutions-data-governance` | `src/pages/solutions-data-governance.astro` |
-| Modern Data Platform | `/solutions-modern-data-platform` | `src/pages/solutions-modern-data-platform.astro` |
-| AI/ML Engineering | `/solutions-ai-ml-engineering` | `src/pages/solutions-ai-ml-engineering.astro` |
-| Analytics & BI | `/solutions-analytics-bi` | `src/pages/solutions-analytics-bi.astro` |
-| FlexiAnalyst | `/solutions-flexianalyst` | `src/pages/solutions-flexianalyst.astro` |
-| Platforms | `/platforms` | `src/pages/platforms.astro` |
-| Trust & Security | `/trust-security` | `src/pages/trust-security.astro` |
-| Insights Hub | `/insights` | `src/pages/insights.astro` |
+| Homepage | `/` | `index.html` → `src/pages/index.astro` |
+| Approach | `/approach` | `approach.html` → `src/pages/approach.astro` |
+| Context Engineering | `/context-engineering` | `context-engineering.html` → `src/pages/context-engineering.astro` |
+| Solutions Hub | `/solutions` | `solutions.html` → `src/pages/solutions.astro` |
+| Data Governance | `/solutions-data-governance` | `solutions-data-governance.html` → `src/pages/solutions-data-governance.astro` |
+| Modern Data Platform | `/solutions-modern-data-platform` | `solutions-modern-data-platform.html` → `src/pages/solutions-modern-data-platform.astro` |
+| AI/ML Engineering | `/solutions-ai-ml-engineering` | `solutions-ai-ml-engineering.html` → `src/pages/solutions-ai-ml-engineering.astro` |
+| Analytics & BI | `/solutions-analytics-bi` | `solutions-analytics-bi.html` → `src/pages/solutions-analytics-bi.astro` |
+| FlexiAnalyst | `/solutions-flexianalyst` | `solutions-flexianalyst.html` → `src/pages/solutions-flexianalyst.astro` |
+| Platforms | `/platforms` | `platforms.html` → `src/pages/platforms.astro` |
+| Trust & Security | `/trust-security` | `trust-security.html` → `src/pages/trust-security.astro` |
+| Insights Hub | `/insights` | `insights.html` → `src/pages/insights.astro` |
 | Article — Context Engineering | `/insights/context-engineering-buyable-category` | `src/pages/insights/context-engineering-buyable-category.astro` |
 | Article — Fabric vs Databricks | `/insights/fabric-vs-databricks-bfsi` | `src/pages/insights/fabric-vs-databricks-bfsi.astro` |
-| About | `/about` | `src/pages/about.astro` |
-| Leadership | `/leadership` | `src/pages/leadership.astro` |
-| BFSI Industry | `/industries/bfsi` | `src/pages/industries/bfsi.astro` |
-| Book Audit | `/book-audit` | `src/pages/book-audit.astro` |
+| About | `/about` | `about.html` → `src/pages/about.astro` |
+| Leadership | `/leadership` | `leadership.html` → `src/pages/leadership.astro` |
+| BFSI Industry | `/industries/bfsi` | `bfsi.html` → `src/pages/industries/bfsi.astro` |
+| Book Audit | `/book-audit` | `book-audit.html` → `src/pages/book-audit.astro` |
 | Sitemap | `/sitemap.xml` | `src/pages/sitemap.xml.ts` |
+| LLM Context (short) | `/llms.txt` | `src/pages/llms.txt.ts` |
+| LLM Context (full) | `/llms-full.txt` | `src/pages/llms-full.txt.ts` |
+| IndexNow key | `/00d6af46d60a454eb2b84a57ed974c79.txt` | `public/00d6af46d60a454eb2b84a57ed974c79.txt` |
 
 ---
 
@@ -333,6 +372,39 @@ All endpoints: Zod schema validation → honeypot check → IP rate limit (5 req
 
 ---
 
+## SEO and AEO Infrastructure
+
+### JSON-LD Schemas (per page)
+
+| Page | Schemas |
+|---|---|
+| All pages | `Organization`, `WebSite`, typed `WebPage` node, `BreadcrumbList` |
+| `/` | + `FAQPage` (4 questions) |
+| `/approach` | + `FAQPage` (2 questions), `HowTo` (Two-Week Readiness Audit, 3 steps, P14D) |
+| `/context-engineering` | + `FAQPage` |
+| `/book-audit` | + `FAQPage` |
+| `/leadership` | + 4× `Person` (Ankush Shah, Vishal Dhure, Arun Bhatia, Arjun Ghosh) with `alumniOf`, `knowsAbout`, `sameAs` (LinkedIn) |
+
+### LLM Discoverability
+
+- `/llms.txt`: Short context file — identity, framework, team summary, page list. Follows the emerging llms.txt standard.
+- `/llms-full.txt`: Full 10-section context — Company Identity, What We Do, FlexiContext™ Framework, Products, Founding Partners, Industries/Geographies, Technology Partners, Trust & Compliance, Content, Site Map.
+
+### Disambiguation
+
+Flexilytics is **not** FlexAI. This is made explicit in:
+- `about.html` → Why We Exist section
+- `Footer.astro` — footer bottom line
+
+### IndexNow
+
+Key: `00d6af46d60a454eb2b84a57ed974c79`
+Key file: `https://www.flexilytics.ai/00d6af46d60a454eb2b84a57ed974c79.txt`
+Submission endpoint: `https://api.indexnow.org/IndexNow`
+18 production URLs submitted 2026-05-22, HTTP 200 accepted.
+
+---
+
 ## Development
 
 ### Project Structure
@@ -344,19 +416,19 @@ corporate-website-v2/
 │   │   └── BaseLayout.astro          # Shared HTML shell — nav, footer, GA4, SEO, JSON-LD slots
 │   ├── components/
 │   │   ├── Nav.astro                 # Top navigation bar
-│   │   ├── Footer.astro             # Site footer
+│   │   ├── Footer.astro             # Site footer + "Not FlexAI" disambiguation note
 │   │   ├── SEO.astro                # Typed meta / OG / Twitter / geo tags
 │   │   └── JsonLd.astro             # JSON-LD script injector
 │   ├── data/
-│   │   ├── site.ts                  # Org constants (name, URL, tagline, address, team)
+│   │   ├── site.ts                  # Org constants — URL MUST be https://www.flexilytics.ai
 │   │   ├── navigation.ts            # Nav link definitions
-│   │   └── team.ts                  # Founder data
+│   │   └── team.ts                  # Founder data (name, role, LinkedIn, alumni)
 │   ├── lib/
 │   │   ├── db.ts                    # NeonDB: insertLead, insertNewsletterSub, insertWaitlist
 │   │   ├── email.ts                 # Resend: branded HTML templates for all 4 email types
 │   │   ├── validation.ts            # Zod schemas: auditSchema, newsletterSchema, waitlistSchema
 │   │   ├── rate-limit.ts            # In-memory IP rate limiter
-│   │   └── __tests__/               # Unit tests (Vitest)
+│   │   └── __tests__/               # Unit tests (Vitest, 103 tests)
 │   │       ├── validation.test.ts   # 40+ tests: schema shape, consent, honeypot, type coercion
 │   │       ├── rate-limit.test.ts   # 8 tests: window reset, key isolation (fake timers)
 │   │       ├── email.test.ts        # 30+ tests: XSS escaping, honeypot exclusion, routing
@@ -371,30 +443,37 @@ corporate-website-v2/
 │       ├── insights/
 │       │   ├── context-engineering-buyable-category.astro
 │       │   └── fabric-vs-databricks-bfsi.astro
-│       ├── index.astro              # Homepage (reads index.html at build time)
-│       ├── about.astro
-│       ├── approach.astro
-│       ├── book-audit.astro
+│       ├── llms.txt.ts              # GET /llms.txt — AI context (prerendered)
+│       ├── llms-full.txt.ts         # GET /llms-full.txt — full AI context (prerendered)
+│       ├── sitemap.xml.ts           # GET /sitemap.xml — generated from routes
+│       ├── index.astro              # / (reads index.html at build time)
+│       ├── about.astro              # /about
+│       ├── approach.astro           # /approach
+│       ├── book-audit.astro         # /book-audit
 │       ├── context-engineering.astro
 │       ├── insights.astro
 │       ├── leadership.astro
 │       ├── platforms.astro
 │       ├── solutions.astro
 │       ├── solutions-*.astro        # 5 solution sub-pages
-│       ├── trust-security.astro
-│       └── sitemap.xml.ts           # Generated sitemap
-├── assets/                          # Symlinked into public/ at build
-│   ├── site.css                     # Design system v4 (CSS custom properties)
-│   ├── site.js                      # Nav, reveal animations, ambient canvas
-│   ├── logo-full-nav.png            # Nav logo (1941×409px transparent, incl. tagline)
-│   ├── logo-footer.png              # Footer logo (grey-toned variant)
-│   └── team/                        # Founder portrait photos
-├── og/                              # OG social preview images (1200×630px, one per page)
+│       └── trust-security.astro
+├── *.html                           # Static HTML source files — primary content source
+│                                    # Each .astro page reads its matching .html at build time.
+│                                    # JSON-LD schemas live in the .html <head> sections.
+│                                    # Do NOT delete these files.
 ├── public/
-│   ├── favicon.ico                  # Multi-size ICO (16/32/48px)
-│   └── robots.txt                   # AI crawlers explicitly allowed
-├── *.html                           # Original static HTML — parity reference, do not delete
-├── astro.config.mjs                 # output: hybrid, Vercel adapter, trailingSlash: never
+│   ├── favicon.ico                  # Flexilytics brand teal-F logo (multi-size ICO)
+│   ├── favicon.png                  # PNG variant
+│   ├── robots.txt                   # 11 AI crawlers explicitly allowed
+│   ├── 00d6af46d60a454eb2b84a57ed974c79.txt  # IndexNow key file
+│   └── og/                          # OG social preview images (1200×630px, one per page)
+├── assets/                          # Design system assets (CSS, JS, logos, team photos)
+│   ├── site.css                     # Design system v4 (CSS custom properties, all-dark palette)
+│   ├── site.js                      # Nav, reveal animations, ambient canvas
+│   ├── logo-full-nav.png            # Nav logo (with tagline)
+│   ├── logo-footer.png              # Footer logo
+│   └── team/                        # Founder portrait photos
+├── astro.config.mjs                 # output: hybrid, Vercel adapter (nodeVersion: 20), site URL
 ├── tsconfig.json                    # Strict mode, path alias @/*
 ├── vercel.json                      # cleanUrls, security headers (CSP, HSTS, X-Frame-Options)
 ├── vitest.config.ts                 # Test config: node env, import.meta.env stubs, coverage scope
@@ -403,22 +482,24 @@ corporate-website-v2/
 
 ### Key Conventions
 
-- `type="email"` inputs use browser-native validation only — do NOT add `pattern` attribute (Astro strips `\s` in attribute strings).
-- All API responses follow `{ ok: true }` (202) or `{ error: string }` (4xx/5xx) envelope.
-- `Promise.allSettled` on all email sends — DB insert failure throws, email failure is logged and swallowed.
-- `src/pages/index.astro` reads `index.html` at build time via `readFile` — extracts `<main>`, tweaks panel, foot script via regex. Changing the homepage layout requires editing `index.html`, not `index.astro`.
+- **`site.url` is authoritative**: `src/data/site.ts` → `url` field controls ALL canonical, OG, sitemap, and schema URLs. Never hardcode `flexilytics.ai` in new files — always import `site`.
+- **HTML-source pattern**: `.astro` pages read matching `.html` files and call `replaceAll('https://flexilytics.ai', site.url)`. This means schemas in `.html` files use non-www `https://flexilytics.ai` — the `.astro` normalises at build time.
+- **`type="email"` inputs**: Use browser-native validation only — do NOT add `pattern` attribute (Astro strips `\s` in attribute strings).
+- **API responses**: `{ ok: true }` (202) or `{ error: string }` (4xx/5xx) envelope.
+- **Email sends**: `Promise.allSettled` on all sends — DB insert failure throws, email failure is logged and swallowed.
+- **Deploy**: Always prebuilt (`npm run build` → `vercel deploy --prebuilt --prod`). Never source upload — the repo is 900MB+ with `node_modules`.
 
 ### Scripts
 
 | Command | Purpose |
 |---|---|
 | `npm run dev` | Local dev server at `http://localhost:4321` |
-| `npm run build` | Production build — must pass before any deploy |
-| `npm run check` | TypeScript check — 0 errors, 0 warnings required |
-| `npm run test` | Run all 98 unit tests (Vitest) |
+| `npm run build` | Production build — generates `.vercel/output/`, must pass with 0 errors |
+| `npm run typecheck` | TypeScript check — 0 errors required |
+| `npm run test` | Run all 103 unit tests (Vitest) |
 | `npm run test:watch` | Vitest watch mode for TDD |
 | `npm run test:coverage` | Generate v8 coverage report (`coverage/` dir) |
-| `git push origin main` | Triggers Vercel auto-deploy |
+| `vercel deploy --prebuilt --prod` | Deploy prebuilt output to production |
 
 ---
 
@@ -427,10 +508,11 @@ corporate-website-v2/
 Proprietary. Internal development only.
 
 - Never commit `.env.local` or any file containing credentials.
-- Run `npm run build && npm run check` before pushing — both must be clean.
-- After every push, self-test on `https://new-corporate-website-version2.vercel.app` (not hash URLs).
+- Run `npm run build && npm run typecheck && npm run test` before pushing — all must be clean.
+- After every deploy, verify canonical URL is `https://www.flexilytics.ai` (not `*.vercel.app`).
 - Do not add `pattern` attributes to `type="email"` inputs — use browser native validation.
 - All new form fields must be added to both the Zod schema (`src/lib/validation.ts`) and the API route payload.
+- Schema changes: edit the `.html` source files (not `.astro` wrappers). JSON-LD lives in `<head>` of each `.html`.
 
 ---
 
@@ -444,21 +526,9 @@ Unauthorized copying, modification, distribution, or use of this software in any
 
 ## Acknowledgments
 
-- **Arjun Ghosh** (Chief AI & Tech Officer) — Architecture, development, deployment
-- **Ankush Shah** (CEO & Founder) — Product direction, brand, content
+- **Arjun Ghosh** (Chief AI & Tech Officer) — Architecture, development, deployment, SEO/AEO engineering
+- **Ankush Shah** (CEO & Founder) — Product direction, brand, content, CEO content audit (v3.0.0)
 - **Flexilytics Private Limited** — Organization
-
----
-
-## Documentation
-
-- [CHANGES.md](CHANGES.md) — Rolling session log + CEO update material (gitignored, local only)
-- [src/lib/schema.sql](src/lib/schema.sql) — NeonDB live schema DDL
-- [vercel.json](vercel.json) — CSP + security headers reference
-
-### Design Reference
-
-Parity baseline: `new-designdocs-part-2/deploy/` — original static HTML/CSS/JS bundle. Every Astro page must match this reference visually and structurally. Exception: logos and favicon use the re-created assets in this repo, not the originals.
 
 ---
 
@@ -466,21 +536,28 @@ Parity baseline: `new-designdocs-part-2/deploy/` — original static HTML/CSS/JS
 
 | Tag | Date | Description |
 |---|---|---|
+| `v3.0.0` | 2026-05-22 | **New design + CEO audit + SEO/GEO remediation.** New design UI (full mobile/responsive optimisation), brand favicon, CEO-requested content updates (disambiguation, founder credential enrichment, HowTo schema), full SEO/AEO/GEO stack fix (canonical URLs from staging → www.flexilytics.ai, llms.txt/llms-full.txt, IndexNow, Person schemas, HowTo schema, robots.txt with 11 AI crawlers). 103 tests passing. |
 | `v2.1.0` | 2026-05-13 | **Test suite** — 98 unit tests (Vitest). Covers Zod schemas, rate-limiter, email XSS escaping, CSP headers, form injection attacks, robots.txt AI crawler access. 100% statement/function/line coverage on all unit-testable lib files. |
-| `v2.0.0` | 2026-05-13 | **Production launch** — Full Astro 4 hybrid rebuild. 18 pages, 3 API endpoints, NeonDB persistence, branded Resend HTML email, GA4, CSP security headers, generated sitemap. All 19 routes HTTP 200. Zero console errors. Both forms E2E tested and confirmed DB-saving. |
+| `v2.0.0` | 2026-05-13 | **Production launch** — Full Astro 4 hybrid rebuild. 18 pages, 3 API endpoints, NeonDB persistence, branded Resend HTML email, GA4, CSP security headers, generated sitemap. All 19 routes HTTP 200. |
 
 ### Commit History
 
 | Commit | Description |
 |---|---|
+| `305f133` | fix(build): set Astro Vercel adapter nodeVersion to 20 — prevents nodejs18.x runtime rejection on Vercel |
+| `8df61f8` | feat(seo): fix canonical URLs, enrich schemas, add llms.txt — L5 audit remediation |
+| `ec3c63d` | feat: add full mobile/responsive optimisation across all breakpoints |
+| `971b79a` | fix: replace triangle placeholder favicon with Flexilytics brand teal-F logo |
+| `0516e30` | fix: replace placeholder favicon with brand-accurate Flexilytics ICO from v1 site |
+| `edb22ec` | docs: update README to v2.1.0 — add test suite section, scripts, commit history |
 | `06eaf63` | fix: coverage config — exclude legacy-page.ts, schema.sql, api routes from unit coverage scope |
 | `e9f185b` | feat: add unit test suite — 98 tests (validation, rate-limit, email XSS, security headers) |
 | `20ec0c5` | docs: update README to v2.0.0 production state + tighten gitignore |
 | `68c3f3e` | chore: flip email routing to production addresses |
 | `fc04f6c` | chore: trigger redeploy to pick up new Vercel env vars |
-| `0f20df8` | fix: book-audit email pattern attribute stripping `\s` — removed, native validation sufficient |
+| `0f20df8` | fix: book-audit email pattern attribute stripping — removed, native validation sufficient |
 | `dbe52ce` | feat: replace bare email stubs with full branded HTML template system |
-| `edb73f4` | fix: inject tweaks panel HTML into homepage foot slot — eliminates null addEventListener TypeError |
+| `edb73f4` | fix: inject tweaks panel HTML into homepage foot slot |
 | `a9c3b4f` | fix: add GA4/GTM domains to CSP connect-src |
 | `bd815bf` | fix: add engines.node=20.x — Vercel adapter incompatible with Node 24 |
 | `ca357a8` | fix: remove TWEAK_DEFAULTS from BaseLayout — eliminates duplicate const declaration |
@@ -490,26 +567,34 @@ Parity baseline: `new-designdocs-part-2/deploy/` — original static HTML/CSS/JS
 
 ---
 
-## Pre-Launch Open Items
+## Open Items
 
 | Item | Priority | Notes |
 |---|---|---|
-| Beehiiv API key | P1 | Newsletter DB-only until key received. Add `BEEHIIV_API_KEY` Vercel env var. Code already handles it. |
-| Domain cutover | P0 | Point `flexilytics.ai` DNS to this Vercel project. |
-| Google Search Console | P2 | Submit `/sitemap.xml` after domain go-live. |
-| Replace `assets/team/arun.png` | P3 | Non-standardised portrait — replace with square white-bg photo before launch. |
+| GSC sitemap resubmission | P0 | Manual: GSC UI → Sitemaps → submit `https://www.flexilytics.ai/sitemap.xml` |
+| Beehiiv API key | P1 | Newsletter DB-only until key received. Add `BEEHIIV_API_KEY` Vercel env var. |
+| Crunchbase/G2 profiles | P1 | Create profiles, then add URLs to `sameAs` in `leadership.html` Organization schema |
+| Content articles | P1 | Articles 3–10 — writing task, not engineering |
+| Backlinks / guest posts | P2 | Marketing task |
+| Founder videos | P2 | Production task |
+| Service schemas on solutions pages | P2 | Add `Service` JSON-LD to each solutions `.html` file |
+| Replace `assets/team/arun.png` | P3 | Non-standardised portrait — replace with square white-bg photo |
 
 ---
 
 ## Status
 
-- **Version**: 2.1.0
-- **Status**: Production ready — live at `https://new-corporate-website-version2.vercel.app`
-- **Pages**: 18 static + 1 sitemap, all HTTP 200
+- **Version**: 3.0.0
+- **Tag**: `v3.0.0`
+- **Production URL**: `https://www.flexilytics.ai`
+- **Vercel deployment**: `dpl_P42ajrNtaeiies3fzZaK4qLWZoiu`
+- **Pages**: 18 static + sitemap + llms.txt + llms-full.txt, all HTTP 200
 - **Forms**: All 3 API endpoints tested E2E — DB saves confirmed
 - **Console errors**: 0
-- **Tests**: 98/98 passing (`npm run test`) | 100% statement/function/line coverage on lib layer
-- **Build**: `npm run build` ✅ | `npm run check` ✅ 0 errors, 0 warnings
+- **Tests**: 103/103 passing (`npm run test`) | 100% statement/function/line coverage on lib layer
+- **Build**: `npm run build` ✅ | `npm run typecheck` ✅ 0 errors
+- **Canonical URL**: `https://www.flexilytics.ai` on all pages ✅
+- **IndexNow**: 18 URLs submitted, HTTP 200 ✅
 - **Node runtime**: 20.x (Vercel + local enforced)
 - **License**: Proprietary — All Rights Reserved
 - **Owner**: Flexilytics Private Limited

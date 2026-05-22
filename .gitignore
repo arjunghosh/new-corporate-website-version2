@@ -7,6 +7,8 @@ node_modules/
 .env.local
 test-*.png
 *.jpeg
+# Root-level session capture screenshots (operational captures, not design assets)
+/*.png
 archive/
 CHANGES.md
 plan-change.md
