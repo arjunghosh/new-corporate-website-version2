@@ -1269,7 +1269,8 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
   function frame(){
     ctx.clearRect(0,0,w,h);
-    const speedMul = motionMode === 'calm' ? 0.5 : motionMode === 'flow' ? 1 : 1.7;
+    // const speedMul = motionMode === 'calm' ? 0.5 : motionMode === 'flow' ? 1 : 1.7;
+    const speedMul = motionMode === 'calm' ? 0.1 : motionMode === 'flow' ? 0.5 : 1.0;
     // travel across the full stage, edge to edge
     const xStart = w * 0.04;
     const xEnd = w * 0.96;
