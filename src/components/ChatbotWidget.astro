@@ -1,0 +1,196 @@
+---
+// Flexilytics AI chatbot widget — vanilla JS, no framework, no Tailwind.
+// Styled with CSS vars from assets/site.css. Matches source Chatbot.tsx UX.
+---
+
+<!-- FAB + Chat window -->
+<div id="cb-root" aria-live="polite">
+
+  <!-- Chat window (hidden until open) -->
+  <div id="cb-window" class="cb-window" role="dialog" aria-modal="true" aria-label="Flexilytics AI chat">
+
+    <!-- Header -->
+    <div class="cb-header">
+      <div class="cb-header-info">
+        <div class="cb-avatar" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span class="cb-status-dot" aria-hidden="true"></span>
+        </div>
+        <div>
+          <div class="cb-header-name">Flexilytics AI</div>
+          <div class="cb-header-sub">Online</div>
+        </div>
+      </div>
+      <button id="cb-close" class="cb-close-btn" aria-label="Close chat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Messages -->
+    <div id="cb-messages" class="cb-messages"></div>
+
+    <!-- Input -->
+    <div class="cb-input-area">
+      <form id="cb-form" class="cb-form" autocomplete="off">
+        <input
+          id="cb-input"
+          type="text"
+          class="cb-input"
+          placeholder="Type your message…"
+          maxlength="500"
+          aria-label="Chat message"
+        />
+        <button type="submit" id="cb-send" class="cb-send-btn" aria-label="Send message" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- Ambient glow -->
+    <div class="cb-glow" aria-hidden="true"></div>
+  </div>
+
+  <!-- FAB toggle -->
+  <button id="cb-fab" class="cb-fab" aria-label="Open Flexilytics AI chat" aria-expanded="false">
+    <span class="cb-fab-icon cb-fab-open" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+    </span>
+    <span class="cb-fab-icon cb-fab-close" aria-hidden="true" style="display:none">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+      </svg>
+    </span>
+  </button>
+
+</div>
+
+<script is:inline>
+(function () {
+  var root = document.getElementById('cb-root');
+  var win = document.getElementById('cb-window');
+  var msgContainer = document.getElementById('cb-messages');
+  var form = document.getElementById('cb-form');
+  var input = document.getElementById('cb-input');
+  var sendBtn = document.getElementById('cb-send');
+  var fab = document.getElementById('cb-fab');
+  var closeBtn = document.getElementById('cb-close');
+
+  if (!root || !win || !fab) return;
+
+  var isOpen = false;
+  var isLoading = false;
+  // history mirrors messages sent to API (excludes current in-flight message)
+  var chatHistory = [];
+
+  function setOpen(open) {
+    isOpen = open;
+    win.classList.toggle('cb-open', open);
+    fab.setAttribute('aria-expanded', String(open));
+    fab.classList.toggle('cb-active', open);
+    fab.querySelector('.cb-fab-open').style.display = open ? 'none' : '';
+    fab.querySelector('.cb-fab-close').style.display = open ? '' : 'none';
+    if (open) {
+      scrollToBottom();
+      setTimeout(function () { input.focus(); }, 220);
+    }
+  }
+
+  function scrollToBottom() {
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+  }
+
+  function renderMessage(role, content) {
+    var wrapper = document.createElement('div');
+    wrapper.className = 'cb-msg ' + (role === 'user' ? 'cb-msg-user' : 'cb-msg-assistant');
+    var bubble = document.createElement('div');
+    bubble.className = 'cb-bubble';
+    bubble.textContent = content;
+    wrapper.appendChild(bubble);
+    msgContainer.appendChild(wrapper);
+    scrollToBottom();
+  }
+
+  function showLoader() {
+    var wrapper = document.createElement('div');
+    wrapper.id = 'cb-loader';
+    wrapper.className = 'cb-msg cb-msg-assistant';
+    wrapper.innerHTML = '<div class="cb-bubble cb-loading"><span></span><span></span><span></span></div>';
+    msgContainer.appendChild(wrapper);
+    scrollToBottom();
+  }
+
+  function hideLoader() {
+    var el = document.getElementById('cb-loader');
+    if (el) el.remove();
+  }
+
+  function setLoading(loading) {
+    isLoading = loading;
+    input.disabled = loading;
+    sendBtn.disabled = loading || !input.value.trim();
+  }
+
+  async function sendMessage(text) {
+    if (isLoading || !text.trim()) return;
+
+    var historySnapshot = chatHistory.slice();
+    chatHistory.push({ role: 'user', content: text });
+    renderMessage('user', text);
+    setLoading(true);
+    showLoader();
+
+    try {
+      var res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, history: historySnapshot }),
+      });
+      var data = await res.json();
+      hideLoader();
+      var reply = data.reply || data.error || 'Sorry, something went wrong. Please try again.';
+      chatHistory.push({ role: 'assistant', content: reply });
+      renderMessage('assistant', reply);
+    } catch (_) {
+      hideLoader();
+      var errMsg = 'Connection error. Please check your network and try again.';
+      chatHistory.push({ role: 'assistant', content: errMsg });
+      renderMessage('assistant', errMsg);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Initial greeting
+  renderMessage('assistant', "Hello! I'm the Flexilytics AI assistant. Ask me anything about our services, approach, or how we can help your enterprise.");
+  chatHistory.push({ role: 'assistant', content: "Hello! I'm the Flexilytics AI assistant. Ask me anything about our services, approach, or how we can help your enterprise." });
+
+  fab.addEventListener('click', function () { setOpen(!isOpen); });
+  closeBtn.addEventListener('click', function () { setOpen(false); });
+
+  input.addEventListener('input', function () {
+    sendBtn.disabled = !input.value.trim() || isLoading;
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var text = input.value.trim();
+    if (!text || isLoading) return;
+    input.value = '';
+    sendBtn.disabled = true;
+    sendMessage(text);
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && isOpen) setOpen(false);
+  });
+})();
+</script>

@@ -24,5 +24,6 @@ export default defineConfig({
     'import.meta.env.BEEHIIV_API_KEY': JSON.stringify(''),
     'import.meta.env.BEEHIIV_PUBLICATION_ID': JSON.stringify('test-pub-id'),
     'import.meta.env.IP_HASH_SALT': JSON.stringify('test-salt'),
+    'import.meta.env.GEMINI_API_KEY': JSON.stringify('test_gemini_key'),
   },
 });

@@ -3,6 +3,7 @@ import Nav from '@/components/Nav.astro';
 import Footer from '@/components/Footer.astro';
 import SEO from '@/components/SEO.astro';
 import JsonLd from '@/components/JsonLd.astro';
+import ChatbotWidget from '@/components/ChatbotWidget.astro';
 
 interface Props {
   title: string;
@@ -96,6 +97,8 @@ window.__ambientMode = 'on';
 <script is:inline src="/assets/site.js"></script>
 
 <slot name="foot" />
+
+<ChatbotWidget />
 
 </body>
 </html>
