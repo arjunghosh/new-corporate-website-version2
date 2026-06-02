@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * Build-time script: embed all knowledge chunks via Gemini text-embedding-004.
+ * Build-time script: embed all knowledge chunks via Gemini gemini-embedding-001.
  * Outputs src/lib/chatbot-embeddings.ts (gitignored, regenerated on every deploy).
  *
  * Incremental: uses a SHA-256 content hash per chunk to skip re-embedding unchanged text.
@@ -38,11 +38,11 @@ function sha256(text: string): string {
 }
 
 async function embedText(text: string): Promise<number[]> {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${API_KEY}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${API_KEY}`;
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: 'models/text-embedding-004', content: { parts: [{ text }] } }),
+    body: JSON.stringify({ model: 'models/gemini-embedding-001', content: { parts: [{ text }] } }),
   });
   if (!res.ok) {
     const body = await res.text();
@@ -50,6 +50,20 @@ async function embedText(text: string): Promise<number[]> {
   }
   const data = await res.json() as { embedding: { values: number[] } };
   return data.embedding.values;
+}
+
+function writeEmptyEmbeddings(reason: string) {
+  console.warn(`[embed] ${reason} — writing empty embeddings, RAG uses context-stuffing fallback.`);
+  writeFileSync(
+    OUT_PATH,
+    [
+      '// AUTO-GENERATED — embedding unavailable at build time.',
+      '// RAG falls back to full context stuffing. See scripts/embed-knowledge.ts.',
+      'import type { EmbeddedChunk } from \'./chatbot-rag\';',
+      'export const embeddedChunks: EmbeddedChunk[] = [];',
+      '',
+    ].join('\n'),
+  );
 }
 
 async function main() {
@@ -70,7 +84,14 @@ async function main() {
       continue;
     }
     console.log(`[embed] embedding: ${chunk.id}`);
-    const embedding = await embedText(chunk.text);
+    let embedding: number[];
+    try {
+      embedding = await embedText(chunk.text);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      writeEmptyEmbeddings(`embedding failed (${msg.slice(0, 120)})`);
+      process.exit(0);
+    }
     cache[chunk.id] = { hash, embedding };
     results.push({ id: chunk.id, embedding });
     embedded++;

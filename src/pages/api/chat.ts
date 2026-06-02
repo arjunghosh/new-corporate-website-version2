@@ -45,11 +45,11 @@ async function getEmbeddedChunks() {
 
 async function embedQuery(text: string, apiKey: string): Promise<number[] | null> {
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${apiKey}`;
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'models/text-embedding-004', content: { parts: [{ text }] } }),
+      body: JSON.stringify({ model: 'models/gemini-embedding-001', content: { parts: [{ text }] } }),
     });
     if (!res.ok) return null;
     const data = await res.json() as { embedding: { values: number[] } };
